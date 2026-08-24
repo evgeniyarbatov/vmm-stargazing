@@ -1,0 +1,42 @@
+# stargazing-ultras race configuration
+# Paths are relative to DATA_DIR (~/data/stargazing-ultras by default) unless absolute.
+
+race:
+  name: "VMM 100 Miles 2026"
+  location: "Sa Pa, Lào Cai, Vietnam"
+  # Approximate start coordinates (Sapa Square); refined from GPX once available
+  default_lat: 22.340
+  default_lon: 103.844
+  default_elev_m: 1550
+
+# Course track
+gpx: "gpx/vmm-100-miles-2026.gpx"   # place actual file under DATA_DIR/gpx/
+
+# Timing (local time, Asia/Ho_Chi_Minh = UTC+7)
+timezone: "Asia/Ho_Chi_Minh"
+start_time: "2026-09-18T08:00:00+07:00"
+# Either cutoff_time or time_limit_hours (prefer both for clarity)
+cutoff_time: "2026-09-20T09:00:00+07:00"
+time_limit_hours: 49
+
+# Sampling & visibility thresholds (used once code exists)
+sampling:
+  # Only sample during astronomical night windows
+  distance_m: 2000          # along-track spacing for sky snapshots
+  max_points_per_night: 12  # hard cap
+
+visibility:
+  planet_mag_limit: 6.0     # fainter planets ignored
+  include_moon: true
+  include_milky_way_note: true
+  # Simple horizon masking via DEM (degrees above geometric horizon)
+  horizon_buffer_deg: 2.0
+
+dem:
+  source: "copernicus-glo30"  # same preference as gpx-dem-preview
+  # cache lives under DATA_DIR/dem/
+
+# Output
+output:
+  format: ["markdown", "csv"]  # night summaries + tables
+  # Generated files go under DATA_DIR/out/
