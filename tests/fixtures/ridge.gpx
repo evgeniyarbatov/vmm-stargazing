@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="stargazing-ultras-tests" xmlns="http://www.topografix.com/GPX/1/1">
+  <trk>
+    <name>ridge</name>
+    <trkseg>
+      <trkpt lat="22.3330" lon="103.8410"><ele>1500</ele></trkpt>
+      <trkpt lat="22.3335" lon="103.8430"><ele>1550</ele></trkpt>
+      <trkpt lat="22.3340" lon="103.8450"><ele>1600</ele></trkpt>
+      <trkpt lat="22.3345" lon="103.8470"><ele>1580</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

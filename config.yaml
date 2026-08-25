@@ -1,5 +1,5 @@
 # stargazing-ultras race configuration
-# Paths are relative to DATA_DIR (~/data/stargazing-ultras by default) unless absolute.
+# Paths are relative to DATA_DIR (~/Documents/data/stargazing-ultras by default) unless absolute.
 
 race:
   name: "VMM 100 Miles 2026"
