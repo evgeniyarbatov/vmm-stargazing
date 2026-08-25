@@ -1,5 +1,5 @@
 # stargazing-ultras race configuration
-# Paths are relative to DATA_DIR (~/Documents/data/stargazing-ultras by default) unless absolute.
+# Paths are relative to the repo, then DATA_DIR (~/Documents/data/stargazing-ultras).
 
 race:
   name: "VMM 100 Miles 2026"
@@ -10,7 +10,7 @@ race:
   default_elev_m: 1550
 
 # Course track
-gpx: "gpx/vmm-100-miles-2026.gpx"   # place actual file under DATA_DIR/gpx/
+gpx: "gpx/vmm-100-miles-2026.gpx"
 
 # Timing (local time, Asia/Ho_Chi_Minh = UTC+7)
 timezone: "Asia/Ho_Chi_Minh"

@@ -3,7 +3,7 @@
 ```bash
 make install
 make test
-make run GPX=~/Downloads/vietnam-mountain-marathon-2024-ultra-100-miles.gpx
+make run
 ```
 
 Python ≥ 3.11, `uv` on `PATH`. `make test` is offline (synthetic GPX + GeoTIFF). The first `make dem` downloads GLO-30; the first `make timeline` downloads de421 into `$DATA_DIR/ephemeris/`.
@@ -27,7 +27,7 @@ Human-readable notes: `$DATA_DIR/out/summary.md`. Tables: `nights.csv`, `samples
 
 | Changed | Re-run |
 |---|---|
-| GPX file | `make run GPX=…` |
+| GPX file | `make run` (or `make run GPX=…` to override) |
 | `BUFFER_KM` | `make clean-dem dem timeline sky report` |
 | start/cutoff in `config.yaml` | `make timeline sky report` |
 | sampling / magnitude / horizon buffer | `make timeline sky report` |

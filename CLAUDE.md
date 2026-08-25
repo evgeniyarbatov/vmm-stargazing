@@ -13,7 +13,7 @@ Details: [docs/architecture.md](docs/architecture.md), [docs/usage.md](docs/usag
 ```sh
 make install
 make test
-make run GPX=/path/to/course.gpx
+make run
 make lint
 ```
 
@@ -21,6 +21,6 @@ Run scripts via `uv run python scripts/…` or Make. Python ≥ 3.11.
 
 ## Do not
 
-- Commit DEM tiles, ephemeris, GPX, or generated tables.
+- Commit DEM tiles, ephemeris, or generated tables.
 - Call live Copernicus or download de421 from `make test`.
 - Add a live planetarium or heavy star-catalogue rendering.

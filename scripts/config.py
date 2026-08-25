@@ -42,8 +42,18 @@ def race_window(cfg: dict[str, Any]) -> tuple[datetime, datetime]:
     return start, start + timedelta(hours=float(hours))
 
 
-def resolve_gpx(cfg: dict[str, Any], datadir: Path, gpx_override: Path | None) -> Path:
-    dest = datadir / str(cfg["gpx"])
+def resolve_gpx(
+    cfg: dict[str, Any],
+    datadir: Path,
+    gpx_override: Path | None,
+    repo_root: Path | None = None,
+) -> Path:
     if gpx_override is not None:
         return gpx_override.expanduser()
-    return dest
+    rel = Path(str(cfg["gpx"]))
+    if rel.is_absolute():
+        return rel
+    in_repo = (repo_root or REPO_ROOT) / rel
+    if in_repo.is_file():
+        return in_repo
+    return datadir / rel

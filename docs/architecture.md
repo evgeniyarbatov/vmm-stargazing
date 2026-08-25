@@ -11,13 +11,16 @@ config.yaml + GPX
   → report.py    markdown + CSV under out/
 ```
 
-`make run GPX=…` is that chain. Later stages can be re-run alone if their inputs still exist.
+`make run` is that chain (`GPX=…` overrides the in-repo course). Later stages can be re-run alone if their inputs still exist.
 
 ## Layout
 
 ```text
+Repo `gpx/` holds the committed course file. The pipeline copies it into `$DATA_DIR` and densifies from there.
+
+```text
 $DATA_DIR/
-  gpx/<config name>.gpx   source copy (not densified)
+  gpx/<config name>.gpx   working copy of the repo GPX
   input.gpx               densified track
   bbox.json               tight lon/lat envelope + length
   dem/glo30.tif           cached GLO-30 (orthometric)

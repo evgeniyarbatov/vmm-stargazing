@@ -11,7 +11,7 @@ This is **not** a live planetarium. It is pre-computation + lightweight lookup m
 ```bash
 make install
 make test
-make run GPX=~/Downloads/vietnam-mountain-marathon-2024-ultra-100-miles.gpx
+make run
 ```
 
 Night summaries land in `~/Documents/data/stargazing-ultras/out/summary.md` (`DATA_DIR` / `DATA_ROOT` override). First run downloads Copernicus GLO-30 and the de421 ephemeris into that data dir.
@@ -38,7 +38,7 @@ Given a race configuration (GPX + start + cutoff):
 
 All race-specific parameters live in `config.yaml`.
 
-Data (GPX, DEM caches, ephemeris, generated tables) lives **outside** the repo under `~/Documents/data/stargazing-ultras`. Nothing heavy is committed.
+The course GPX lives in-repo (`gpx/`). DEM caches, ephemeris, and generated tables live under `~/Documents/data/stargazing-ultras`.
 
 Along-track times assume even pace to the cutoff. Faster running shifts night locations earlier on the course; planet positions barely change across this bbox.
 
@@ -58,4 +58,4 @@ GLO-30 is a ~30 m DSM: ridges and valleys, not the trail.
 
 ## Status
 
-Pipeline is in: `make run GPX=…` writes night windows, planet/constellation tables, and a short summary. No polar plots, no live app.
+Pipeline is in: `make run` writes night windows, planet/constellation tables, and a short summary. No polar plots, no live app.
