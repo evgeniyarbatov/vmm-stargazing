@@ -42,6 +42,15 @@ def visible(row: dict[str, Any], min_alt: float = 0.0) -> bool:
     return float(row["alt_deg"]) >= min_alt and not row.get("obscured")
 
 
+def disc_stem(sample: dict[str, Any], group: list[dict[str, Any]]) -> str:
+    nid = int(sample["night_id"])
+    if sample["i"] == group[0]["i"]:
+        return f"night{nid}-dusk"
+    if sample["i"] == group[-1]["i"]:
+        return f"night{nid}-dawn"
+    return f"night{nid}-midnight"
+
+
 def key_samples(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -152,11 +161,18 @@ def sample_heading(sample: dict[str, Any]) -> str:
     )
 
 
+def md_image(stem: str, plots: dict[str, str] | None, alt: str) -> list[str]:
+    if not plots or stem not in plots:
+        return []
+    return ["", f"![{alt}]({plots[stem]})", ""]
+
+
 def build_markdown(
     cfg: dict[str, Any],
     nights: dict[str, Any],
     samples: list[dict[str, Any]],
     sky: list[dict[str, Any]],
+    plots: dict[str, str] | None = None,
 ) -> str:
     race = cfg.get("race") or {}
     title = race.get("name") or "Race"
@@ -198,6 +214,8 @@ def build_markdown(
         if e["event"] not in wanted:
             continue
         lines.append(f"| {e['event'].replace('_', ' ')} | {fmt_time(e['time'])} | {fmt_hours(e['elapsed_h'])} |")
+    lines.extend(md_image("course", plots, "Course with night samples"))
+    lines.extend(md_image("profile", plots, "Elevation profile with night windows"))
 
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -216,11 +234,13 @@ def build_markdown(
             f"(elapsed {fmt_hours(n['elapsed0_h'])}–{fmt_hours(n['elapsed1_h'])}, "
             f"km {n['dist0_km']:.0f}–{n['dist1_km']:.0f} at cutoff pace)."
         )
+        lines.extend(md_image(f"night{nid}-alt", plots, f"Night {nid} altitude"))
         for sample in group:
             if sample["i"] not in keys:
                 continue
             rows = rows_for_sample(sky, sample["i"])
             lines += ["", f"### {sample_heading(sample)}", ""]
+            lines.extend(md_image(disc_stem(sample, group), plots, sample_heading(sample)))
             lines.append(moon_sentence(rows))
             mw = milky_way_sentence(rows)
             if mw:
@@ -271,7 +291,10 @@ def main() -> None:
     sky = load_json(datadir / "sky.json")
     formats = (cfg.get("output") or {}).get("format") or ["markdown", "csv"]
     if "markdown" in formats:
-        md = build_markdown(cfg, nights, samples, sky)
+        plot_links = {
+            p.stem: f"plots/{p.name}" for p in sorted((out_dir / "plots").glob("*.png"))
+        }
+        md = build_markdown(cfg, nights, samples, sky, plots=plot_links or None)
         ensure_parent(out_dir / "summary.md")
         (out_dir / "summary.md").write_text(md, encoding="utf-8")
     if "csv" in formats:

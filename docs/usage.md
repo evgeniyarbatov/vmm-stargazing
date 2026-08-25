@@ -19,7 +19,7 @@ Default root: `~/Documents/data/stargazing-ultras/`.
 | `DATA_ROOT=/other/root` | files under `/other/root/stargazing-ultras/` |
 | `DATA_DIR=/exact/path` | files under that path |
 
-Human-readable notes: `$DATA_DIR/out/summary.md`. Tables: `nights.csv`, `samples.csv`, `sky.csv`.
+Human-readable notes: `$DATA_DIR/out/summary.md` (embeds PNGs from `out/plots/`). Tables: `nights.csv`, `samples.csv`, `sky.csv`.
 
 `make clean` removes nights/samples/sky/out (keeps DEM + ephemeris). `make clean-dem` drops the GeoTIFF.
 
@@ -28,9 +28,9 @@ Human-readable notes: `$DATA_DIR/out/summary.md`. Tables: `nights.csv`, `samples
 | Changed | Re-run |
 |---|---|
 | GPX file | `make run` (or `make run GPX=…` to override) |
-| `BUFFER_KM` | `make clean-dem dem timeline sky report` |
-| start/cutoff in `config.yaml` | `make timeline sky report` |
-| sampling / magnitude / horizon buffer | `make timeline sky report` |
+| `BUFFER_KM` | `make clean-dem dem timeline sky plots report` |
+| start/cutoff in `config.yaml` | `make timeline sky plots report` |
+| sampling / magnitude / horizon buffer | `make timeline sky plots report` |
 
 ## Knobs
 

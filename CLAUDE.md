@@ -14,6 +14,7 @@ Details: [docs/architecture.md](docs/architecture.md), [docs/usage.md](docs/usag
 make install
 make test
 make run
+make plots
 make lint
 ```
 

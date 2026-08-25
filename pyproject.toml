@@ -5,6 +5,7 @@ requires-python = ">=3.11"
 dependencies = [
     "dem-stitcher",
     "gpxpy",
+    "matplotlib",
     "numpy",
     "pyyaml",
     "rasterio",
@@ -40,6 +41,7 @@ explicit_package_bases = true
 module = [
     "dem_stitcher.*",
     "gpxpy.*",
+    "matplotlib.*",
     "rasterio.*",
     "skyfield.*",
     "jplephem.*",

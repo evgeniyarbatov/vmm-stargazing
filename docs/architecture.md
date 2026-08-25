@@ -8,10 +8,11 @@ config.yaml + GPX
   → dem.py       Copernicus GLO-30 GeoTIFF for bbox + buffer (cached)
   → timeline.py  astronomical night windows + along-track samples
   → sky.py       planets / moon / stars + DEM horizon at each sample
+  → plots.py     course map, sky discs, altitude-vs-time
   → report.py    markdown + CSV under out/
 ```
 
-`make run` is that chain (`GPX=…` overrides the in-repo course). Later stages can be re-run alone if their inputs still exist.
+`make run` is that chain (`GPX=…` overrides the in-repo course). Later stages can be re-run alone if their inputs still exist. `make plots` rebuilds PNGs from existing `samples.json` / `sky.json` / DEM.
 
 ## Layout
 
@@ -28,10 +29,16 @@ $DATA_DIR/
   nights.json             twilight intervals + night windows
   samples.json            observer states during nights
   sky.json                bodies at each sample
-  out/summary.md          human-readable notes
+  out/summary.md          human-readable notes (embeds plots/)
   out/nights.csv
   out/samples.csv
   out/sky.csv
+  out/plots/course.png
+  out/plots/profile.png
+  out/plots/nightN-dusk.png
+  out/plots/nightN-midnight.png
+  out/plots/nightN-dawn.png
+  out/plots/nightN-alt.png
 ```
 
 Nothing in that tree is committed. Tests use a tiny synthetic ridge; they never download Copernicus or de421.

@@ -49,6 +49,7 @@ GPX + config → densify / bbox
              → Copernicus GLO-30 cache
              → astronomical night windows + night-only samples
              → planets / moon / stars + DEM horizon
+             → course map, sky discs, altitude charts
              → markdown + CSV
 ```
 
@@ -58,4 +59,4 @@ GLO-30 is a ~30 m DSM: ridges and valleys, not the trail.
 
 ## Status
 
-Pipeline is in: `make run` writes night windows, planet/constellation tables, and a short summary. No polar plots, no live app.
+Pipeline is in: `make run` writes night windows, planet/constellation tables, sky discs along the GPX, and a short summary. No live app.

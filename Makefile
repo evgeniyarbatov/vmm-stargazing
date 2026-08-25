@@ -20,7 +20,7 @@ SKY = $(DATA_DIR)/sky.json
 OUT_DIR = $(DATA_DIR)/out
 
 .PHONY: install lock test lint help \
-	gpx dem timeline sky report run \
+	gpx dem timeline sky plots report run \
 	clean clean-dem
 
 install:
@@ -61,12 +61,17 @@ sky: install
 	@test -f "$(SAMPLES)" || (echo "Error: missing $(SAMPLES). Run: make timeline" >&2; exit 1)
 	@uv run python scripts/sky.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
 
+plots: install
+	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
+	@mkdir -p "$(OUT_DIR)/plots"
+	@uv run python scripts/plots.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
+
 report: install
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
 	@mkdir -p "$(OUT_DIR)"
 	@uv run python scripts/report.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
 
-run: gpx dem timeline sky report
+run: gpx dem timeline sky plots report
 	@echo "Done: $(OUT_DIR)"
 
 clean:
@@ -87,8 +92,9 @@ help:
 	@echo "dem         - cache Copernicus GLO-30 for bbox"
 	@echo "timeline    - astronomical night windows + along-track samples"
 	@echo "sky         - planets, moon, stars, terrain horizon"
+	@echo "plots       - course map, sky discs, altitude charts"
 	@echo "report      - markdown + CSV under \$$(DATA_DIR)/out/"
-	@echo "run          - gpx → dem → timeline → sky → report"
+	@echo "run          - gpx → dem → timeline → sky → plots → report"
 	@echo "clean       - remove nights/samples/sky/out (keep DEM + ephemeris)"
 	@echo "clean-dem   - remove cached DEM"
 	@echo ""
