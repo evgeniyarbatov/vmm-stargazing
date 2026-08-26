@@ -49,7 +49,7 @@ GPX + config → densify / bbox
              → Copernicus GLO-30 cache
              → astronomical night windows + night-only samples
              → planets / moon / stars + DEM horizon
-             → course map, sky discs, altitude charts
+             → course map, sky discs, altitude / spots / steer charts
              → markdown + CSV
 ```
 

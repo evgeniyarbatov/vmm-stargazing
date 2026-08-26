@@ -142,15 +142,17 @@ def milky_way_sentence(rows: list[dict[str, Any]]) -> str:
 
 def nav_star_lines(rows: list[dict[str, Any]]) -> list[str]:
     stars = [
-        r
-        for r in rows
-        if r["kind"] == "star" and r["name"] in NAV_STARS and visible(r, min_alt=5)
+        r for r in rows if r["kind"] == "star" and r["name"] in NAV_STARS and visible(r, min_alt=5)
     ]
-    stars.sort(key=lambda r: (r.get("mag") is None, r.get("mag") if r.get("mag") is not None else 99))
+    stars.sort(
+        key=lambda r: (r.get("mag") is None, r.get("mag") if r.get("mag") is not None else 99)
+    )
     lines = []
     for r in stars[:12]:
         mag = f", mag {r['mag']:.1f}" if r.get("mag") is not None else ""
-        lines.append(f"- {r['name']} ({r['constellation']}): {fmt_altaz(r['alt_deg'], r['az_deg'])}{mag}")
+        lines.append(
+            f"- {r['name']} ({r['constellation']}): {fmt_altaz(r['alt_deg'], r['az_deg'])}{mag}"
+        )
     return lines
 
 
@@ -199,7 +201,13 @@ def build_markdown(
             f"{fmt_hours(n['duration_h'])} | {fmt_hours(n['elapsed0_h'])}–{fmt_hours(n['elapsed1_h'])} | "
             f"{n['dist0_km']:.0f}–{n['dist1_km']:.0f} |"
         )
-    lines += ["", "### Twilight (context)", "", "| Event | Local time | Elapsed |", "| --- | --- | --- |"]
+    lines += [
+        "",
+        "### Twilight (context)",
+        "",
+        "| Event | Local time | Elapsed |",
+        "| --- | --- | --- |",
+    ]
     wanted = {
         "sunset",
         "civil_dusk",
@@ -213,9 +221,23 @@ def build_markdown(
     for e in nights.get("events") or []:
         if e["event"] not in wanted:
             continue
-        lines.append(f"| {e['event'].replace('_', ' ')} | {fmt_time(e['time'])} | {fmt_hours(e['elapsed_h'])} |")
+        lines.append(
+            f"| {e['event'].replace('_', ' ')} | {fmt_time(e['time'])} | {fmt_hours(e['elapsed_h'])} |"
+        )
     lines.extend(md_image("course", plots, "Course with night samples"))
     lines.extend(md_image("profile", plots, "Elevation profile with night windows"))
+    lines.extend(md_image("spots", plots, "Stargazing spot scores along the course"))
+    if plots and "spots" in plots:
+        lines += [
+            "Score mixes open DEM horizon, elevation, moon (down/dim is better), "
+            "and whether the Milky Way centre is above the ridge.",
+        ]
+    lines.extend(md_image("steer", plots, "Guide star along the course"))
+    if plots and "steer" in plots:
+        lines += [
+            "Guide star is the brightest unobscured nav star near the trail heading. "
+            "L/R is degrees left or right of the direction of travel.",
+        ]
 
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -235,6 +257,7 @@ def build_markdown(
             f"km {n['dist0_km']:.0f}–{n['dist1_km']:.0f} at cutoff pace)."
         )
         lines.extend(md_image(f"night{nid}-alt", plots, f"Night {nid} altitude"))
+        lines.extend(md_image(f"night{nid}-steer", plots, f"Night {nid} steer by stars"))
         for sample in group:
             if sample["i"] not in keys:
                 continue
@@ -263,14 +286,28 @@ def build_markdown(
                 lines += ["", "**Bright stars**", ""]
                 lines.extend(nav)
 
-        lines += ["", "### All night samples (cutoff pace)", "", "| Local | Elapsed | km | Elev | Heading |", "| --- | --- | --- | --- | --- |"]
+        lines += [
+            "",
+            "### All night samples (cutoff pace)",
+            "",
+            "| Local | Elapsed | km | Elev | Heading |",
+            "| --- | --- | --- | --- | --- |",
+        ]
         for sample in group:
             lines.append(
                 f"| {fmt_time(sample['time'])} | {fmt_hours(sample['elapsed_h'])} | "
                 f"{sample['dist_km']:.1f} | {sample['elev_m']:.0f} m | {sample['heading_deg']:.0f}° |"
             )
 
-    lines += ["", "## Notes", "", "- Astronomical night is Sun altitude below −18°.", "- Horizon masking uses GLO-30 plus a 2° buffer; a planet behind a ridge is flagged, not hidden from the CSV.", "- This is pre-computation for study, not a live planetarium.", ""]
+    lines += [
+        "",
+        "## Notes",
+        "",
+        "- Astronomical night is Sun altitude below −18°.",
+        "- Horizon masking uses GLO-30 plus a 2° buffer; a planet behind a ridge is flagged, not hidden from the CSV.",
+        "- This is pre-computation for study, not a live planetarium.",
+        "",
+    ]
     return "\n".join(lines) + "\n"
 
 
@@ -291,9 +328,7 @@ def main() -> None:
     sky = load_json(datadir / "sky.json")
     formats = (cfg.get("output") or {}).get("format") or ["markdown", "csv"]
     if "markdown" in formats:
-        plot_links = {
-            p.stem: f"plots/{p.name}" for p in sorted((out_dir / "plots").glob("*.png"))
-        }
+        plot_links = {p.stem: f"plots/{p.name}" for p in sorted((out_dir / "plots").glob("*.png"))}
         md = build_markdown(cfg, nights, samples, sky, plots=plot_links or None)
         ensure_parent(out_dir / "summary.md")
         (out_dir / "summary.md").write_text(md, encoding="utf-8")
@@ -301,12 +336,31 @@ def main() -> None:
         write_csv(
             out_dir / "nights.csv",
             flatten_nights(nights),
-            ["night_id", "start", "end", "duration_h", "elapsed0_h", "elapsed1_h", "dist0_km", "dist1_km"],
+            [
+                "night_id",
+                "start",
+                "end",
+                "duration_h",
+                "elapsed0_h",
+                "elapsed1_h",
+                "dist0_km",
+                "dist1_km",
+            ],
         )
         write_csv(
             out_dir / "samples.csv",
             samples,
-            ["i", "night_id", "time", "elapsed_h", "dist_km", "lat", "lon", "elev_m", "heading_deg"],
+            [
+                "i",
+                "night_id",
+                "time",
+                "elapsed_h",
+                "dist_km",
+                "lat",
+                "lon",
+                "elev_m",
+                "heading_deg",
+            ],
         )
         write_csv(
             out_dir / "sky.csv",

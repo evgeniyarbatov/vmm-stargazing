@@ -92,7 +92,7 @@ help:
 	@echo "dem         - cache Copernicus GLO-30 for bbox"
 	@echo "timeline    - astronomical night windows + along-track samples"
 	@echo "sky         - planets, moon, stars, terrain horizon"
-	@echo "plots       - course map, sky discs, altitude charts"
+	@echo "plots       - course map, sky discs, altitude / spots / steer charts"
 	@echo "report      - markdown + CSV under \$$(DATA_DIR)/out/"
 	@echo "run          - gpx → dem → timeline → sky → plots → report"
 	@echo "clean       - remove nights/samples/sky/out (keep DEM + ephemeris)"

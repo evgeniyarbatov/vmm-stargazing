@@ -8,7 +8,7 @@ config.yaml + GPX
   → dem.py       Copernicus GLO-30 GeoTIFF for bbox + buffer (cached)
   → timeline.py  astronomical night windows + along-track samples
   → sky.py       planets / moon / stars + DEM horizon at each sample
-  → plots.py     course map, sky discs, altitude-vs-time
+  → plots.py     course map, sky discs, altitude, spots, steer
   → report.py    markdown + CSV under out/
 ```
 
@@ -35,10 +35,13 @@ $DATA_DIR/
   out/sky.csv
   out/plots/course.png
   out/plots/profile.png
+  out/plots/spots.png
+  out/plots/steer.png
   out/plots/nightN-dusk.png
   out/plots/nightN-midnight.png
   out/plots/nightN-dawn.png
   out/plots/nightN-alt.png
+  out/plots/nightN-steer.png
 ```
 
 Nothing in that tree is committed. Tests use a tiny synthetic ridge; they never download Copernicus or de421.
