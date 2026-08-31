@@ -110,6 +110,9 @@
     }
     openTarget();
     window.addEventListener('hashchange', openTarget);
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('summary a')) e.stopPropagation();
+    }, true);
   </script>
 </body>
 </html>

@@ -32,6 +32,9 @@ HASH_SCRIPT = """  <script>
     }
     openTarget();
     window.addEventListener('hashchange', openTarget);
+    document.addEventListener('click', function (e) {
+      if (e.target.closest('summary a')) e.stopPropagation();
+    }, true);
   </script>"""
 
 
@@ -230,9 +233,8 @@ def html_altitude_block(
         name = altitude_name(stem, night_id)
         html_id = constellation_id(name)
         jump.append(f'<a href="#{esc(html_id)}">{esc(name)}</a>')
-        figs.append(f'<h4 id="{esc(html_id)}">{esc(name)}</h4>')
+        figs.append(f'<h4 id="{esc(html_id)}">{titled_name(name)}</h4>')
         figs.extend(html_figure(stem, plots, f"Night {night_id} · {name}"))
-        figs.append(f"<p class='meta'>{encyclopedia_links(name)}</p>")
     if len(jump) > 1:
         lines.append(f"<p class='jump'>{' · '.join(jump)}</p>")
     lines.extend(figs)
@@ -261,6 +263,10 @@ def encyclopedia_links(name: str) -> str:
         f'<a href="{esc(wiki)}" target="_blank" rel="noopener noreferrer">Wikipedia</a>'
     )
     return " · ".join(bits)
+
+
+def titled_name(name: str) -> str:
+    return f"{esc(name)} <span class=\"ency\">{encyclopedia_links(name)}</span>"
 
 
 def unique_ref_names(names: list[str]) -> list[str]:
@@ -453,6 +459,7 @@ def html_details(
     opened: bool = False,
     html_id: str | None = None,
     css: str = "",
+    summary_html: bool = False,
 ) -> list[str]:
     attrs: list[str] = []
     if html_id:
@@ -462,7 +469,8 @@ def html_details(
     if opened:
         attrs.append("open")
     attr = f" {' '.join(attrs)}" if attrs else ""
-    return [f"<details{attr}>", f"  <summary>{esc(summary)}</summary>", *body, "</details>"]
+    label = summary if summary_html else esc(summary)
+    return [f"<details{attr}>", f"  <summary>{label}</summary>", *body, "</details>"]
 
 
 def html_table(headers: list[str], rows: list[list[str]]) -> list[str]:
@@ -1181,7 +1189,6 @@ def build_iau(
             inner.extend(
                 html_src_figure(src, f"{plate_title} · {caption}", caption=caption)
             )
-        inner.append(f"<p class='meta'>{encyclopedia_links(plate_title)}</p>")
         here = [s for s, names in stop_names if name_in(plate_title, names)]
         if here:
             links = ", ".join(
@@ -1196,7 +1203,15 @@ def build_iau(
                     f'<p class="meta"><a href="{esc(o.iau_href)}#{esc(cid)}">'
                     f"{esc(plate_title)} on Night {o.nid}</a></p>"
                 )
-        body.extend(html_details(plate_title, inner, html_id=cid, css="iau-item"))
+        body.extend(
+            html_details(
+                titled_name(plate_title),
+                inner,
+                html_id=cid,
+                css="iau-item",
+                summary_html=True,
+            )
+        )
     return page_shell(
         title=f"Constellations · Night {nv.nid} — {title}",
         heading=(
