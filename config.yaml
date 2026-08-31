@@ -46,7 +46,12 @@ time_limit_hours: 49
 sampling:
   # Only sample during astronomical night windows
   distance_m: 2000          # along-track spacing for sky snapshots
-  max_points_per_night: 12  # hard cap
+  max_points_per_night: 24
+
+spots:
+  min_gap_km: 4.0
+  max_per_night: 8
+  score_floor: 0.7
 
 visibility:
   planet_mag_limit: 6.0     # fainter planets ignored

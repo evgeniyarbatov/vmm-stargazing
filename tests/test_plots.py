@@ -24,6 +24,7 @@ from plots import (
     pick_best_spots,
     rel_bearing_deg,
     score_sample,
+    score_samples,
     star_color,
     write_plots,
 )
@@ -151,6 +152,35 @@ class TestPlots(unittest.TestCase):
         self.assertGreater(high["score"], low["score"])
         self.assertAlmostEqual(high["open_sky"], 1.0)
         self.assertGreater(low["moon_penalty"], 0.0)
+
+    def test_score_sample_rewards_open_ahead(self) -> None:
+        sample = {
+            "i": 0,
+            "night_id": 1,
+            "lon": 0,
+            "lat": 0,
+            "dist_km": 1,
+            "elev_m": 1000,
+            "heading_deg": 90.0,
+            "time": "t",
+        }
+        wall_ahead = np.concatenate([np.full(19, 40.0), np.zeros(17)])
+        open_ahead = np.concatenate([np.zeros(19), np.full(17, 40.0)])
+        closed = score_sample(sample, [], wall_ahead, 500.0, 1500.0)
+        opened = score_sample(sample, [], open_ahead, 500.0, 1500.0)
+        self.assertGreater(opened["open_ahead"], closed["open_ahead"])
+        self.assertGreater(opened["score"], closed["score"])
+
+    def test_score_samples_elev_is_per_night(self) -> None:
+        samples = [
+            {"i": 0, "night_id": 1, "lon": 0, "lat": 0, "dist_km": 10, "elev_m": 700, "time": "t"},
+            {"i": 1, "night_id": 1, "lon": 0, "lat": 0, "dist_km": 20, "elev_m": 1000, "time": "t"},
+            {"i": 2, "night_id": 2, "lon": 0, "lat": 0, "dist_km": 150, "elev_m": 1000, "time": "t"},
+            {"i": 3, "night_id": 2, "lon": 0, "lat": 0, "dist_km": 155, "elev_m": 2000, "time": "t"},
+        ]
+        scored = {int(row["i"]): row for row in score_samples(samples, [], {})}
+        self.assertAlmostEqual(scored[1]["elev_score"], 1.0)
+        self.assertAlmostEqual(scored[2]["elev_score"], 0.0)
 
     def test_disc_stem_dusk_midnight_dawn(self) -> None:
         group = [
@@ -286,6 +316,38 @@ class TestPlots(unittest.TestCase):
         picked = pick_best_spots(scores, min_gap_km=6.0, max_per_night=4)
         ids = [int(s["i"]) for s in picked]
         self.assertEqual(ids, [0, 2])
+
+    def test_pick_best_spots_keeps_stretch_peak(self) -> None:
+        scores = [
+            {"i": 0, "night_id": 1, "dist_km": 10.0, "score": 0.90, "lon": 0, "lat": 0},
+            {"i": 1, "night_id": 1, "dist_km": 16.0, "score": 0.65, "lon": 0, "lat": 0},
+            {"i": 2, "night_id": 1, "dist_km": 32.0, "score": 0.72, "lon": 0, "lat": 0},
+            {"i": 3, "night_id": 1, "dist_km": 38.0, "score": 0.71, "lon": 0, "lat": 0},
+            {"i": 4, "night_id": 1, "dist_km": 44.0, "score": 0.70, "lon": 0, "lat": 0},
+        ]
+        picked = pick_best_spots(scores, min_gap_km=5.0, max_per_night=8, score_floor=0.7)
+        ids = [int(s["i"]) for s in picked]
+        self.assertIn(0, ids)
+        self.assertIn(1, ids)
+        self.assertIn(2, ids)
+
+    def test_pick_best_spots_skips_below_floor(self) -> None:
+        scores = [
+            {"i": 0, "night_id": 1, "dist_km": 10.0, "score": 0.90, "lon": 0, "lat": 0},
+            {"i": 1, "night_id": 1, "dist_km": 16.0, "score": 0.40, "lon": 0, "lat": 0},
+            {"i": 2, "night_id": 1, "dist_km": 40.0, "score": 0.80, "lon": 0, "lat": 0},
+        ]
+        picked = pick_best_spots(scores, min_gap_km=5.0, max_per_night=8, score_floor=0.7)
+        ids = [int(s["i"]) for s in picked]
+        self.assertEqual(ids, [0, 2])
+
+    def test_pick_best_spots_keeps_short_night_end(self) -> None:
+        scores = [
+            {"i": 0, "night_id": 2, "dist_km": 152.0, "score": 0.88, "lon": 0, "lat": 0},
+            {"i": 1, "night_id": 2, "dist_km": 156.8, "score": 0.65, "lon": 0, "lat": 0},
+        ]
+        picked = pick_best_spots(scores, min_gap_km=4.0, max_per_night=8, score_floor=0.7)
+        self.assertEqual([int(s["i"]) for s in picked], [0, 1])
 
     def test_star_colors_differ(self) -> None:
         self.assertNotEqual(star_color("Vega"), star_color("Altair"))

@@ -12,13 +12,13 @@ At each sample: planets Mercury–Saturn, Moon phase, ~60 named stars with a con
 
 A multi-page notebook: contents, course (pace table + map + profile + twilight), one page per night, one page per scored stop, planet/star altitude, IAU plates. Copy is derived from the GPX, `nights.json`, and `config.yaml`.
 
-Stops are scored from open DSM horizon, elevation, moon wash, and whether the Milky Way centre clears the ridge. A few per night, spaced. Each has a sky disc and a DSM look-ahead facing the GPX. Waypoints go out as `stargazing-spots.gpx`. On the current page that is four places on Night 1 and two on Night 2.
+Stops are the best sample in each stretch of night: heading-open DSM sky, elevation on that night, moon wash, and whether the Milky Way centre clears the ridge. Spaced, not every sample. Each has a sky disc and a DSM look-ahead facing the GPX. Waypoints go out as `stargazing-spots.gpx`.
 
 Altitude charts are one plot per planet, the moon, and each bright star that comes above 5°. IAU plates (chart / azimuth / altitude) cover constellations overhead or up at the stops. Nights cross-link as “same sky, different place”. `data.json` is the raw dump.
 
 Constellation “presence” is: at least one catalogued star from that constellation is up. Discs and look-aheads draw a nav-star subset, not stick figures.
 
-What the pages still do not do: name a stop after what you would look at, put a “look at this” line under a picture, call Vega–Altair–Deneb a triangle, or read Night 1’s four stops as one turning sky.
+What the pages still do not do: name a stop after what you would look at, put a “look at this” line under a picture, call Vega–Altair–Deneb a triangle, or read Night 1’s stops as one turning sky.
 
 ## Hard limits
 
@@ -64,11 +64,11 @@ Done when the first stop is rememberable as a triangle over a ridge, not three m
 
 ### 4. Read the night as a sequence
 
-Night 1 is four independent ledes. The moon is up at the first stop and behind the ridge at the rest. Overhead names shift from Aquila / Cygnus / Lyra to Pegasus to Orion. Nothing says that.
+Night 1’s stop ledes are independent. The moon is up at the first stop and behind the ridge at later ones. Overhead names shift from Aquila / Cygnus / Lyra to Pegasus to Orion. Nothing says that.
 
 After the stop list, one short block from the ordered samples: the moon’s hinge, then what rose. Sentence form. The altitude panels already show Vega dropping and Orion climbing — do not paste those charts here; one sentence is enough.
 
-Done when Night 1 reads as a night that turns, not four km cards.
+Done when Night 1 reads as a night that turns, not a stack of km cards.
 
 ### 5. Constellation cards for what this stop actually shows
 

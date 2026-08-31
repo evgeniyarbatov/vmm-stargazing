@@ -32,7 +32,7 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 | `BUFFER_KM` | `make clean-dem dem timeline sky plots site` |
 | start/cutoff in `config.yaml` | `make timeline sky plots site` |
 | `checkpoints.csv` or `pace:` in config | `make timeline sky plots site` |
-| sampling / magnitude / horizon buffer | `make timeline sky plots site` |
+| sampling / spots / magnitude / horizon buffer | `make timeline sky plots site` |
 | IAU constellation charts | `make constellations site` |
 | `sky-links.json` | `make site` |
 
@@ -44,6 +44,6 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 | `BUFFER_KM` | 15 | DEM pad around the track bbox (km) |
 | `SAMPLE_M` | from config (2000) | Along-track spacing during night (m) |
 
-Race timing, magnitude limit, and horizon buffer live in `config.yaml`.
+Race timing, sampling cap, spot spacing, magnitude limit, and horizon buffer live in `config.yaml`.
 
 Copernicus GLO-30 is a ~30 m DSM. It shows ridges and valleys — not the trail tread.

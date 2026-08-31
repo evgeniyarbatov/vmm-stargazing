@@ -36,6 +36,10 @@ STAR = "#1e1e2e"
 AHEAD_DEG = 20.0
 AHEAD_HALF_DEG = 90.0
 OPEN_REF_DEG = 45.0
+LOCAL_PEAK_BUMP = 0.08
+SPOT_GAP_KM = 4.0
+SPOT_MAX_PER_NIGHT = 8
+SPOT_SCORE_FLOOR = 0.7
 NIGHT_COLORS = {1: "#1e66f5", 2: "#8839ef", 3: "#40a02b"}
 PLANET_COLORS = {
     "Mercury": "#7c7f93",
@@ -126,11 +130,49 @@ def guide_label(row: dict[str, Any] | None) -> str:
     return f"{row['name']} {abs(rel):.0f}° {side}"
 
 
-def _mean_horizon(profile: np.ndarray | None, rows: list[dict[str, Any]]) -> float:
+def _mean_horizon(
+    profile: np.ndarray | None,
+    rows: list[dict[str, Any]],
+    heading_deg: float | None = None,
+    half_deg: float | None = None,
+) -> float:
     if profile is not None and len(profile) > 0:
+        if heading_deg is None or half_deg is None:
+            return float(np.mean(profile))
+        n = len(profile)
+        azs = np.arange(n, dtype=float) * (360.0 / n)
+        rel = (azs - float(heading_deg) + 180.0) % 360.0 - 180.0
+        mask = np.abs(rel) <= float(half_deg)
+        if np.any(mask):
+            return float(np.mean(profile[mask]))
         return float(np.mean(profile))
-    vals = [float(r["horizon_deg"]) for r in rows if r.get("horizon_deg") is not None]
+    vals: list[float] = []
+    for row in rows:
+        if row.get("horizon_deg") is None:
+            continue
+        if heading_deg is not None and half_deg is not None:
+            az = row.get("az_deg")
+            if az is None or abs(rel_bearing_deg(az, heading_deg)) > half_deg:
+                continue
+        vals.append(float(row["horizon_deg"]))
     return float(np.mean(vals)) if vals else 0.0
+
+
+def _open_fraction(mean_horizon_deg: float) -> float:
+    return 1.0 - min(max(mean_horizon_deg / OPEN_REF_DEG, 0.0), 1.0)
+
+
+def _local_elev_peaks(samples: list[dict[str, Any]]) -> set[int]:
+    ordered = sorted(samples, key=lambda row: float(row["dist_km"]))
+    peaks: set[int] = set()
+    for i, sample in enumerate(ordered):
+        elev = float(sample["elev_m"])
+        if i and elev < float(ordered[i - 1]["elev_m"]):
+            continue
+        if i + 1 < len(ordered) and elev < float(ordered[i + 1]["elev_m"]):
+            continue
+        peaks.add(int(sample["i"]))
+    return peaks
 
 
 def score_sample(
@@ -139,10 +181,23 @@ def score_sample(
     profile: np.ndarray | None,
     elev_min: float,
     elev_max: float,
+    local_peak: bool = False,
 ) -> dict[str, Any]:
-    open_sky = 1.0 - min(max(_mean_horizon(profile, rows) / OPEN_REF_DEG, 0.0), 1.0)
+    heading = sample.get("heading_deg")
+    heading_f = float(heading) if heading is not None else None
+    open_full = _open_fraction(_mean_horizon(profile, rows))
+    if heading_f is None:
+        open_ahead = open_full
+        open_sky = open_full
+    else:
+        open_ahead = _open_fraction(
+            _mean_horizon(profile, rows, heading_f, AHEAD_HALF_DEG)
+        )
+        open_sky = 0.5 * open_full + 0.5 * open_ahead
     span = max(elev_max - elev_min, 1.0)
     elev_score = (float(sample["elev_m"]) - elev_min) / span
+    if local_peak:
+        elev_score = min(1.0, elev_score + LOCAL_PEAK_BUMP)
     moons = [r for r in rows if r["kind"] == "moon"]
     if not moons or float(moons[0]["alt_deg"]) < 0 or moons[0].get("obscured"):
         moon_penalty = 0.0
@@ -162,31 +217,69 @@ def score_sample(
         "time": sample["time"],
         "score": score,
         "open_sky": open_sky,
+        "open_ahead": open_ahead,
         "elev_score": elev_score,
         "moon_penalty": moon_penalty,
         "mw_bonus": float(mw_up),
+        "local_peak": local_peak,
     }
+
+
+def score_samples(
+    samples: list[dict[str, Any]],
+    sky: list[dict[str, Any]],
+    profiles: dict[int, np.ndarray],
+) -> list[dict[str, Any]]:
+    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for sample in samples:
+        by_night[int(sample["night_id"])].append(sample)
+    out: list[dict[str, Any]] = []
+    for nid in sorted(by_night):
+        group = by_night[nid]
+        elevs = [float(s["elev_m"]) for s in group]
+        elev_min = min(elevs) if elevs else 0.0
+        elev_max = max(elevs) if elevs else 1.0
+        peaks = _local_elev_peaks(group)
+        for sample in group:
+            out.append(
+                score_sample(
+                    sample,
+                    rows_for_sample(sky, sample["i"]),
+                    profiles.get(int(sample["i"])),
+                    elev_min,
+                    elev_max,
+                    local_peak=int(sample["i"]) in peaks,
+                )
+            )
+    return out
 
 
 def pick_best_spots(
     scores: list[dict[str, Any]],
-    min_gap_km: float = 4.5,
-    max_per_night: int = 4,
+    min_gap_km: float = SPOT_GAP_KM,
+    max_per_night: int = SPOT_MAX_PER_NIGHT,
+    score_floor: float = SPOT_SCORE_FLOOR,
 ) -> list[dict[str, Any]]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for row in scores:
         by_night[int(row["night_id"])].append(row)
     picked: list[dict[str, Any]] = []
     for nid in sorted(by_night):
-        ranked = sorted(by_night[nid], key=lambda row: float(row["score"]), reverse=True)
+        ordered = sorted(by_night[nid], key=lambda row: float(row["dist_km"]))
+        night_best = max(float(row["score"]) for row in ordered)
+        floor = score_floor * night_best
         chosen: list[dict[str, Any]] = []
-        for row in ranked:
-            if len(chosen) >= max_per_night:
-                break
-            if any(abs(float(row["dist_km"]) - float(c["dist_km"])) < min_gap_km for c in chosen):
-                continue
-            chosen.append(row)
-        chosen.sort(key=lambda row: float(row["dist_km"]))
+        remaining = list(ordered)
+        while remaining and len(chosen) < max_per_night:
+            origin = float(remaining[0]["dist_km"])
+            window = [row for row in remaining if float(row["dist_km"]) < origin + min_gap_km]
+            candidate = max(window, key=lambda row: float(row["score"]))
+            if float(candidate["score"]) >= floor:
+                chosen.append(candidate)
+                cut = float(candidate["dist_km"]) + min_gap_km
+            else:
+                cut = origin + min_gap_km
+            remaining = [row for row in remaining if float(row["dist_km"]) >= cut]
         picked.extend(chosen)
     return picked
 
@@ -781,6 +874,7 @@ def write_plots(
     sky: list[dict[str, Any]],
     dem_array: np.ndarray | None = None,
     dem_transform: Any = None,
+    spots_cfg: dict[str, Any] | None = None,
 ) -> list[Path]:
     plots_dir = out_dir / "plots"
     slon, slat, dist, sele = sample_along(lons, lats, 200.0, eles)
@@ -800,19 +894,7 @@ def write_plots(
     else:
         elev = sele
     profiles = _horizon_profiles(samples, dem_array, dem_transform)
-    elevs = [float(s["elev_m"]) for s in samples]
-    elev_min = min(elevs) if elevs else 0.0
-    elev_max = max(elevs) if elevs else 1.0
-    scores = [
-        score_sample(
-            sample,
-            rows_for_sample(sky, sample["i"]),
-            profiles.get(int(sample["i"])),
-            elev_min,
-            elev_max,
-        )
-        for sample in samples
-    ]
+    scores = score_samples(samples, sky, profiles)
     guides = {
         int(sample["i"]): guide_star(sample, rows_for_sample(sky, sample["i"]))
         for sample in samples
@@ -837,7 +919,13 @@ def write_plots(
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for sample in samples:
         by_night[int(sample["night_id"])].append(sample)
-    picked = pick_best_spots(scores)
+    knobs = spots_cfg or {}
+    picked = pick_best_spots(
+        scores,
+        min_gap_km=float(knobs.get("min_gap_km", SPOT_GAP_KM)),
+        max_per_night=int(knobs.get("max_per_night", SPOT_MAX_PER_NIGHT)),
+        score_floor=float(knobs.get("score_floor", SPOT_SCORE_FLOOR)),
+    )
     picked_ids = {int(s["i"]) for s in picked}
     for nid, group in by_night.items():
         span = [_local_time(s["time"]) for s in group]
@@ -887,7 +975,7 @@ def main() -> None:
     parser.add_argument("--data-dir", type=Path, default=None)
     parser.add_argument("--site-dir", type=Path, default=None)
     args = parser.parse_args()
-    load_config(args.config)
+    cfg = load_config(args.config)
     datadir = data_dir(args.data_dir)
     site_dir = (args.site_dir or REPO_ROOT / "docs").expanduser()
     lons, lats, eles, _name = read_track(datadir / "input.gpx")
@@ -896,6 +984,7 @@ def main() -> None:
     dem_transform = None
     if dem_path.is_file():
         dem_array, dem_transform, _ = load_dem_array(dem_path)
+    spots_cfg = cfg.get("spots")
     written = write_plots(
         site_dir,
         lons,
@@ -906,6 +995,7 @@ def main() -> None:
         load_json(datadir / "sky.json"),
         dem_array,
         dem_transform,
+        spots_cfg=spots_cfg if isinstance(spots_cfg, dict) else None,
     )
     print(f"{len(written)} plots → {site_dir / 'plots'}")
 

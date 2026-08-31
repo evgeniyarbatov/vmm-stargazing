@@ -233,7 +233,7 @@ def main() -> None:
     start, cutoff = race_window(cfg)
     sampling = cfg.get("sampling") or {}
     sample_m = float(args.sample_m or sampling.get("distance_m") or 2000)
-    max_per_night = int(sampling.get("max_points_per_night") or 12)
+    max_per_night = int(sampling.get("max_points_per_night") or 24)
     race = cfg.get("race") or {}
     fallback_elev = float(race.get("default_elev_m") or 1500)
 

@@ -29,7 +29,7 @@ See [usage.md](usage.md) for knobs and [architecture.md](architecture.md) for ho
 
 Race start, GPX path, and predicted-pace knobs live in `config.yaml`. The course GPX lives in `gpx/`. DEM caches and ephemeris stay out of git.
 
-Along-track *time* uses the realistic predicted pace (when you reach a place). *Which* places are good for looking up is scored from open DSM horizon, elevation, moon, and whether the Milky Way centre is above the ridge — not from aid-station cutoffs.
+Along-track *time* uses the realistic predicted pace (when you reach a place). *Which* places are good for looking up is the best sample in each stretch of night (heading-open DSM sky, elevation on that night, moon, Milky Way centre) — not aid-station cutoffs.
 
 ## New course GPX
 

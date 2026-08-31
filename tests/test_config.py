@@ -19,6 +19,10 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(cutoff, datetime.fromisoformat("2026-09-20T09:00:00+07:00"))
         self.assertAlmostEqual((cutoff - start).total_seconds() / 3600.0, 49.0)
         self.assertEqual(cfg["timezone"], "Asia/Ho_Chi_Minh")
+        self.assertEqual(cfg["sampling"]["max_points_per_night"], 24)
+        self.assertEqual(cfg["spots"]["max_per_night"], 8)
+        self.assertAlmostEqual(float(cfg["spots"]["min_gap_km"]), 4.0)
+        self.assertAlmostEqual(float(cfg["spots"]["score_floor"]), 0.7)
 
     def test_resolve_gpx_prefers_repo_then_override(self) -> None:
         cfg = load_config()
