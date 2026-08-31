@@ -113,7 +113,8 @@ class TestReport(unittest.TestCase):
         self.assertIn('href="night-1.html"', index)
         self.assertIn('href="night-1-km48.html"', index)
         self.assertIn("best stop", index)
-        self.assertIn("Overhead: Lyra", index)
+        self.assertIn("Overhead:", index)
+        self.assertIn("https://grokipedia.com/page/Lyra", index)
         self.assertNotIn('href="#night-1"', index)
 
         course = pages["course.html"]
@@ -141,6 +142,12 @@ class TestReport(unittest.TestCase):
         self.assertIn("Jupiter", stop)
         self.assertIn("Lyra", stop)
         self.assertIn("waxing gibbous", stop)
+        self.assertIn("https://grokipedia.com/page/Jupiter", stop)
+        self.assertIn("https://grokipedia.com/page/Vega", stop)
+        self.assertIn("https://grokipedia.com/page/Lyra", stop)
+        self.assertIn("https://en.wikipedia.org/wiki/Jupiter", stop)
+        self.assertIn("https://en.wikipedia.org/wiki/Vega", stop)
+        self.assertIn("https://grokipedia.com/page/Moon", stop)
         self.assertIn('href="night-1.html"', stop)
         self.assertIn('href="index.html"', stop)
 
@@ -205,8 +212,8 @@ class TestReport(unittest.TestCase):
         sky_page = pages["night-1-sky.html"]
         self.assertIn("plots/night1-alt-planet-saturn.png", sky_page)
         self.assertIn("plots/night1-alt-star-vega.png", sky_page)
-        self.assertIn(">Saturn</h4>", sky_page)
-        self.assertIn(">Vega</h4>", sky_page)
+        self.assertIn("https://grokipedia.com/page/Saturn", sky_page)
+        self.assertIn("https://grokipedia.com/page/Vega", sky_page)
         self.assertNotIn("Download chart", sky_page)
         self.assertNotIn("night1-steer", sky_page)
         self.assertNotIn("night1-alt-planets", sky_page)
@@ -297,6 +304,8 @@ class TestReport(unittest.TestCase):
         self.assertNotIn("Download chart", iau)
         self.assertIn("<summary>Andromeda</summary>", iau)
         self.assertIn('id="andromeda"', iau)
+        self.assertIn("https://grokipedia.com/page/Andromeda_(constellation)", iau)
+        self.assertIn("https://en.wikipedia.org/wiki/Andromeda_(constellation)", iau)
         self.assertIn("night-1-km37.html", iau)
         self.assertNotIn("Ara", iau)
 
@@ -305,6 +314,8 @@ class TestReport(unittest.TestCase):
 
         stop = pages["night-1-km37.html"]
         self.assertIn('href="night-1-iau.html#andromeda"', stop)
+        self.assertIn('class="chart"', stop)
+        self.assertIn("https://grokipedia.com/page/Andromeda_(constellation)", stop)
 
     def test_nights_cross_link(self) -> None:
         nights = _nights()

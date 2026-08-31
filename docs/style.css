@@ -222,6 +222,22 @@ a {
   color: var(--link);
 }
 
+a.wiki,
+a.chart {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.72em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a.wiki:hover,
+a.chart:hover {
+  color: var(--gold);
+}
+
 nav.toc a,
 nav.crumbs a,
 nav.pager a,

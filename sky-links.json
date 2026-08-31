@@ -1,0 +1,646 @@
+{
+  "Sirius": {
+    "grokipedia": "https://grokipedia.com/page/Sirius",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sirius"
+  },
+  "Canopus": {
+    "grokipedia": "https://grokipedia.com/page/Canopus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Canopus"
+  },
+  "Arcturus": {
+    "grokipedia": "https://grokipedia.com/page/Arcturus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Arcturus"
+  },
+  "Vega": {
+    "grokipedia": "https://grokipedia.com/page/Vega",
+    "wikipedia": "https://en.wikipedia.org/wiki/Vega"
+  },
+  "Capella": {
+    "grokipedia": "https://grokipedia.com/page/Capella",
+    "wikipedia": "https://en.wikipedia.org/wiki/Capella"
+  },
+  "Rigel": {
+    "grokipedia": "https://grokipedia.com/page/Rigel",
+    "wikipedia": "https://en.wikipedia.org/wiki/Rigel"
+  },
+  "Procyon": {
+    "grokipedia": "https://grokipedia.com/page/Procyon",
+    "wikipedia": "https://en.wikipedia.org/wiki/Procyon"
+  },
+  "Betelgeuse": {
+    "grokipedia": "https://grokipedia.com/page/Betelgeuse",
+    "wikipedia": "https://en.wikipedia.org/wiki/Betelgeuse"
+  },
+  "Achernar": {
+    "grokipedia": "https://grokipedia.com/page/Achernar",
+    "wikipedia": "https://en.wikipedia.org/wiki/Achernar"
+  },
+  "Hadar": {
+    "grokipedia": "https://grokipedia.com/page/Beta_Centauri",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Centauri"
+  },
+  "Altair": {
+    "grokipedia": "https://grokipedia.com/page/Altair",
+    "wikipedia": "https://en.wikipedia.org/wiki/Altair"
+  },
+  "Acrux": {
+    "grokipedia": "https://grokipedia.com/page/Acrux",
+    "wikipedia": "https://en.wikipedia.org/wiki/Acrux"
+  },
+  "Aldebaran": {
+    "grokipedia": "https://grokipedia.com/page/Aldebaran",
+    "wikipedia": "https://en.wikipedia.org/wiki/Aldebaran"
+  },
+  "Antares": {
+    "grokipedia": "https://grokipedia.com/page/Antares",
+    "wikipedia": "https://en.wikipedia.org/wiki/Antares"
+  },
+  "Spica": {
+    "grokipedia": "https://grokipedia.com/page/Spica",
+    "wikipedia": "https://en.wikipedia.org/wiki/Spica"
+  },
+  "Pollux": {
+    "grokipedia": "https://grokipedia.com/page/Pollux_(star)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pollux_(star)"
+  },
+  "Fomalhaut": {
+    "grokipedia": "https://grokipedia.com/page/Fomalhaut",
+    "wikipedia": "https://en.wikipedia.org/wiki/Fomalhaut"
+  },
+  "Deneb": {
+    "grokipedia": "https://grokipedia.com/page/Deneb",
+    "wikipedia": "https://en.wikipedia.org/wiki/Deneb"
+  },
+  "Mimosa": {
+    "grokipedia": "https://grokipedia.com/page/Mimosa_(star)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Mimosa_(star)"
+  },
+  "Regulus": {
+    "grokipedia": "https://grokipedia.com/page/Regulus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Regulus"
+  },
+  "Adhara": {
+    "grokipedia": "https://grokipedia.com/page/Epsilon_Canis_Majoris",
+    "wikipedia": "https://en.wikipedia.org/wiki/Epsilon_Canis_Majoris"
+  },
+  "Castor": {
+    "grokipedia": "https://grokipedia.com/page/Castor_(star)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Castor_(star)"
+  },
+  "Shaula": {
+    "grokipedia": "https://grokipedia.com/page/Lambda_Scorpii",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lambda_Scorpii"
+  },
+  "Gacrux": {
+    "grokipedia": "https://grokipedia.com/page/Gacrux",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gacrux"
+  },
+  "Bellatrix": {
+    "grokipedia": "https://grokipedia.com/page/Bellatrix",
+    "wikipedia": "https://en.wikipedia.org/wiki/Bellatrix"
+  },
+  "Elnath": {
+    "grokipedia": "https://grokipedia.com/page/Beta_Tauri",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Tauri"
+  },
+  "Alnair": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Gruis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Gruis"
+  },
+  "Alioth": {
+    "grokipedia": "https://grokipedia.com/page/Alioth",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alioth"
+  },
+  "Alnitak": {
+    "grokipedia": "https://grokipedia.com/page/Alnitak",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alnitak"
+  },
+  "Dubhe": {
+    "grokipedia": "https://grokipedia.com/page/Dubhe",
+    "wikipedia": "https://en.wikipedia.org/wiki/Dubhe"
+  },
+  "Mirfak": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Persei",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Persei"
+  },
+  "Kaus Australis": {
+    "grokipedia": "https://grokipedia.com/page/Epsilon_Sagittarii",
+    "wikipedia": "https://en.wikipedia.org/wiki/Epsilon_Sagittarii"
+  },
+  "Atria": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Alpha_Trianguli_Australis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Trianguli_Australis"
+  },
+  "Peacock": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Pavonis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Pavonis"
+  },
+  "Polaris": {
+    "grokipedia": "https://grokipedia.com/page/Polaris",
+    "wikipedia": "https://en.wikipedia.org/wiki/Polaris"
+  },
+  "Alphard": {
+    "grokipedia": "https://grokipedia.com/page/Alphard",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alphard"
+  },
+  "Hamal": {
+    "grokipedia": "https://grokipedia.com/page/Hamal",
+    "wikipedia": "https://en.wikipedia.org/wiki/Hamal"
+  },
+  "Diphda": {
+    "grokipedia": "https://grokipedia.com/page/Beta_Ceti",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Ceti"
+  },
+  "Ankaa": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Phoenicis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Phoenicis"
+  },
+  "Nunki": {
+    "grokipedia": "https://grokipedia.com/page/Sigma_Sagittarii",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sigma_Sagittarii"
+  },
+  "Alpheratz": {
+    "grokipedia": "https://grokipedia.com/page/Alpheratz",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpheratz"
+  },
+  "Rasalhague": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Ophiuchi",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Ophiuchi"
+  },
+  "Algol": {
+    "grokipedia": "https://grokipedia.com/page/Algol",
+    "wikipedia": "https://en.wikipedia.org/wiki/Algol"
+  },
+  "Denebola": {
+    "grokipedia": "https://grokipedia.com/page/Denebola",
+    "wikipedia": "https://en.wikipedia.org/wiki/Denebola"
+  },
+  "Schedar": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Cassiopeiae",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Cassiopeiae"
+  },
+  "Alphecca": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Coronae_Borealis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Coronae_Borealis"
+  },
+  "Sadr": {
+    "grokipedia": "https://grokipedia.com/page/Gamma_Cygni",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gamma_Cygni"
+  },
+  "Caph": {
+    "grokipedia": "https://grokipedia.com/page/Beta_Cassiopeiae",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Cassiopeiae"
+  },
+  "Enif": {
+    "grokipedia": "https://grokipedia.com/page/Epsilon_Pegasi",
+    "wikipedia": "https://en.wikipedia.org/wiki/Epsilon_Pegasi"
+  },
+  "Markab": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Pegasi",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Pegasi"
+  },
+  "Menkar": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Ceti",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Ceti"
+  },
+  "Unukalhai": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Serpentis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Serpentis"
+  },
+  "Algenib": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Gamma_Pegasi",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gamma_Pegasi"
+  },
+  "Dabih": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Beta_Capricorni",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Capricorni"
+  },
+  "Sadalsuud": {
+    "grokipedia": "https://grokipedia.com/page/Beta_Aquarii",
+    "wikipedia": "https://en.wikipedia.org/wiki/Beta_Aquarii"
+  },
+  "Alrescha": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Piscium",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Piscium"
+  },
+  "Arneb": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Alpha_Leporis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Leporis"
+  },
+  "Naos": {
+    "grokipedia": "https://grokipedia.com/page/Zeta_Puppis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Zeta_Puppis"
+  },
+  "Suhail": {
+    "grokipedia": "https://grokipedia.com/page/Suhail_(star)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lambda_Velorum"
+  },
+  "Phact": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Alpha_Columbae",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Columbae"
+  },
+  "Tarazed": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Gamma_Aquilae",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gamma_Aquilae"
+  },
+  "Eltanin": {
+    "grokipedia": "https://grokipedia.com/page/Gamma_Draconis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gamma_Draconis"
+  },
+  "Alderamin": {
+    "grokipedia": "https://grokipedia.com/page/Alpha_Cephei",
+    "wikipedia": "https://en.wikipedia.org/wiki/Alpha_Cephei"
+  },
+  "Mercury": {
+    "grokipedia": "https://grokipedia.com/page/Mercury_(planet)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Mercury_(planet)"
+  },
+  "Venus": {
+    "grokipedia": "https://grokipedia.com/page/Venus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Venus"
+  },
+  "Mars": {
+    "grokipedia": "https://grokipedia.com/page/Mars",
+    "wikipedia": "https://en.wikipedia.org/wiki/Mars"
+  },
+  "Jupiter": {
+    "grokipedia": "https://grokipedia.com/page/Jupiter",
+    "wikipedia": "https://en.wikipedia.org/wiki/Jupiter"
+  },
+  "Saturn": {
+    "grokipedia": "https://grokipedia.com/page/Saturn",
+    "wikipedia": "https://en.wikipedia.org/wiki/Saturn"
+  },
+  "Moon": {
+    "grokipedia": "https://grokipedia.com/page/Moon",
+    "wikipedia": "https://en.wikipedia.org/wiki/Moon"
+  },
+  "Milky Way centre": {
+    "grokipedia": "https://grokipedia.com/page/Galactic_Center",
+    "wikipedia": "https://en.wikipedia.org/wiki/Galactic_Center"
+  },
+  "Andromeda": {
+    "grokipedia": "https://grokipedia.com/page/Andromeda_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Andromeda_(constellation)"
+  },
+  "Antlia": {
+    "grokipedia": "https://grokipedia.com/page/Antlia",
+    "wikipedia": "https://en.wikipedia.org/wiki/Antlia"
+  },
+  "Apus": {
+    "grokipedia": "https://grokipedia.com/page/Apus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Apus"
+  },
+  "Aquarius": {
+    "grokipedia": "https://grokipedia.com/page/Aquarius_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Aquarius_(constellation)"
+  },
+  "Aquila": {
+    "grokipedia": "https://grokipedia.com/page/Aquila_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Aquila_(constellation)"
+  },
+  "Ara": {
+    "grokipedia": "https://grokipedia.com/page/Ara_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ara_(constellation)"
+  },
+  "Aries": {
+    "grokipedia": "https://grokipedia.com/page/Aries_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Aries_(constellation)"
+  },
+  "Auriga": {
+    "grokipedia": "https://grokipedia.com/page/Auriga",
+    "wikipedia": "https://en.wikipedia.org/wiki/Auriga"
+  },
+  "Boötes": {
+    "grokipedia": "https://grokipedia.com/page/Boötes",
+    "wikipedia": "https://en.wikipedia.org/wiki/Boötes"
+  },
+  "Bootes": {
+    "grokipedia": "https://grokipedia.com/page/Boötes",
+    "wikipedia": "https://en.wikipedia.org/wiki/Boötes"
+  },
+  "Caelum": {
+    "grokipedia": "https://grokipedia.com/page/Caelum",
+    "wikipedia": "https://en.wikipedia.org/wiki/Caelum"
+  },
+  "Camelopardalis": {
+    "grokipedia": "https://grokipedia.com/page/Camelopardalis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Camelopardalis"
+  },
+  "Cancer": {
+    "grokipedia": "https://grokipedia.com/page/Cancer_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cancer_(constellation)"
+  },
+  "Canes Venatici": {
+    "grokipedia": "https://grokipedia.com/page/Canes_Venatici",
+    "wikipedia": "https://en.wikipedia.org/wiki/Canes_Venatici"
+  },
+  "Canis Major": {
+    "grokipedia": "https://grokipedia.com/page/Canis_Major",
+    "wikipedia": "https://en.wikipedia.org/wiki/Canis_Major"
+  },
+  "Canis Minor": {
+    "grokipedia": "https://grokipedia.com/page/Canis_Minor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Canis_Minor"
+  },
+  "Capricornus": {
+    "grokipedia": "https://grokipedia.com/page/Capricornus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Capricornus"
+  },
+  "Carina": {
+    "grokipedia": "https://grokipedia.com/page/Carina_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Carina_(constellation)"
+  },
+  "Cassiopeia": {
+    "grokipedia": "https://grokipedia.com/page/Cassiopeia_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cassiopeia_(constellation)"
+  },
+  "Centaurus": {
+    "grokipedia": "https://grokipedia.com/page/Centaurus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Centaurus"
+  },
+  "Cepheus": {
+    "grokipedia": "https://grokipedia.com/page/Cepheus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cepheus_(constellation)"
+  },
+  "Cetus": {
+    "grokipedia": "https://en.wikipedia.org/wiki/Cetus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cetus_(constellation)"
+  },
+  "Chamaeleon": {
+    "grokipedia": "https://grokipedia.com/page/Chamaeleon",
+    "wikipedia": "https://en.wikipedia.org/wiki/Chamaeleon"
+  },
+  "Circinus": {
+    "grokipedia": "https://grokipedia.com/page/Circinus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Circinus"
+  },
+  "Columba": {
+    "grokipedia": "https://grokipedia.com/page/Columba_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Columba_(constellation)"
+  },
+  "Coma Berenices": {
+    "grokipedia": "https://grokipedia.com/page/Coma_Berenices",
+    "wikipedia": "https://en.wikipedia.org/wiki/Coma_Berenices"
+  },
+  "Corona Australis": {
+    "grokipedia": "https://grokipedia.com/page/Corona_Australis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Corona_Australis"
+  },
+  "Corona Borealis": {
+    "grokipedia": "https://grokipedia.com/page/Corona_Borealis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Corona_Borealis"
+  },
+  "Corvus": {
+    "grokipedia": "https://grokipedia.com/page/Corvus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Corvus_(constellation)"
+  },
+  "Crater": {
+    "grokipedia": "https://grokipedia.com/page/Crater_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Crater_(constellation)"
+  },
+  "Crux": {
+    "grokipedia": "https://grokipedia.com/page/Crux",
+    "wikipedia": "https://en.wikipedia.org/wiki/Crux"
+  },
+  "Cygnus": {
+    "grokipedia": "https://grokipedia.com/page/Cygnus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Cygnus_(constellation)"
+  },
+  "Delphinus": {
+    "grokipedia": "https://grokipedia.com/page/Delphinus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Delphinus"
+  },
+  "Dorado": {
+    "grokipedia": "https://grokipedia.com/page/Dorado",
+    "wikipedia": "https://en.wikipedia.org/wiki/Dorado"
+  },
+  "Draco": {
+    "grokipedia": "https://grokipedia.com/page/Draco_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Draco_(constellation)"
+  },
+  "Equuleus": {
+    "grokipedia": "https://grokipedia.com/page/Equuleus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Equuleus"
+  },
+  "Eridanus": {
+    "grokipedia": "https://grokipedia.com/page/Eridanus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Eridanus_(constellation)"
+  },
+  "Fornax": {
+    "grokipedia": "https://grokipedia.com/page/Fornax",
+    "wikipedia": "https://en.wikipedia.org/wiki/Fornax"
+  },
+  "Gemini": {
+    "grokipedia": "https://grokipedia.com/page/Gemini_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Gemini_(constellation)"
+  },
+  "Grus": {
+    "grokipedia": "https://grokipedia.com/page/Grus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Grus_(constellation)"
+  },
+  "Hercules": {
+    "grokipedia": "https://grokipedia.com/page/Hercules_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Hercules_(constellation)"
+  },
+  "Horologium": {
+    "grokipedia": "https://grokipedia.com/page/Horologium_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Horologium_(constellation)"
+  },
+  "Hydra": {
+    "grokipedia": "https://grokipedia.com/page/Hydra_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Hydra_(constellation)"
+  },
+  "Hydrus": {
+    "grokipedia": "https://grokipedia.com/page/Hydrus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Hydrus"
+  },
+  "Indus": {
+    "grokipedia": "https://grokipedia.com/page/Indus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Indus_(constellation)"
+  },
+  "Lacerta": {
+    "grokipedia": "https://grokipedia.com/page/Lacerta",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lacerta"
+  },
+  "Leo": {
+    "grokipedia": "https://grokipedia.com/page/Leo_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Leo_(constellation)"
+  },
+  "Leo Minor": {
+    "grokipedia": "https://grokipedia.com/page/Leo_Minor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Leo_Minor"
+  },
+  "Lepus": {
+    "grokipedia": "https://grokipedia.com/page/Lepus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lepus_(constellation)"
+  },
+  "Libra": {
+    "grokipedia": "https://grokipedia.com/page/Libra_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Libra_(constellation)"
+  },
+  "Lupus": {
+    "grokipedia": "https://grokipedia.com/page/Lupus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lupus_(constellation)"
+  },
+  "Lynx": {
+    "grokipedia": "https://grokipedia.com/page/Lynx_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lynx_(constellation)"
+  },
+  "Lyra": {
+    "grokipedia": "https://grokipedia.com/page/Lyra",
+    "wikipedia": "https://en.wikipedia.org/wiki/Lyra"
+  },
+  "Mensa": {
+    "grokipedia": "https://grokipedia.com/page/Mensa_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Mensa_(constellation)"
+  },
+  "Microscopium": {
+    "grokipedia": "https://grokipedia.com/page/Microscopium",
+    "wikipedia": "https://en.wikipedia.org/wiki/Microscopium"
+  },
+  "Monoceros": {
+    "grokipedia": "https://grokipedia.com/page/Monoceros",
+    "wikipedia": "https://en.wikipedia.org/wiki/Monoceros"
+  },
+  "Musca": {
+    "grokipedia": "https://grokipedia.com/page/Musca",
+    "wikipedia": "https://en.wikipedia.org/wiki/Musca"
+  },
+  "Norma": {
+    "grokipedia": "https://grokipedia.com/page/Norma_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Norma_(constellation)"
+  },
+  "Octans": {
+    "grokipedia": "https://grokipedia.com/page/Octans",
+    "wikipedia": "https://en.wikipedia.org/wiki/Octans"
+  },
+  "Ophiuchus": {
+    "grokipedia": "https://grokipedia.com/page/Ophiuchus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ophiuchus"
+  },
+  "Orion": {
+    "grokipedia": "https://grokipedia.com/page/Orion_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Orion_(constellation)"
+  },
+  "Pavo": {
+    "grokipedia": "https://grokipedia.com/page/Pavo_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pavo_(constellation)"
+  },
+  "Pegasus": {
+    "grokipedia": "https://grokipedia.com/page/Pegasus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pegasus_(constellation)"
+  },
+  "Perseus": {
+    "grokipedia": "https://grokipedia.com/page/Perseus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Perseus_(constellation)"
+  },
+  "Phoenix": {
+    "grokipedia": "https://grokipedia.com/page/Phoenix_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Phoenix_(constellation)"
+  },
+  "Pictor": {
+    "grokipedia": "https://grokipedia.com/page/Pictor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pictor"
+  },
+  "Pisces": {
+    "grokipedia": "https://grokipedia.com/page/Pisces_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pisces_(constellation)"
+  },
+  "Piscis Austrinus": {
+    "grokipedia": "https://grokipedia.com/page/Piscis_Austrinus",
+    "wikipedia": "https://en.wikipedia.org/wiki/Piscis_Austrinus"
+  },
+  "Puppis": {
+    "grokipedia": "https://grokipedia.com/page/Puppis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Puppis"
+  },
+  "Pyxis": {
+    "grokipedia": "https://grokipedia.com/page/Pyxis",
+    "wikipedia": "https://en.wikipedia.org/wiki/Pyxis"
+  },
+  "Reticulum": {
+    "grokipedia": "https://grokipedia.com/page/Reticulum",
+    "wikipedia": "https://en.wikipedia.org/wiki/Reticulum"
+  },
+  "Sagitta": {
+    "grokipedia": "https://grokipedia.com/page/Sagitta",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sagitta"
+  },
+  "Sagittarius": {
+    "grokipedia": "https://grokipedia.com/page/Sagittarius_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sagittarius_(constellation)"
+  },
+  "Scorpius": {
+    "grokipedia": "https://grokipedia.com/page/Scorpius",
+    "wikipedia": "https://en.wikipedia.org/wiki/Scorpius"
+  },
+  "Sculptor": {
+    "grokipedia": "https://grokipedia.com/page/Sculptor_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sculptor_(constellation)"
+  },
+  "Scutum": {
+    "grokipedia": "https://grokipedia.com/page/Scutum_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Scutum_(constellation)"
+  },
+  "Serpens": {
+    "grokipedia": "https://grokipedia.com/page/Serpens",
+    "wikipedia": "https://en.wikipedia.org/wiki/Serpens"
+  },
+  "Serpens Caput": {
+    "grokipedia": "https://grokipedia.com/page/Serpens",
+    "wikipedia": "https://en.wikipedia.org/wiki/Serpens"
+  },
+  "Serpens Cauda": {
+    "grokipedia": "https://grokipedia.com/page/Serpens",
+    "wikipedia": "https://en.wikipedia.org/wiki/Serpens"
+  },
+  "Sextans": {
+    "grokipedia": "https://grokipedia.com/page/Sextans",
+    "wikipedia": "https://en.wikipedia.org/wiki/Sextans"
+  },
+  "Taurus": {
+    "grokipedia": "https://grokipedia.com/page/Taurus_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Taurus_(constellation)"
+  },
+  "Telescopium": {
+    "grokipedia": "https://grokipedia.com/page/Telescopium",
+    "wikipedia": "https://en.wikipedia.org/wiki/Telescopium"
+  },
+  "Triangulum": {
+    "grokipedia": "https://grokipedia.com/page/Triangulum",
+    "wikipedia": "https://en.wikipedia.org/wiki/Triangulum"
+  },
+  "Triangulum Australe": {
+    "grokipedia": "https://grokipedia.com/page/Triangulum_Australe",
+    "wikipedia": "https://en.wikipedia.org/wiki/Triangulum_Australe"
+  },
+  "Tucana": {
+    "grokipedia": "https://grokipedia.com/page/Tucana",
+    "wikipedia": "https://en.wikipedia.org/wiki/Tucana"
+  },
+  "Ursa Major": {
+    "grokipedia": "https://grokipedia.com/page/Ursa_Major",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ursa_Major"
+  },
+  "Ursa Minor": {
+    "grokipedia": "https://grokipedia.com/page/Ursa_Minor",
+    "wikipedia": "https://en.wikipedia.org/wiki/Ursa_Minor"
+  },
+  "Vela": {
+    "grokipedia": "https://grokipedia.com/page/Vela_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Vela_(constellation)"
+  },
+  "Virgo": {
+    "grokipedia": "https://grokipedia.com/page/Virgo_(constellation)",
+    "wikipedia": "https://en.wikipedia.org/wiki/Virgo_(constellation)"
+  },
+  "Volans": {
+    "grokipedia": "https://grokipedia.com/page/Volans",
+    "wikipedia": "https://en.wikipedia.org/wiki/Volans"
+  },
+  "Vulpecula": {
+    "grokipedia": "https://grokipedia.com/page/Vulpecula",
+    "wikipedia": "https://en.wikipedia.org/wiki/Vulpecula"
+  }
+}

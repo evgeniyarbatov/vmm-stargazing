@@ -34,6 +34,7 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 | `checkpoints.csv` or `pace:` in config | `make timeline sky plots site` |
 | sampling / magnitude / horizon buffer | `make timeline sky plots site` |
 | IAU constellation charts | `make constellations site` |
+| `sky-links.json` | `make site` |
 
 ## Knobs
 

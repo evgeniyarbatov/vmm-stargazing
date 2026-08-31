@@ -19,6 +19,8 @@ config.yaml + GPX
 
 Repo `gpx/` holds the committed course file. The pipeline copies it into `$DATA_DIR` and densifies from there.
 
+Named-body encyclopedia URLs live in repo-root `sky-links.json`; `report.py` looks them up when writing the site.
+
 ```text
 $DATA_DIR/
   gpx/<config name>.gpx   working copy of the repo GPX
