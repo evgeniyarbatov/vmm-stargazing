@@ -145,14 +145,14 @@ class TestReport(unittest.TestCase):
                 "spots": "plots/spots.png",
                 "night1-alt-planets": "plots/night1-alt-planets.png",
                 "night1-alt-stars": "plots/night1-alt-stars.png",
-                "night1-dusk": "plots/night1-dusk.png",
-                "night1-spot-ahead": "plots/night1-spot-ahead.png",
+                "night1-s0": "plots/night1-s0.png",
+                "night1-s0-ahead": "plots/night1-s0-ahead.png",
             },
         )
         self.assertIn("plots/course.png", page)
         self.assertIn("plots/spots.png", page)
-        self.assertIn("plots/night1-dusk.png", page)
-        self.assertIn("plots/night1-spot-ahead.png", page)
+        self.assertIn("plots/night1-s0.png", page)
+        self.assertIn("plots/night1-s0-ahead.png", page)
         self.assertIn("plots/night1-alt-planets.png", page)
         self.assertIn("plots/night1-alt-stars.png", page)
         self.assertIn('download="course.png"', page)

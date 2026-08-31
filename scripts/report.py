@@ -57,6 +57,10 @@ def disc_stem(sample: dict[str, Any], group: list[dict[str, Any]]) -> str:
     return f"night{nid}-midnight"
 
 
+def sample_stem(sample: dict[str, Any]) -> str:
+    return f"night{int(sample['night_id'])}-s{int(sample['i'])}"
+
+
 def key_samples(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -340,7 +344,6 @@ def build_html(
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
         by_night[int(s["night_id"])].append(s)
-    keys = {s["i"] for s in key_samples(samples)}
 
     for n in night_list:
         nid = int(n["night_id"])
@@ -359,25 +362,23 @@ def build_html(
         mid = min(group, key=midnightish)
         lines.append(f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, mid['i'])))}</p>")
         lines.extend(
-            html_figure(
-                f"night{nid}-spot-ahead",
-                plots,
-                f"Night {nid} looking along the course",
-                "GLO-30 DSM from the best stop on this night, looking up the GPX. "
-                "The filled contour is the ridge; a star below it is behind terrain.",
-            )
-        )
-        lines.extend(
             html_figure(f"night{nid}-alt-planets", plots, f"Night {nid} planets and moon")
         )
         lines.extend(html_figure(f"night{nid}-alt-stars", plots, f"Night {nid} bright stars"))
         for sample in group:
-            if sample["i"] not in keys:
-                continue
             rows = rows_for_sample(sky, sample["i"])
-            stem = disc_stem(sample, group)
+            stem = sample_stem(sample)
             lines += [f"      <h3>{esc(sample_heading(sample))}</h3>"]
             lines.extend(html_figure(stem, plots, sample_heading(sample)))
+            lines.extend(
+                html_figure(
+                    f"{stem}-ahead",
+                    plots,
+                    f"{sample_heading(sample)} looking along the course",
+                    "GLO-30 DSM looking up the GPX. "
+                    "The filled contour is the ridge; a star below it is behind terrain.",
+                )
+            )
             lines.append(f"      <p>{esc(moon_sentence(rows))}</p>")
             mw = milky_way_sentence(rows)
             if mw:
@@ -389,23 +390,7 @@ def build_html(
             if nav:
                 lines.append("      <h4>Bright stars</h4>")
                 lines.extend(html_ul(nav, ""))
-        lines.append("      <details><summary>All night samples (cutoff pace)</summary>")
-        lines.extend(
-            html_table(
-                ["Local", "Elapsed", "km", "Elev", "Heading"],
-                [
-                    [
-                        fmt_time(sample["time"]),
-                        fmt_hours(sample["elapsed_h"]),
-                        f"{sample['dist_km']:.1f}",
-                        f"{sample['elev_m']:.0f} m",
-                        f"{sample['heading_deg']:.0f}°",
-                    ]
-                    for sample in group
-                ],
-            )
-        )
-        lines += ["      </details>", "    </section>"]
+        lines.append("    </section>")
 
     lines += [
         "  </main>",

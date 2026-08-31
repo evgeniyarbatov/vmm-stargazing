@@ -13,7 +13,7 @@ import numpy as np
 from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
 from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
-from report import disc_stem, fmt_hours, fmt_time, key_samples, rows_for_sample
+from report import fmt_hours, fmt_time, rows_for_sample, sample_stem
 from utils import ensure_parent, load_json, sample_along
 
 from gpx import read_track
@@ -794,7 +794,6 @@ def write_plots(
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for sample in samples:
         by_night[int(sample["night_id"])].append(sample)
-    keys = key_samples(samples)
     for nid, group in by_night.items():
         written.append(
             plot_altitude(plots_dir / f"night{nid}-alt-planets.png", nid, group, sky, "planets")
@@ -802,30 +801,24 @@ def write_plots(
         written.append(
             plot_altitude(plots_dir / f"night{nid}-alt-stars.png", nid, group, sky, "stars")
         )
-        for sample in keys:
-            if int(sample["night_id"]) != nid:
-                continue
-            stem = disc_stem(sample, group)
+        for sample in group:
+            stem = sample_stem(sample)
             rows = rows_for_sample(sky, sample["i"])
             guide = guides.get(int(sample["i"]))
             profile = profiles.get(int(sample["i"]))
             written.append(
                 plot_sky_disc(plots_dir / f"{stem}.png", sample, rows, profile, guide)
             )
-    by_i = {int(s["i"]): s for s in samples}
-    for spot in best_spots(scores):
-        sample = by_i[int(spot["i"])]
-        nid = int(sample["night_id"])
-        written.append(
-            plot_ahead(
-                plots_dir / f"night{nid}-spot-ahead.png",
-                sample,
-                rows_for_sample(sky, sample["i"]),
-                dem_array,
-                dem_transform,
-                guides.get(int(sample["i"])),
+            written.append(
+                plot_ahead(
+                    plots_dir / f"{stem}-ahead.png",
+                    sample,
+                    rows,
+                    dem_array,
+                    dem_transform,
+                    guide,
+                )
             )
-        )
     kept = {path.name for path in written}
     if plots_dir.is_dir():
         for old in plots_dir.glob("*.png"):

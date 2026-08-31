@@ -36,10 +36,8 @@ docs/                     GitHub Pages (committed)
   plots/course.png
   plots/profile.png
   plots/spots.png
-  plots/nightN-dusk.png
-  plots/nightN-midnight.png
-  plots/nightN-dawn.png
-  plots/nightN-spot-ahead.png
+  plots/nightN-sI.png
+  plots/nightN-sI-ahead.png
   plots/nightN-alt-planets.png
   plots/nightN-alt-stars.png
 ```
