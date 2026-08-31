@@ -168,7 +168,7 @@ def score_sample(
 
 def pick_best_spots(
     scores: list[dict[str, Any]],
-    min_gap_km: float = 6.0,
+    min_gap_km: float = 4.5,
     max_per_night: int = 4,
 ) -> list[dict[str, Any]]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
@@ -190,7 +190,7 @@ def pick_best_spots(
 
 
 def best_spots(scores: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    return pick_best_spots(scores, min_gap_km=6.0, max_per_night=4)
+    return pick_best_spots(scores)
 
 
 def _style_axes(ax: Any, title: str | None = None) -> None:

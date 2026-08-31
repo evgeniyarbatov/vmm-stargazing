@@ -429,9 +429,16 @@ def build_html(
             "spots",
             plots,
             "Stargazing spot scores along the course",
-            "Score mixes open DEM horizon, elevation, moon (down/dim is better), "
-            "and whether the Milky Way centre is above the ridge.",
         )
+    )
+    lines.append(
+        "      <p>While the course is astronomically dark, it is sampled every 2 km. "
+        "Each point is scored for an open DSM horizon, higher ground, a dim or set moon, "
+        "and whether the Milky Way centre sits above the ridge. Aid stations are not used. "
+        "The listed places are the highest-scoring points at least 5 km apart "
+        "(at most four per night). Closer samples are the same ridge, not extra stops. "
+        "At realistic pace the second night is only the last kilometres of the course, "
+        "so there are fewer places to stand — not a hidden second list.</p>"
     )
     if spots_gpx:
         lines.append(

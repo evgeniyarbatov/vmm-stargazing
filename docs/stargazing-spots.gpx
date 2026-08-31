@@ -28,4 +28,9 @@
     <name>Night 2 · km 152</name>
     <desc>stargazing score 0.87</desc>
   </wpt>
+  <wpt lat="22.27626" lon="103.9667">
+    <ele>947.7404750780904</ele>
+    <name>Night 2 · km 157</name>
+    <desc>stargazing score 0.78</desc>
+  </wpt>
 </gpx>

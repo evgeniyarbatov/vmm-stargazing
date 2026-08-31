@@ -95,6 +95,8 @@ class TestReport(unittest.TestCase):
         self.assertIn('href="#night-1"', page)
         self.assertIn("<details", page)
         self.assertIn("Best stargazing locations", page)
+        self.assertIn("sampled every 2 km", page)
+        self.assertIn("Aid stations are not used", page)
         self.assertIn("data.json", page)
         self.assertIn('download="vmm-stargazing.json"', page)
         self.assertNotIn("steer", page)
