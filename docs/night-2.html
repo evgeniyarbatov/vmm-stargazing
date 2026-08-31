@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night 2 — VMM 100 Miles 2026</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+  <header>
+    <p class="kicker"><a href="index.html">Sa Pa, Lào Cai, Vietnam · VMM 100 Miles 2026</a></p>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Contents</a> <span class="sep" aria-hidden="true">/</span> <span>Night 2</span>
+    </nav>
+    <h1>Night 2</h1>
+  </header>
+  <main>
+<p>Sat 19 Sep 19:18 → Sun 20 Sep 04:37 (elapsed 35h 19m–44h 38m, km 152–157 at predicted pace)</p>
+<p class='lede'>Moon first quarter, 56% lit, 38° S (195°). Bright enough to wash out the Milky Way and faint constellations. Milky Way centre 35° S (202°). Overhead: Aquila, Cygnus, Lyra, Ophiuchus.</p>
+<figure>
+  <img src="plots/night2-s12.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 151.8 · 1397 m" loading="lazy" />
+  <figcaption>
+    <a href="plots/night2-s12.png" download="night2-s12.png">Download chart</a>
+  </figcaption>
+</figure>
+<figure>
+  <img src="plots/night2-s12-ahead.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 151.8 · 1397 m looking along the course" loading="lazy" />
+  <figcaption>
+    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
+    <a href="plots/night2-s12-ahead.png" download="night2-s12-ahead.png">Download chart</a>
+  </figcaption>
+</figure>
+<p>Best-scored stop: <a href="night-2-km152.html">km 152</a> · Sat 19 Sep 19:18 · 1397 m.</p>
+<h3>Stargazing stops</h3>
+<ul class="stops">
+  <li>
+    <a href="night-2-km152.html">km 152 · Sat 19 Sep 19:18</a>
+    <p class='meta'>best stop</p>
+    <p class='meta'>Moon first quarter, 56% lit, 38° S (195°). Bright enough to wash out the Milky Way and faint constellations. Milky Way centre 35° S (202°). Overhead: Aquila, Cygnus, Lyra, Ophiuchus.</p>
+  </li>
+  <li>
+    <a href="night-2-km157.html">km 157 · Sat 19 Sep 20:28</a>
+    <p class='meta'>Moon first quarter, 57% lit, 32° SW (211°). Bright enough to wash out the Milky Way and faint constellations. Milky Way centre 27° SW (217°). Overhead: Aquila, Cygnus, Lyra, Pegasus.</p>
+  </li>
+</ul>
+<h3>This night</h3>
+<ul>
+  <li><a href="night-2-sky.html">Planets and stars through the night</a></li>
+  <li><a href="night-2-iau.html">15 constellations overhead or up at the stops</a></li>
+</ul>
+<p>Same sky, different ridge: <a href="night-1.html">Night 1</a> · best stop <a href="night-1-km62.html">km 62</a>.</p>
+<nav class="pager">
+  <a class="prev" href="night-1.html">Night 1</a>
+</nav>
+  </main>
+  <footer>
+    <p>Pre-computation for study, not a live planetarium. Astronomical night is Sun altitude below −18°. Horizon masking uses GLO-30 plus a 2° buffer.</p>
+    <p class="site-nav">
+      <a href="index.html">Contents</a>
+      <a href="course.html">Course</a>
+      <a href="night-1.html">Night 1</a>
+      <a href="night-2.html">Night 2</a>
+    </p>
+    <p>
+      <a href="data.json" download="vmm-stargazing.json">Download raw data (JSON)</a>
+      <a href="stargazing-spots.gpx" download="stargazing-spots.gpx">Stargazing locations (GPX)</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing">Source</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing/blob/main/ROADMAP.md">Roadmap</a>
+    </p>
+  </footer>
+  <script>
+    function openTarget() {
+      var id = location.hash.slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === 'DETAILS') el.open = true;
+      var parent = el.closest('details');
+      if (parent) parent.open = true;
+    }
+    openTarget();
+    window.addEventListener('hashchange', openTarget);
+  </script>
+</body>
+</html>

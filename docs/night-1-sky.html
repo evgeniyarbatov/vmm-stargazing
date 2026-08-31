@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planets and stars · Night 1 — VMM 100 Miles 2026</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+  <header>
+    <p class="kicker"><a href="index.html">Sa Pa, Lào Cai, Vietnam · VMM 100 Miles 2026</a></p>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Contents</a> <span class="sep" aria-hidden="true">/</span> <a href="night-1.html">Night 1</a> <span class="sep" aria-hidden="true">/</span> <span>Planets and stars</span>
+    </nav>
+    <h1>Planets and stars</h1>
+  </header>
+  <main>
+<figure>
+  <img src="plots/night1-alt-planets.png" alt="Night 1 planets and moon" loading="lazy" />
+  <figcaption>
+    <a href="plots/night1-alt-planets.png" download="night1-alt-planets.png">Download chart</a>
+  </figcaption>
+</figure>
+<figure>
+  <img src="plots/night1-alt-stars.png" alt="Night 1 bright stars" loading="lazy" />
+  <figcaption>
+    <a href="plots/night1-alt-stars.png" download="night1-alt-stars.png">Download chart</a>
+  </figcaption>
+</figure>
+<p>At the best stop (<a href="night-1-km62.html">km 62</a>): Moon first quarter, 47% lit, 29° SW (216°). Milky Way centre 31° SW (210°). Overhead: Aquila, Cygnus, Lyra.</p>
+<h4>Planets</h4>
+<ul>
+  <li><strong>Saturn</strong>: 13° E (93°), mag 0.4</li>
+</ul>
+<p class='meta'><a href="night-1.html">Night 1</a> · <a href="night-1-iau.html">Constellations this night</a></p>
+<nav class="pager">
+  <a class="prev" href="night-1.html">Night 1</a>
+  <a class="next" href="night-1-iau.html">Constellations</a>
+</nav>
+  </main>
+  <footer>
+    <p>Pre-computation for study, not a live planetarium. Astronomical night is Sun altitude below −18°. Horizon masking uses GLO-30 plus a 2° buffer.</p>
+    <p class="site-nav">
+      <a href="index.html">Contents</a>
+      <a href="course.html">Course</a>
+      <a href="night-1.html">Night 1</a>
+      <a href="night-2.html">Night 2</a>
+    </p>
+    <p>
+      <a href="data.json" download="vmm-stargazing.json">Download raw data (JSON)</a>
+      <a href="stargazing-spots.gpx" download="stargazing-spots.gpx">Stargazing locations (GPX)</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing">Source</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing/blob/main/ROADMAP.md">Roadmap</a>
+    </p>
+  </footer>
+  <script>
+    function openTarget() {
+      var id = location.hash.slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === 'DETAILS') el.open = true;
+      var parent = el.closest('details');
+      if (parent) parent.open = true;
+    }
+    openTarget();
+    window.addEventListener('hashchange', openTarget);
+  </script>
+</body>
+</html>

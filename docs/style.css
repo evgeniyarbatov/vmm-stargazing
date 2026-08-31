@@ -52,6 +52,10 @@ h1 {
   margin: 0 0 0.6rem;
 }
 
+body.page h1 {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+}
+
 h2 {
   font-size: 1.7rem;
   margin: 2.4rem 0 0.7rem;
@@ -92,19 +96,10 @@ footer {
 
 nav.toc {
   background: var(--paper);
-  margin: 0 0 2rem;
-  padding: 0 0 0.85rem;
-  border-bottom: 1px solid var(--rule);
+  margin: 0;
+  padding: 0;
   font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
   font-size: 0.88rem;
-}
-
-.toc-label {
-  margin: 0 0 0.35rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-size: 0.68rem;
-  color: var(--muted);
 }
 
 nav.toc ol {
@@ -113,20 +108,90 @@ nav.toc ol {
   padding: 0;
 }
 
-nav.toc > ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1.4rem;
+nav.toc > ol > li {
+  margin: 0 0 1.6rem;
+}
+
+nav.toc > ol > li > a {
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+nav.toc .insight {
+  margin: 0.3rem 0 0.45rem;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.05rem;
+  line-height: 1.45;
 }
 
 nav.toc > ol > li > ol {
-  margin: 0.2rem 0 0;
+  margin: 0.35rem 0 0;
   padding: 0;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
 }
 
 nav.toc > ol > li > ol li {
-  margin: 0.12rem 0;
+  margin: 0.2rem 0;
+}
+
+nav.crumbs {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin: 0 0 0.85rem;
+}
+
+nav.crumbs .sep {
+  margin: 0 0.35rem;
+  color: var(--rule);
+}
+
+nav.pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.88rem;
+}
+
+nav.pager .next {
+  margin-left: auto;
+  text-align: right;
+}
+
+ul.stops {
+  list-style: none;
+  padding: 0;
+  margin: 0.4rem 0 1.2rem;
+}
+
+ul.stops > li {
+  margin: 0 0 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+ul.stops > li > a {
+  font-size: 1.05rem;
+}
+
+.jump {
+  font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  font-size: 0.92rem;
+}
+
+header .kicker a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+header .kicker a:hover {
+  color: var(--gold);
 }
 
 a {
@@ -134,6 +199,8 @@ a {
 }
 
 nav.toc a,
+nav.crumbs a,
+nav.pager a,
 figcaption a,
 footer a {
   color: var(--gold);

@@ -31,7 +31,12 @@ $DATA_DIR/
   sky.json                bodies at each sample
 
 docs/                     GitHub Pages (committed)
-  index.html
+  index.html              contents
+  course.html             map / pace / profile
+  night-N.html            night field note
+  night-N-kmK.html        one stargazing stop
+  night-N-sky.html        planet and star altitude
+  night-N-iau.html        constellations up at the stops
   style.css
   data.json               nights + samples + sky (download)
   plots/course.png

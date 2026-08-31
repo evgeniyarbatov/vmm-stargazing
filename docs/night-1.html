@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night 1 — VMM 100 Miles 2026</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+  <header>
+    <p class="kicker"><a href="index.html">Sa Pa, Lào Cai, Vietnam · VMM 100 Miles 2026</a></p>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Contents</a> <span class="sep" aria-hidden="true">/</span> <span>Night 1</span>
+    </nav>
+    <h1>Night 1</h1>
+  </header>
+  <main>
+<p>Fri 18 Sep 19:19 → Sat 19 Sep 04:37 (elapsed 11h 20m–20h 37m, km 60–99 at predicted pace)</p>
+<p class='lede'>Moon first quarter, 47% lit, 29° SW (216°). Milky Way centre 31° SW (210°). Overhead: Aquila, Cygnus, Lyra.</p>
+<figure>
+  <img src="plots/night1-s1.png" alt="Fri 18 Sep 19:58 · elapsed 11h 58m · km 62.0 · 1027 m" loading="lazy" />
+  <figcaption>
+    <a href="plots/night1-s1.png" download="night1-s1.png">Download chart</a>
+  </figcaption>
+</figure>
+<figure>
+  <img src="plots/night1-s1-ahead.png" alt="Fri 18 Sep 19:58 · elapsed 11h 58m · km 62.0 · 1027 m looking along the course" loading="lazy" />
+  <figcaption>
+    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
+    <a href="plots/night1-s1-ahead.png" download="night1-s1-ahead.png">Download chart</a>
+  </figcaption>
+</figure>
+<p>Best-scored stop: <a href="night-1-km62.html">km 62</a> · Fri 18 Sep 19:58 · 1027 m.</p>
+<h3>Stargazing stops</h3>
+<ul class="stops">
+  <li>
+    <a href="night-1-km62.html">km 62 · Fri 18 Sep 19:58</a>
+    <p class='meta'>best stop</p>
+    <p class='meta'>Moon first quarter, 47% lit, 29° SW (216°). Milky Way centre 31° SW (210°). Overhead: Aquila, Cygnus, Lyra.</p>
+  </li>
+  <li>
+    <a href="night-1-km84.html">km 84 · Sat 19 Sep 00:56</a>
+    <p class='meta'>Moon first quarter, 49% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Andromeda, Aries, Pegasus, Pisces.</p>
+  </li>
+  <li>
+    <a href="night-1-km92.html">km 92 · Sat 19 Sep 02:55</a>
+    <p class='meta'>Moon first quarter, 50% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Aries, Cetus, Perseus, Pisces, Taurus.</p>
+  </li>
+  <li>
+    <a href="night-1-km99.html">km 99 · Sat 19 Sep 04:37</a>
+    <p class='meta'>Moon first quarter, 50% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Auriga, Cetus, Orion, Perseus, Taurus.</p>
+  </li>
+</ul>
+<h3>This night</h3>
+<ul>
+  <li><a href="night-1-sky.html">Planets and stars through the night</a></li>
+  <li><a href="night-1-iau.html">27 constellations overhead or up at the stops</a></li>
+</ul>
+<p>Same sky, different ridge: <a href="night-2.html">Night 2</a> · best stop <a href="night-2-km152.html">km 152</a>.</p>
+<nav class="pager">
+  <a class="prev" href="course.html">Course</a>
+  <a class="next" href="night-2.html">Night 2</a>
+</nav>
+  </main>
+  <footer>
+    <p>Pre-computation for study, not a live planetarium. Astronomical night is Sun altitude below −18°. Horizon masking uses GLO-30 plus a 2° buffer.</p>
+    <p class="site-nav">
+      <a href="index.html">Contents</a>
+      <a href="course.html">Course</a>
+      <a href="night-1.html">Night 1</a>
+      <a href="night-2.html">Night 2</a>
+    </p>
+    <p>
+      <a href="data.json" download="vmm-stargazing.json">Download raw data (JSON)</a>
+      <a href="stargazing-spots.gpx" download="stargazing-spots.gpx">Stargazing locations (GPX)</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing">Source</a>
+      <a href="https://github.com/evgeniyarbatov/vmm-stargazing/blob/main/ROADMAP.md">Roadmap</a>
+    </p>
+  </footer>
+  <script>
+    function openTarget() {
+      var id = location.hash.slice(1);
+      if (!id) return;
+      var el = document.getElementById(id);
+      if (!el) return;
+      if (el.tagName === 'DETAILS') el.open = true;
+      var parent = el.closest('details');
+      if (parent) parent.open = true;
+    }
+    openTarget();
+    window.addEventListener('hashchange', openTarget);
+  </script>
+</body>
+</html>
