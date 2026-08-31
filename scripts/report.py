@@ -20,6 +20,7 @@ AHEAD_CAPTION = (
     "GLO-30 DSM looking up the GPX. "
     "The filled contour is the horizon; a star below it is behind terrain."
 )
+COURSE_CAPTION = "Whole course at realistic pace. The ringed marker is this stop."
 HASH_SCRIPT = """  <script>
     function openTarget() {
       var id = location.hash.slice(1);
@@ -591,12 +592,19 @@ def filter_iau_items(
 
 def sample_disc_figures(sample: dict[str, Any], plots: dict[str, str] | None) -> list[str]:
     stem = sample_stem(sample)
-    lines = html_figure(stem, plots, sample_heading(sample))
+    heading = sample_heading(sample)
+    lines = html_figure(
+        f"{stem}-course",
+        plots,
+        f"{heading} on the course",
+        COURSE_CAPTION,
+    )
+    lines.extend(html_figure(stem, plots, heading))
     lines.extend(
         html_figure(
             f"{stem}-ahead",
             plots,
-            f"{sample_heading(sample)} looking along the course",
+            f"{heading} looking along the course",
             AHEAD_CAPTION,
         )
     )
@@ -932,7 +940,7 @@ def build_course(
                 html_table(["Event", "Local time", "Elapsed"], twilight_rows),
             )
         )
-    body.extend(html_figure("course", plots, "Course with night samples"))
+    body.extend(html_figure("course", plots, "Course with stargazing stops"))
     body.extend(html_figure("profile", plots, "Elevation profile with night windows"))
     body.extend(html_figure("spots", plots, "Stargazing spot scores along the course"))
     body.append(

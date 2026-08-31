@@ -46,6 +46,7 @@ docs/                     GitHub Pages (committed)
   plots/spots.png
   plots/nightN-sI.png
   plots/nightN-sI-ahead.png
+  plots/nightN-sI-course.png
   plots/nightN-alt-{kind}-{name}.png
   plots/constellations/nightN/*.png
   spots.json

@@ -436,34 +436,51 @@ def plot_course(
     samples: list[dict[str, Any]],
     dem_array: np.ndarray | None,
     dem_transform: Any,
+    featured: list[dict[str, Any]] | None = None,
+    highlight_i: int | None = None,
 ) -> Path:
     fig, ax = plt.subplots(figsize=(8.5, 8.5), facecolor=PAPER)
     if dem_array is not None and dem_transform is not None:
         _draw_hillshade(ax, dem_array, dem_transform)
     _draw_course_track(ax, lons, lats, dist, nights)
-    labeled = _edge_samples(samples)
-    labeled_ids = {s["i"] for s in labeled}
+    labeled = list(featured) if featured else _edge_samples(samples)
+    labeled_ids = {int(s["i"]) for s in labeled}
     for sample in samples:
-        color = NIGHT_COLORS.get(int(sample["night_id"]), "#ea76cb")
+        sid = int(sample["i"])
+        is_hi = highlight_i is not None and sid == int(highlight_i)
+        is_mark = sid in labeled_ids
+        color = RUN if is_hi else NIGHT_COLORS.get(int(sample["night_id"]), "#ea76cb")
         ax.scatter(
             sample["lon"],
             sample["lat"],
-            s=22 if sample["i"] in labeled_ids else 10,
+            s=90 if is_hi else (28 if is_mark else 10),
             c=color,
             edgecolors=INK,
-            linewidths=0.4,
-            zorder=4,
+            linewidths=0.5 if is_hi else 0.4,
+            zorder=6 if is_hi else 4,
         )
-        if sample["i"] in labeled_ids:
-            _annotate(
-                ax,
-                f"{sample['dist_km']:.0f} km\n{fmt_time(sample['time'])}",
-                (sample["lon"], sample["lat"]),
+        if is_hi:
+            ax.scatter(
+                sample["lon"],
+                sample["lat"],
+                s=160,
+                facecolors="none",
+                edgecolors=RUN,
+                linewidths=1.8,
+                zorder=7,
             )
+        if is_mark:
+            text = f"{sample['dist_km']:.0f} km"
+            if is_hi:
+                text = f"{text}\n{fmt_time(sample['time'])}"
+            _annotate(ax, text, (sample["lon"], sample["lat"]))
     ax.set_aspect("equal", adjustable="box")
     ax.set_xlabel("lon")
     ax.set_ylabel("lat")
-    _style_axes(ax, "Night samples on course (realistic pace)")
+    title = "Stargazing stops on course (realistic pace)"
+    if highlight_i is not None:
+        title = "This stop on the course (realistic pace)"
+    _style_axes(ax, title)
     _legend(ax, loc="upper right")
     return _savefig(fig, path)
 
@@ -474,15 +491,20 @@ def plot_profile(
     elev: np.ndarray,
     nights: dict[str, Any],
     samples: list[dict[str, Any]],
+    featured: list[dict[str, Any]] | None = None,
 ) -> Path:
     fig, ax = plt.subplots(figsize=(10, 3.8), facecolor=PAPER)
     km = dist / 1000.0
     ax.plot(km, elev, color=INK, lw=1.1)
     _night_spans(ax, nights)
-    for sample in _edge_samples(samples):
+    marks = list(featured) if featured else _edge_samples(samples)
+    for sample in marks:
         ax.scatter(sample["dist_km"], sample["elev_m"], c=INK, s=18, zorder=3)
         _annotate(
-            ax, fmt_time(sample["time"]), (sample["dist_km"], sample["elev_m"]), xytext=(4, 6)
+            ax,
+            f"{sample['dist_km']:.0f} km",
+            (sample["dist_km"], sample["elev_m"]),
+            xytext=(4, 6),
         )
     ax.set_xlabel("km")
     ax.set_ylabel("elev m")
@@ -899,11 +921,27 @@ def write_plots(
         int(sample["i"]): guide_star(sample, rows_for_sample(sky, sample["i"]))
         for sample in samples
     }
+    knobs = spots_cfg or {}
+    picked = pick_best_spots(
+        scores,
+        min_gap_km=float(knobs.get("min_gap_km", SPOT_GAP_KM)),
+        max_per_night=int(knobs.get("max_per_night", SPOT_MAX_PER_NIGHT)),
+        score_floor=float(knobs.get("score_floor", SPOT_SCORE_FLOOR)),
+    )
+    picked_ids = {int(s["i"]) for s in picked}
     written: list[Path] = [
         plot_course(
-            plots_dir / "course.png", slon, slat, dist, nights, samples, dem_array, dem_transform
+            plots_dir / "course.png",
+            slon,
+            slat,
+            dist,
+            nights,
+            samples,
+            dem_array,
+            dem_transform,
+            featured=picked,
         ),
-        plot_profile(plots_dir / "profile.png", dist, elev, nights, samples),
+        plot_profile(plots_dir / "profile.png", dist, elev, nights, samples, featured=picked),
         plot_spots(
             plots_dir / "spots.png",
             slon,
@@ -919,14 +957,6 @@ def write_plots(
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for sample in samples:
         by_night[int(sample["night_id"])].append(sample)
-    knobs = spots_cfg or {}
-    picked = pick_best_spots(
-        scores,
-        min_gap_km=float(knobs.get("min_gap_km", SPOT_GAP_KM)),
-        max_per_night=int(knobs.get("max_per_night", SPOT_MAX_PER_NIGHT)),
-        score_floor=float(knobs.get("score_floor", SPOT_SCORE_FLOOR)),
-    )
-    picked_ids = {int(s["i"]) for s in picked}
     for nid, group in by_night.items():
         span = [_local_time(s["time"]) for s in group]
         for series in ("planets", "stars"):
@@ -955,6 +985,20 @@ def write_plots(
                     dem_array,
                     dem_transform,
                     guide,
+                )
+            )
+            written.append(
+                plot_course(
+                    plots_dir / f"{stem}-course.png",
+                    slon,
+                    slat,
+                    dist,
+                    nights,
+                    samples,
+                    dem_array,
+                    dem_transform,
+                    featured=picked,
+                    highlight_i=int(sample["i"]),
                 )
             )
     dump_json(out_dir / "spots.json", picked)

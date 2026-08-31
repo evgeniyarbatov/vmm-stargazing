@@ -296,6 +296,7 @@ class TestPlots(unittest.TestCase):
         self.assertNotIn("night1-alt-stars", stems)
         self.assertTrue({"night1-s0", "night1-s1"} & stems)
         self.assertTrue({"night1-s0-ahead", "night1-s1-ahead"} & stems)
+        self.assertTrue({"night1-s0-course", "night1-s1-course"} & stems)
         self.assertNotIn("night1-dusk", stems)
         self.assertNotIn("night1-spot-ahead", stems)
         self.assertNotIn("night1-alt", stems)

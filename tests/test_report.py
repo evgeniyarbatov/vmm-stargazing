@@ -200,6 +200,7 @@ class TestReport(unittest.TestCase):
                 "night1-alt-star-vega": "plots/night1-alt-star-vega.png",
                 "night1-s0": "plots/night1-s0.png",
                 "night1-s0-ahead": "plots/night1-s0-ahead.png",
+                "night1-s0-course": "plots/night1-s0-course.png",
             },
         )
         course = pages["course.html"]
@@ -210,6 +211,7 @@ class TestReport(unittest.TestCase):
         stop = pages["night-1-km37.html"]
         self.assertIn("plots/night1-s0.png", stop)
         self.assertIn("plots/night1-s0-ahead.png", stop)
+        self.assertIn("plots/night1-s0-course.png", stop)
         self.assertNotIn("Download chart", stop)
 
         sky_page = pages["night-1-sky.html"]
