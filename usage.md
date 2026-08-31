@@ -12,25 +12,26 @@ How the stages fit together: [architecture.md](architecture.md).
 
 ## Output
 
-Default root: `~/Documents/data/stargazing-ultras/`.
+Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in the repo.
 
 | Override | Effect |
 |---|---|
-| `DATA_ROOT=/other/root` | files under `/other/root/stargazing-ultras/` |
+| `DATA_ROOT=/other/root` | files under `/other/root/vmm-stargazing/` |
 | `DATA_DIR=/exact/path` | files under that path |
+| `SITE_DIR=/exact/path` | GitHub Pages files under that path |
 
-Human-readable notes: `$DATA_DIR/out/summary.md` (embeds PNGs from `out/plots/`). Tables: `nights.csv`, `samples.csv`, `sky.csv`.
+`docs/index.html` embeds PNGs from `docs/plots/`. Raw data is `docs/data.json`; each chart has a download link on the page.
 
-`make clean` removes nights/samples/sky/out (keeps DEM + ephemeris). `make clean-dem` drops the GeoTIFF.
+`make clean` removes nights/samples/sky (keeps DEM + ephemeris + `docs/`). `make clean-dem` drops the GeoTIFF.
 
 ## What to re-run
 
 | Changed | Re-run |
 |---|---|
 | GPX file | `make run` (or `make run GPX=…` to override) |
-| `BUFFER_KM` | `make clean-dem dem timeline sky plots report` |
-| start/cutoff in `config.yaml` | `make timeline sky plots report` |
-| sampling / magnitude / horizon buffer | `make timeline sky plots report` |
+| `BUFFER_KM` | `make clean-dem dem timeline sky plots site` |
+| start/cutoff in `config.yaml` | `make timeline sky plots site` |
+| sampling / magnitude / horizon buffer | `make timeline sky plots site` |
 
 ## Knobs
 

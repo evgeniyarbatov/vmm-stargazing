@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
 from catalog import NAV_STARS
-from config import data_dir, load_config
+from config import REPO_ROOT, data_dir, load_config
 from horizon import horizon_at_az, horizon_profile, load_dem_array
 from report import disc_stem, fmt_hours, fmt_time, key_samples, rows_for_sample
 from utils import ensure_parent, load_json, sample_along
@@ -42,26 +42,6 @@ PLANET_COLORS = {
     "Saturn": "#179299",
 }
 ALT_STARS = {"Vega", "Altair", "Deneb", "Sirius", "Betelgeuse", "Antares"}
-STEER_PALETTE = (
-    "#1e66f5",
-    "#d20f39",
-    "#40a02b",
-    "#df8e1d",
-    "#8839ef",
-    "#fe640b",
-    "#179299",
-    "#dd7878",
-    "#04a5e5",
-    "#e64553",
-    "#7287fd",
-    "#4a7c2c",
-    "#ea76cb",
-    "#9d6b3a",
-    "#00a86b",
-    "#1a1a1a",
-    "#6c2c6f",
-    "#c6a645",
-)
 
 
 def altaz_to_rtheta(alt_deg: float, az_deg: float) -> tuple[float, float]:
@@ -159,13 +139,6 @@ def score_sample(
     }
 
 
-def _star_color(name: str) -> str:
-    names = sorted(NAV_STARS)
-    if name not in names:
-        return STAR
-    return STEER_PALETTE[names.index(name) % len(STEER_PALETTE)]
-
-
 def _style_axes(ax: Any, title: str | None = None) -> None:
     ax.set_facecolor(PAPER)
     ax.tick_params(colors=INK)
@@ -212,22 +185,6 @@ def _edge_samples(samples: list[dict[str, Any]]) -> list[dict[str, Any]]:
         if group[-1]["i"] != group[0]["i"]:
             out.append(group[-1])
     return out
-
-
-def _break_jumps(
-    xs: list[float], ys: list[float], limit: float = 120.0
-) -> tuple[list[float], list[float]]:
-    if not xs:
-        return [], []
-    ox = [xs[0]]
-    oy = [ys[0]]
-    for x, y, prev_y in zip(xs[1:], ys[1:], ys[:-1], strict=True):
-        if abs(y - prev_y) > limit:
-            ox.append(x)
-            oy.append(float("nan"))
-        ox.append(x)
-        oy.append(y)
-    return ox, oy
 
 
 def _savefig(fig: plt.Figure, path: Path) -> Path:
@@ -285,43 +242,6 @@ def _score_limits(vals: list[float]) -> tuple[float, float]:
         mid = (lo + hi) / 2.0
         lo, hi = mid - 0.06, mid + 0.06
     return lo, hi
-
-
-def _zoom_to_samples(ax: Any, samples: list[dict[str, Any]], pad_frac: float = 0.4) -> None:
-    xs = [float(s["lon"]) for s in samples]
-    ys = [float(s["lat"]) for s in samples]
-    x0, x1 = min(xs), max(xs)
-    y0, y1 = min(ys), max(ys)
-    pad_x = max((x1 - x0) * pad_frac, 0.012)
-    pad_y = max((y1 - y0) * pad_frac, 0.012)
-    ax.set_xlim(x0 - pad_x, x1 + pad_x)
-    ax.set_ylim(y0 - pad_y, y1 + pad_y)
-
-
-def _guide_label_ids(
-    group: list[dict[str, Any]],
-    guides: dict[int, dict[str, Any] | None],
-    min_deg: float = 0.015,
-) -> set[int]:
-    picked: list[dict[str, Any]] = []
-    n = len(group)
-    for idx, sample in enumerate(group):
-        guide = guides.get(int(sample["i"]))
-        is_end = idx == 0 or idx == n - 1
-        rel = abs(float(guide["rel_deg"])) if guide else 999.0
-        in_cone = rel <= AHEAD_DEG
-        if not (is_end or in_cone):
-            continue
-        if picked:
-            prev = picked[-1]
-            close = (
-                abs(float(sample["lon"]) - float(prev["lon"])) < min_deg
-                and abs(float(sample["lat"]) - float(prev["lat"])) < min_deg
-            )
-            if close and (not is_end or rel > AHEAD_DEG):
-                continue
-        picked.append(sample)
-    return {int(s["i"]) for s in picked}
 
 
 def _night_spans(ax: Any, nights: dict[str, Any]) -> None:
@@ -505,120 +425,6 @@ def plot_spots(
     return _savefig(fig, path)
 
 
-def plot_steer_map(
-    path: Path,
-    lons: np.ndarray,
-    lats: np.ndarray,
-    dist: np.ndarray,
-    nights: dict[str, Any],
-    samples: list[dict[str, Any]],
-    guides: dict[int, dict[str, Any] | None],
-    dem_array: np.ndarray | None,
-    dem_transform: Any,
-) -> Path:
-    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
-    for sample in samples:
-        by_night[int(sample["night_id"])].append(sample)
-    night_ids = sorted(by_night) or [1]
-    n = len(night_ids)
-    fig, axes = plt.subplots(n, 1, figsize=(8.5, 5.2 * n), facecolor=PAPER)
-    if n == 1:
-        axes = [axes]
-    for ax, nid in zip(axes, night_ids, strict=True):
-        group = by_night[nid]
-        if dem_array is not None and dem_transform is not None:
-            _draw_hillshade(ax, dem_array, dem_transform)
-        _draw_course_track(ax, lons, lats, dist, nights)
-        labeled_ids = _guide_label_ids(group, guides)
-        for sample in group:
-            gid = int(sample["i"])
-            guide = guides.get(gid)
-            ax.scatter(
-                sample["lon"],
-                sample["lat"],
-                s=22 if gid in labeled_ids else 10,
-                c=GUIDE if guide else MUTED,
-                edgecolors=INK,
-                linewidths=0.4,
-                zorder=4,
-            )
-        for j, sample in enumerate(s for s in group if int(s["i"]) in labeled_ids):
-            _annotate(
-                ax,
-                guide_label(guides.get(int(sample["i"]))),
-                (sample["lon"], sample["lat"]),
-                xytext=(6, 6) if j % 2 == 0 else (6, -14),
-            )
-        ax.set_xlabel("lon")
-        ax.set_ylabel("lat")
-        _style_axes(ax, f"Night {nid} · guide star")
-        _zoom_to_samples(ax, group)
-        ax.set_aspect("equal", adjustable="box")
-        _legend(ax, loc="upper right")
-    fig.suptitle("Guide star along the course (brightest near heading)", color=INK)
-    fig.tight_layout()
-    return _savefig(fig, path)
-
-
-def plot_steer(
-    path: Path,
-    night_id: int,
-    samples: list[dict[str, Any]],
-    sky: list[dict[str, Any]],
-) -> Path:
-    fig, ax = plt.subplots(figsize=(10, 4.6), facecolor=PAPER)
-    ax.axhspan(-AHEAD_DEG, AHEAD_DEG, color=GUIDE, alpha=0.22, zorder=0, label="ahead ±20°")
-    ax.axhline(0.0, color=INK, lw=0.8, zorder=1)
-    names = sorted(
-        {
-            r["name"]
-            for r in sky
-            if r["kind"] == "star"
-            and r["name"] in NAV_STARS
-            and r["sample_i"] in {s["i"] for s in samples}
-        }
-    )
-    plotted = 0
-    for name in names:
-        xs: list[float] = []
-        ys: list[float] = []
-        for sample in samples:
-            match = [
-                r
-                for r in rows_for_sample(sky, sample["i"])
-                if r["kind"] == "star" and r["name"] == name
-            ]
-            if not match:
-                continue
-            row = match[0]
-            if float(row["alt_deg"]) < 5.0 or row.get("obscured"):
-                continue
-            xs.append(float(sample["dist_km"]))
-            ys.append(rel_bearing_deg(row["az_deg"], sample["heading_deg"]))
-        if not xs:
-            continue
-        if min(abs(y) for y in ys) > 30.0:
-            continue
-        color = _star_color(name)
-        if len(xs) == 1:
-            ax.scatter(xs, ys, s=18, c=color, zorder=3, label=name)
-        else:
-            bx, by = _break_jumps(xs, ys)
-            ax.plot(bx, by, color=color, lw=1.4, zorder=3, label=name)
-        plotted += 1
-    if samples:
-        ax.set_xlim(float(samples[0]["dist_km"]), float(samples[-1]["dist_km"]))
-    ax.set_ylim(-180, 180)
-    ax.set_yticks([-180, -90, 0, 90, 180])
-    ax.set_yticklabels(["behind", "left", "ahead", "right", "behind"])
-    ax.set_xlabel("km")
-    ax.set_ylabel("bearing vs heading")
-    _style_axes(ax, f"Night {night_id} · steer by stars (0° = trail heading)")
-    if plotted:
-        _legend(ax, loc="upper right", fontsize=7, ncol=3)
-    return _savefig(fig, path)
-
-
 def plot_sky_disc(
     path: Path,
     sample: dict[str, Any],
@@ -725,7 +531,7 @@ def plot_sky_disc(
                     zorder=5,
                 )
             if (mag <= 1.3 or is_guide) and not obscured:
-                label = f"{name} · steer" if is_guide else name
+                label = f"{name} · ahead" if is_guide else name
                 ax.annotate(
                     label,
                     (theta, r),
@@ -867,17 +673,6 @@ def write_plots(
             dem_array,
             dem_transform,
         ),
-        plot_steer_map(
-            plots_dir / "steer.png",
-            slon,
-            slat,
-            dist,
-            nights,
-            samples,
-            guides,
-            dem_array,
-            dem_transform,
-        ),
     ]
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for sample in samples:
@@ -885,7 +680,6 @@ def write_plots(
     keys = key_samples(samples)
     for nid, group in by_night.items():
         written.append(plot_altitude(plots_dir / f"night{nid}-alt.png", nid, group, sky))
-        written.append(plot_steer(plots_dir / f"night{nid}-steer.png", nid, group, sky))
         for sample in keys:
             if int(sample["night_id"]) != nid:
                 continue
@@ -899,18 +693,23 @@ def write_plots(
                     guides.get(int(sample["i"])),
                 )
             )
+    kept = {path.name for path in written}
+    if plots_dir.is_dir():
+        for old in plots_dir.glob("*.png"):
+            if old.name not in kept:
+                old.unlink()
     return written
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Course, sky-disc, altitude, spots, and steer plots."
-    )
+    parser = argparse.ArgumentParser(description="Course, sky-disc, altitude, and spots plots.")
     parser.add_argument("--config", type=Path, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)
+    parser.add_argument("--site-dir", type=Path, default=None)
     args = parser.parse_args()
     load_config(args.config)
     datadir = data_dir(args.data_dir)
+    site_dir = (args.site_dir or REPO_ROOT / "docs").expanduser()
     lons, lats, eles, _name = read_track(datadir / "input.gpx")
     dem_path = datadir / "dem" / "glo30.tif"
     dem_array = None
@@ -918,7 +717,7 @@ def main() -> None:
     if dem_path.is_file():
         dem_array, dem_transform, _ = load_dem_array(dem_path)
     written = write_plots(
-        datadir / "out",
+        site_dir,
         lons,
         lats,
         eles,
@@ -928,7 +727,7 @@ def main() -> None:
         dem_array,
         dem_transform,
     )
-    print(f"{len(written)} plots → {datadir / 'out' / 'plots'}")
+    print(f"{len(written)} plots → {site_dir / 'plots'}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 # uv: https://docs.astral.sh/uv — deps via `make install`, run with `uv run`.
 DATA_ROOT ?= $(HOME)/Documents/data
-REPO_NAME := $(notdir $(CURDIR))
-DATA_DIR  ?= $(DATA_ROOT)/$(REPO_NAME)
+DATA_DIR  ?= $(DATA_ROOT)/vmm-stargazing
+SITE_DIR  ?= $(CURDIR)/docs
 
 CONFIG ?= config.yaml
 GPX ?=
@@ -17,10 +17,9 @@ DEM_TIF = $(DATA_DIR)/dem/glo30.tif
 NIGHTS = $(DATA_DIR)/nights.json
 SAMPLES = $(DATA_DIR)/samples.json
 SKY = $(DATA_DIR)/sky.json
-OUT_DIR = $(DATA_DIR)/out
 
 .PHONY: install lock test lint help \
-	gpx dem timeline sky plots report run \
+	gpx dem timeline sky plots site run \
 	clean clean-dem
 
 install:
@@ -63,21 +62,22 @@ sky: install
 
 plots: install
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
-	@mkdir -p "$(OUT_DIR)/plots"
-	@uv run python scripts/plots.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
+	@mkdir -p "$(SITE_DIR)/plots"
+	@uv run python scripts/plots.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
+		--site-dir "$(SITE_DIR)"
 
-report: install
+site: install
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
-	@mkdir -p "$(OUT_DIR)"
-	@uv run python scripts/report.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
+	@mkdir -p "$(SITE_DIR)"
+	@uv run python scripts/report.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
+		--site-dir "$(SITE_DIR)"
 
-run: gpx dem timeline sky plots report
-	@echo "Done: $(OUT_DIR)"
+run: gpx dem timeline sky plots site
+	@echo "Done: $(SITE_DIR)"
 
 clean:
 	@rm -f "$(NIGHTS)" "$(SAMPLES)" "$(SKY)"
-	@rm -rf "$(OUT_DIR)"
-	@echo "Cleaned nights/samples/sky/out under $(DATA_DIR)"
+	@echo "Cleaned nights/samples/sky under $(DATA_DIR)"
 
 clean-dem:
 	@rm -f "$(DEM_TIF)"
@@ -88,16 +88,17 @@ help:
 	@echo "lock        - refresh uv.lock"
 	@echo "test        - run unit tests"
 	@echo "lint        - ruff check scripts tests"
-	@echo "gpx          - densify in-repo GPX + bbox → \$$(DATA_DIR)/ (GPX= overrides)"
+	@echo "gpx         - densify in-repo GPX + bbox → \$$(DATA_DIR)/ (GPX= overrides)"
 	@echo "dem         - cache Copernicus GLO-30 for bbox"
 	@echo "timeline    - astronomical night windows + along-track samples"
 	@echo "sky         - planets, moon, stars, terrain horizon"
-	@echo "plots       - course map, sky discs, altitude / spots / steer charts"
-	@echo "report      - markdown + CSV under \$$(DATA_DIR)/out/"
-	@echo "run          - gpx → dem → timeline → sky → plots → report"
-	@echo "clean       - remove nights/samples/sky/out (keep DEM + ephemeris)"
+	@echo "plots       - course map, sky discs, altitude / spots → docs/plots/"
+	@echo "site        - GitHub Pages HTML + data.json under docs/"
+	@echo "run         - gpx → dem → timeline → sky → plots → site"
+	@echo "clean       - remove nights/samples/sky (keep DEM + ephemeris + docs/)"
 	@echo "clean-dem   - remove cached DEM"
 	@echo ""
-	@echo "Data: \$$(DATA_DIR) (default ~/Documents/data/stargazing-ultras)."
+	@echo "Data: \$$(DATA_DIR) (default ~/Documents/data/vmm-stargazing)."
+	@echo "Site: \$$(SITE_DIR) (default ./docs)."
 	@echo "Knobs: DENSIFY_M BUFFER_KM SAMPLE_M"
 	@echo "Example: make run"

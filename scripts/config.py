@@ -16,7 +16,7 @@ def data_dir(override: Path | None = None) -> Path:
     if os.environ.get("DATA_DIR"):
         return Path(os.environ["DATA_DIR"]).expanduser()
     root = os.environ.get("DATA_ROOT", str(Path.home() / "Documents" / "data"))
-    return Path(root).expanduser() / "stargazing-ultras"
+    return Path(root).expanduser() / "vmm-stargazing"
 
 
 def load_config(path: Path | None = None) -> dict[str, Any]:

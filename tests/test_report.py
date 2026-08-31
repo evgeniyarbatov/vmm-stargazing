@@ -6,15 +6,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from report import build_markdown, fmt_hours
+from report import build_html, fmt_hours
 
 
 class TestReport(unittest.TestCase):
     def test_fmt_hours(self) -> None:
         self.assertEqual(fmt_hours(11.5), "11h 30m")
 
-    def test_markdown_contains_night_and_planet(self) -> None:
-        cfg = {"race": {"name": "VMM 100 Miles 2026"}}
+    def test_html_contains_night_and_planet(self) -> None:
+        cfg = {"race": {"name": "VMM 100 Miles 2026", "location": "Sa Pa, Lào Cai, Vietnam"}}
         nights = {
             "timezone": "Asia/Ho_Chi_Minh",
             "pace_kmh": 3.2,
@@ -83,9 +83,73 @@ class TestReport(unittest.TestCase):
                 "tag": "up",
             },
         ]
-        md = build_markdown(cfg, nights, samples, sky)
-        self.assertIn("VMM 100 Miles 2026", md)
-        self.assertIn("Jupiter", md)
-        self.assertIn("Lyra", md)
-        self.assertIn("waxing gibbous", md)
-        self.assertIn("Night 1", md)
+        page = build_html(cfg, nights, samples, sky)
+        self.assertIn("VMM 100 Miles 2026", page)
+        self.assertIn("Jupiter", page)
+        self.assertIn("Lyra", page)
+        self.assertIn("waxing gibbous", page)
+        self.assertIn("Night 1", page)
+        self.assertIn("Look up.", page)
+        self.assertIn("data.json", page)
+        self.assertIn('download="vmm-stargazing.json"', page)
+        self.assertNotIn("steer", page)
+
+    def test_html_embeds_plot_download_links(self) -> None:
+        cfg = {"race": {"name": "VMM"}}
+        nights = {
+            "timezone": "Asia/Ho_Chi_Minh",
+            "nights": [
+                {
+                    "night_id": 1,
+                    "start": "2026-09-18T19:40:00+07:00",
+                    "end": "2026-09-19T04:50:00+07:00",
+                    "duration_h": 9.0,
+                    "elapsed0_h": 11.7,
+                    "elapsed1_h": 20.8,
+                    "dist0_km": 37.0,
+                    "dist1_km": 67.0,
+                }
+            ],
+            "events": [],
+        }
+        samples = [
+            {
+                "i": 0,
+                "night_id": 1,
+                "time": "2026-09-18T19:40:00+07:00",
+                "elapsed_h": 11.7,
+                "dist_km": 37.0,
+                "elev_m": 900,
+                "heading_deg": 10,
+            }
+        ]
+        sky = [
+            {
+                "sample_i": 0,
+                "kind": "planet",
+                "name": "Saturn",
+                "alt_deg": 10.0,
+                "az_deg": 90.0,
+                "mag": 0.4,
+                "obscured": False,
+                "tag": "up",
+            }
+        ]
+        page = build_html(
+            cfg,
+            nights,
+            samples,
+            sky,
+            plots={
+                "course": "plots/course.png",
+                "spots": "plots/spots.png",
+                "night1-dusk": "plots/night1-dusk.png",
+            },
+        )
+        self.assertIn("plots/course.png", page)
+        self.assertIn("plots/spots.png", page)
+        self.assertIn("plots/night1-dusk.png", page)
+        self.assertIn('download="course.png"', page)
+        self.assertIn('download="spots.png"', page)
+        self.assertNotIn("steer", page)
+        self.assertNotIn("night1-steer", page)

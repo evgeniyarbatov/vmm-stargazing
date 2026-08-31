@@ -20,7 +20,7 @@ from plots import (
     score_sample,
     write_plots,
 )
-from report import build_markdown, disc_stem
+from report import disc_stem
 
 from gpx import read_track
 
@@ -251,70 +251,10 @@ class TestPlots(unittest.TestCase):
         self.assertIn("course", stems)
         self.assertIn("profile", stems)
         self.assertIn("spots", stems)
-        self.assertIn("steer", stems)
         self.assertIn("night1-alt", stems)
-        self.assertIn("night1-steer", stems)
         self.assertIn("night1-dusk", stems)
         self.assertIn("night1-dawn", stems)
+        self.assertNotIn("steer", stems)
+        self.assertNotIn("night1-steer", stems)
         for path in written:
             self.assertGreater(path.stat().st_size, 1000)
-
-    def test_markdown_embeds_plot_links(self) -> None:
-        cfg = {"race": {"name": "VMM"}}
-        nights = {
-            "timezone": "Asia/Ho_Chi_Minh",
-            "nights": [
-                {
-                    "night_id": 1,
-                    "start": "2026-09-18T19:40:00+07:00",
-                    "end": "2026-09-19T04:50:00+07:00",
-                    "duration_h": 9.0,
-                    "elapsed0_h": 11.7,
-                    "elapsed1_h": 20.8,
-                    "dist0_km": 37.0,
-                    "dist1_km": 67.0,
-                }
-            ],
-            "events": [],
-        }
-        samples = [
-            {
-                "i": 0,
-                "night_id": 1,
-                "time": "2026-09-18T19:40:00+07:00",
-                "elapsed_h": 11.7,
-                "dist_km": 37.0,
-                "elev_m": 900,
-                "heading_deg": 10,
-            }
-        ]
-        sky = [
-            {
-                "sample_i": 0,
-                "kind": "planet",
-                "name": "Saturn",
-                "alt_deg": 10.0,
-                "az_deg": 90.0,
-                "mag": 0.4,
-                "obscured": False,
-                "tag": "up",
-            }
-        ]
-        md = build_markdown(
-            cfg,
-            nights,
-            samples,
-            sky,
-            plots={
-                "course": "plots/course.png",
-                "spots": "plots/spots.png",
-                "steer": "plots/steer.png",
-                "night1-dusk": "plots/night1-dusk.png",
-                "night1-steer": "plots/night1-steer.png",
-            },
-        )
-        self.assertIn("plots/course.png", md)
-        self.assertIn("plots/spots.png", md)
-        self.assertIn("plots/steer.png", md)
-        self.assertIn("plots/night1-dusk.png", md)
-        self.assertIn("plots/night1-steer.png", md)

@@ -1,5 +1,5 @@
-# stargazing-ultras race configuration
-# Paths are relative to the repo, then DATA_DIR (~/Documents/data/stargazing-ultras).
+# VMM night-sky race configuration
+# Paths are relative to the repo, then DATA_DIR (~/Documents/data/vmm-stargazing).
 
 race:
   name: "VMM 100 Miles 2026"
@@ -35,8 +35,3 @@ visibility:
 dem:
   source: "copernicus-glo30"  # same preference as gpx-dem-preview
   # cache lives under DATA_DIR/dem/
-
-# Output
-output:
-  format: ["markdown", "csv"]  # night summaries + tables
-  # Generated files go under DATA_DIR/out/

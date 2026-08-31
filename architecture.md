@@ -1,6 +1,6 @@
 # Architecture
 
-Makefile is the pipeline DAG. Each stage is a script under `scripts/` that reads and writes files under `~/Documents/data/stargazing-ultras` (`DATA_DIR` / `DATA_ROOT` override). Scripts do not call each other except shared helpers.
+Makefile is the pipeline DAG. Each stage is a script under `scripts/` that reads and writes files under `~/Documents/data/vmm-stargazing` (`DATA_DIR` / `DATA_ROOT` override). Scripts do not call each other except shared helpers.
 
 ```text
 config.yaml + GPX
@@ -8,15 +8,14 @@ config.yaml + GPX
   → dem.py       Copernicus GLO-30 GeoTIFF for bbox + buffer (cached)
   → timeline.py  astronomical night windows + along-track samples
   → sky.py       planets / moon / stars + DEM horizon at each sample
-  → plots.py     course map, sky discs, altitude, spots, steer
-  → report.py    markdown + CSV under out/
+  → plots.py     course map, sky discs, altitude, spots → docs/plots/
+  → report.py    GitHub Pages HTML + data.json → docs/
 ```
 
 `make run` is that chain (`GPX=…` overrides the in-repo course). Later stages can be re-run alone if their inputs still exist. `make plots` rebuilds PNGs from existing `samples.json` / `sky.json` / DEM.
 
 ## Layout
 
-```text
 Repo `gpx/` holds the committed course file. The pipeline copies it into `$DATA_DIR` and densifies from there.
 
 ```text
@@ -29,22 +28,21 @@ $DATA_DIR/
   nights.json             twilight intervals + night windows
   samples.json            observer states during nights
   sky.json                bodies at each sample
-  out/summary.md          human-readable notes (embeds plots/)
-  out/nights.csv
-  out/samples.csv
-  out/sky.csv
-  out/plots/course.png
-  out/plots/profile.png
-  out/plots/spots.png
-  out/plots/steer.png
-  out/plots/nightN-dusk.png
-  out/plots/nightN-midnight.png
-  out/plots/nightN-dawn.png
-  out/plots/nightN-alt.png
-  out/plots/nightN-steer.png
+
+docs/                     GitHub Pages (committed)
+  index.html
+  style.css
+  data.json               nights + samples + sky (download)
+  plots/course.png
+  plots/profile.png
+  plots/spots.png
+  plots/nightN-dusk.png
+  plots/nightN-midnight.png
+  plots/nightN-dawn.png
+  plots/nightN-alt.png
 ```
 
-Nothing in that tree is committed. Tests use a tiny synthetic ridge; they never download Copernicus or de421.
+`$DATA_DIR` is not committed. The site in `docs/` is. Tests use a tiny synthetic ridge; they never download Copernicus or de421.
 
 ## Time model
 
