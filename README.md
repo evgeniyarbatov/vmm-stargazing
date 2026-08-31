@@ -33,10 +33,10 @@ Along-track *time* uses the realistic predicted pace (when you reach a place). *
 
 ## New course GPX
 
-1. Put the file in `gpx/` (or leave it anywhere).
-2. Set `gpx:` in `config.yaml` to that path, **or** pass it once: `make run GPX=/path/to/course.gpx`.
-3. If the course bbox changed, drop the cached DEM: `make clean-dem`.
-4. `make run`. First time on a new bbox downloads GLO-30; de421 is reused if already in `$DATA_DIR`.
+1. Put the file in `gpx/` and set `gpx:` in `config.yaml` to that path, **or** pass it once: `make run GPX=/path/to/course.gpx`.
+2. Point `config.yaml` at the new event: `race.name`, `race.location`, `start_time`, `cutoff_time`, `timezone`. Replace `checkpoints.csv` if the course has published cutoffs.
+3. If the track is in a new area: `make clean-dem`.
+4. `make run`. First time on a new bbox downloads GLO-30; de421 is reused if already in `$DATA_DIR`. The site in `docs/` is generated from that run — do not edit the HTML by hand.
 5. Commit `docs/` (including `stargazing-spots.gpx`) to update GitHub Pages.
 
-Start time, timezone, and `pace:` stay in `config.yaml`. Re-run `make constellations site` if you also want IAU plates for the new night windows.
+`pace:` stays in `config.yaml` unless you have a new model. Knobs: [usage.md](usage.md).

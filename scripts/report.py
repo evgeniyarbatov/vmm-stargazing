@@ -17,7 +17,7 @@ from utils import DEM_LIMITS_NOTE, compass8, dump_json, load_json
 REPO_URL = "https://github.com/evgeniyarbatov/vmm-stargazing"
 AHEAD_CAPTION = (
     "GLO-30 DSM looking up the GPX. "
-    "The filled contour is the ridge; a star below it is behind terrain."
+    "The filled contour is the horizon; a star below it is behind terrain."
 )
 HASH_SCRIPT = """  <script>
     function openTarget() {
@@ -219,6 +219,26 @@ def sample_heading(sample: dict[str, Any]) -> str:
 
 def km_label(dist_km: float) -> str:
     return f"km {int(round(dist_km))}"
+
+
+def nights_phrase(n: int) -> str:
+    if n == 1:
+        return "One night"
+    if n == 2:
+        return "Two nights"
+    return f"{n} nights"
+
+
+def fmt_step_km(metres: float) -> str:
+    km = metres / 1000.0
+    if abs(km - round(km)) < 0.05:
+        return f"{int(round(km))} km"
+    return f"{km:.1f} km"
+
+
+def sample_step_m(cfg: dict[str, Any]) -> float:
+    raw = (cfg.get("sampling") or {}).get("distance_m")
+    return float(raw) if raw else 2000.0
 
 
 def sky_lede(rows: list[dict[str, Any]]) -> str:
@@ -620,7 +640,7 @@ def other_nights(views: list[NightView], nid: int) -> list[NightView]:
     return [v for v in views if v.nid != nid]
 
 
-def same_ridge_html(views: list[NightView], nid: int) -> str:
+def same_place_html(views: list[NightView], nid: int) -> str:
     others = other_nights(views, nid)
     if not others:
         return ""
@@ -634,7 +654,7 @@ def same_ridge_html(views: list[NightView], nid: int) -> str:
                 f"{esc(km_label(float(o.featured['dist_km'])))}</a>"
             )
         bits.append(bit)
-    return f"<p>Same sky, different ridge: {', '.join(bits)}.</p>"
+    return f"<p>Same sky, different place: {', '.join(bits)}.</p>"
 
 
 def build_index(
@@ -651,7 +671,7 @@ def build_index(
         "  <ol>",
         "    <li>",
         '      <a href="course.html">Where night falls</a>',
-        "      <p class='insight'>Two nights, a ridgeline, predicted pace.</p>",
+        f"      <p class='insight'>{esc(nights_phrase(len(views)))}, predicted pace.</p>",
         "    </li>",
     ]
     for nv in views:
@@ -690,8 +710,8 @@ def build_index(
         night_ids=[v.nid for v in views],
         home=True,
         lede=(
-            "Two nights on the Hoàng Liên Sơn. If you stop, this is what is "
-            "overhead — planets, a turning sky, and a few ridges worth remembering."
+            f"{nights_phrase(len(views))} on the course. If you stop, this is what is "
+            "overhead — planets, a turning sky, and a few places worth remembering."
         ),
         meta_html=[f"Times are {esc(tz)}."],
         spots_gpx=spots_gpx,
@@ -706,10 +726,11 @@ def build_course(
     views: list[NightView],
     plots: dict[str, str] | None,
     spots_gpx: bool,
+    sample_m: float = 2000.0,
 ) -> str:
     night_list = [v.rec for v in views]
     body = [
-        "<p class='lede'>Two nights, a ridgeline, predicted pace. "
+        f"<p class='lede'>{esc(nights_phrase(len(views)))}, predicted pace. "
         "Open a night when a stop or a name catches you.</p>",
     ]
     finishes = nights.get("pace_finishes_h") or {}
@@ -772,13 +793,12 @@ def build_course(
     body.extend(html_figure("profile", plots, "Elevation profile with night windows"))
     body.extend(html_figure("spots", plots, "Stargazing spot scores along the course"))
     body.append(
-        "<p>While the course is astronomically dark, it is sampled every 2 km. "
+        "<p>While the course is astronomically dark, it is sampled every "
+        f"{esc(fmt_step_km(sample_m))}. "
         "Each point is scored for an open DSM horizon, higher ground, a dim or set moon, "
-        "and whether the Milky Way centre sits above the ridge. Aid stations are not used. "
-        "The listed places are the highest-scoring points at least 5 km apart "
-        "(at most four per night). Closer samples are the same ridge, not extra stops. "
-        "At realistic pace the second night is only the last kilometres of the course, "
-        "so there are fewer places to stand — not a hidden second list.</p>"
+        "and whether the Milky Way centre sits above the local horizon. Aid stations are not used. "
+        "The listed places are the highest-scoring points, spaced along the course so closer "
+        "samples are the same stretch, not extra stops.</p>"
     )
     if spots_gpx:
         body.append(
@@ -864,9 +884,9 @@ def build_night(
                 f"{len(nv.iau_items)} {noun} overhead or up at the stops</a></li>"
             )
         body.append("</ul>")
-        ridge = same_ridge_html(views, nv.nid)
-        if ridge:
-            body.append(ridge)
+        other = same_place_html(views, nv.nid)
+        if other:
+            body.append(other)
     return page_shell(
         title=f"Night {nv.nid} — {title}",
         heading=f"Night {nv.nid}",
@@ -915,9 +935,9 @@ def build_stop(
                 f"{esc(fmt_time(s['time']))}</a></li>"
             )
         body.append("</ul>")
-    ridge = same_ridge_html(views, nv.nid)
-    if ridge:
-        body.append(ridge)
+    other = same_place_html(views, nv.nid)
+    if other:
+        body.append(other)
     return page_shell(
         title=f"{km} · Night {nv.nid} — {title}",
         heading=km,
@@ -1090,6 +1110,7 @@ def build_pages(
             views=views,
             plots=plots,
             spots_gpx=spots_gpx,
+            sample_m=sample_step_m(cfg),
         ),
     }
     for i, nv in enumerate(views):

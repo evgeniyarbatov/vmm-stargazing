@@ -106,6 +106,9 @@ class TestReport(unittest.TestCase):
         self.assertIn("VMM 100 Miles 2026", index)
         self.assertIn("Look up.", index)
         self.assertIn("Contents", index)
+        self.assertIn("One night on the course", index)
+        self.assertNotIn("Two nights", index)
+        self.assertNotIn("Hoàng Liên Sơn", index)
         self.assertIn('href="course.html"', index)
         self.assertIn('href="night-1.html"', index)
         self.assertIn('href="night-1-km48.html"', index)
@@ -117,6 +120,8 @@ class TestReport(unittest.TestCase):
         self.assertIn("predicted pace", course.lower())
         self.assertIn("sampled every 2 km", course)
         self.assertIn("Aid stations are not used", course)
+        self.assertNotIn("last kilometres", course)
+        self.assertNotIn("Hoàng Liên Sơn", course)
         self.assertIn("<details", course)
         self.assertIn("data.json", course)
         self.assertIn('download="vmm-stargazing.json"', course)
@@ -204,6 +209,13 @@ class TestReport(unittest.TestCase):
         pages_gpx = build_pages(cfg, nights, samples, sky, spots_gpx=True)
         self.assertIn("stargazing-spots.gpx", pages_gpx["index.html"])
         self.assertIn("stargazing-spots.gpx", pages_gpx["course.html"])
+
+    def test_sample_step_follows_config(self) -> None:
+        cfg = _cfg()
+        cfg["sampling"] = {"distance_m": 1500}
+        course = build_pages(cfg, _nights(), [_sample()], _sky())["course.html"]
+        self.assertIn("sampled every 1.5 km", course)
+        self.assertNotIn("sampled every 2 km", course)
 
     def test_html_embeds_iau_constellation_gallery(self) -> None:
         cfg = {"race": {"name": "VMM"}}
@@ -316,7 +328,8 @@ class TestReport(unittest.TestCase):
         )
         night1 = pages["night-1.html"]
         night2 = pages["night-2.html"]
-        self.assertIn("Same sky, different ridge", night1)
+        self.assertIn("Same sky, different place", night1)
+        self.assertIn("Two nights", pages["index.html"])
         self.assertIn('href="night-2.html"', night1)
         self.assertIn('href="night-2-km152.html"', night1)
         self.assertIn('href="night-1.html"', night2)
