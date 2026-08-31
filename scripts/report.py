@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from catalog import NAV_STARS
+from catalog import NAV_STARS, PLANETS
 from config import REPO_ROOT, data_dir, load_config
 from utils import DEM_LIMITS_NOTE, compass8, dump_json, load_json
 
@@ -168,6 +168,60 @@ def constellation_id(name: str) -> str:
     folded = unicodedata.normalize("NFKD", name)
     ascii_name = folded.encode("ascii", "ignore").decode("ascii")
     return re.sub(r"[^a-z0-9]+", "-", ascii_name.lower()).strip("-")
+
+
+def altitude_stem(night_id: int, kind: str, name: str) -> str:
+    return f"night{int(night_id)}-alt-{kind}-{constellation_id(name)}"
+
+
+def altitude_name(stem: str, night_id: int) -> str:
+    prefix = f"night{int(night_id)}-alt-"
+    rest = stem.removeprefix(prefix)
+    _kind, _, slug = rest.partition("-")
+    return slug.replace("-", " ").title()
+
+
+def altitude_stems(plots: dict[str, str] | None, night_id: int, series: str) -> list[str]:
+    if not plots:
+        return []
+    kinds = ("planet", "moon") if series == "planets" else ("star",)
+    planet_slugs = [constellation_id(p[0]) for p in PLANETS]
+    out: list[str] = []
+    for kind in kinds:
+        prefix = f"night{int(night_id)}-alt-{kind}-"
+        found = [stem for stem in plots if stem.startswith(prefix)]
+        if kind == "planet":
+            found.sort(
+                key=lambda stem: planet_slugs.index(stem.removeprefix(prefix))
+                if stem.removeprefix(prefix) in planet_slugs
+                else 99
+            )
+        else:
+            found.sort()
+        out.extend(found)
+    return out
+
+
+def html_altitude_block(
+    night_id: int, plots: dict[str, str] | None, series: str
+) -> list[str]:
+    stems = altitude_stems(plots, night_id, series)
+    if not stems:
+        return []
+    heading = "Planets and moon" if series == "planets" else "Bright stars"
+    lines = [f"<h3>{esc(heading)}</h3>"]
+    jump = []
+    figs: list[str] = []
+    for stem in stems:
+        name = altitude_name(stem, night_id)
+        html_id = constellation_id(name)
+        jump.append(f'<a href="#{esc(html_id)}">{esc(name)}</a>')
+        figs.append(f'<h4 id="{esc(html_id)}">{esc(name)}</h4>')
+        figs.extend(html_figure(stem, plots, f"Night {night_id} · {name}"))
+    if len(jump) > 1:
+        lines.append(f"<p class='jump'>{' · '.join(jump)}</p>")
+    lines.extend(figs)
+    return lines
 
 
 def linked_constellation(name: str, iau_page: str | None, iau_ids: set[str]) -> str:
@@ -988,10 +1042,8 @@ def build_sky(
     spots_gpx: bool,
 ) -> str:
     body: list[str] = []
-    body.extend(
-        html_figure(f"night{nv.nid}-alt-planets", plots, f"Night {nv.nid} planets and moon")
-    )
-    body.extend(html_figure(f"night{nv.nid}-alt-stars", plots, f"Night {nv.nid} bright stars"))
+    body.extend(html_altitude_block(nv.nid, plots, "planets"))
+    body.extend(html_altitude_block(nv.nid, plots, "stars"))
     if nv.featured is not None:
         rows = rows_for_sample(sky, int(nv.featured["i"]))
         href = nv.stop_hrefs[int(nv.featured["i"])]

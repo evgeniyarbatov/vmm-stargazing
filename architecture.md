@@ -44,8 +44,7 @@ docs/                     GitHub Pages (committed)
   plots/spots.png
   plots/nightN-sI.png
   plots/nightN-sI-ahead.png
-  plots/nightN-alt-planets.png
-  plots/nightN-alt-stars.png
+  plots/nightN-alt-{kind}-{name}.png
   plots/constellations/nightN/*.png
   spots.json
   stargazing-spots.gpx

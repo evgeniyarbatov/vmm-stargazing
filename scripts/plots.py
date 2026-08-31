@@ -13,7 +13,7 @@ import numpy as np
 from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
 from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
-from report import fmt_hours, fmt_time, rows_for_sample, sample_stem
+from report import altitude_stem, fmt_hours, fmt_time, rows_for_sample, sample_stem
 from utils import dump_json, ensure_parent, load_json, sample_along
 
 from gpx import read_track, write_spots_gpx
@@ -663,81 +663,30 @@ def _altitude_series(
     return out
 
 
-def _draw_altitude_panel(
-    ax: Any,
+def plot_altitude(
+    path: Path,
+    night_id: int,
     kind: str,
     name: str,
     xs: list[float],
     ys: list[float],
     obs: list[bool],
     hours: list[float],
-) -> None:
+) -> Path:
+    fig, ax = plt.subplots(figsize=(10.0, 4.4), facecolor=PAPER)
     color = _series_color(kind, name)
-    ax.plot(xs, ys, color=color, lw=1.6)
+    ax.plot(xs, ys, color=color, lw=1.8)
     hidden_x = [x for x, o, y in zip(xs, obs, ys, strict=True) if o or y < 0]
     hidden_y = [y for o, y in zip(obs, ys, strict=True) if o or y < 0]
     if hidden_x:
-        ax.scatter(hidden_x, hidden_y, s=12, c=color, alpha=0.25, zorder=2)
+        ax.scatter(hidden_x, hidden_y, s=16, c=color, alpha=0.25, zorder=2)
     ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
     ax.set_ylim(-15, 90)
     if hours:
         ax.set_xlim(min(hours), max(hours))
+    ax.set_xlabel("elapsed h")
     ax.set_ylabel("altitude °")
-    _style_axes(ax)
-    ax.text(
-        0.012,
-        0.90,
-        name,
-        transform=ax.transAxes,
-        color=color,
-        fontsize=9,
-        va="top",
-        zorder=6,
-        bbox={"facecolor": PAPER, "edgecolor": "none", "alpha": 0.85, "pad": 1.2},
-    )
-
-
-def plot_altitude(
-    path: Path,
-    night_id: int,
-    samples: list[dict[str, Any]],
-    sky: list[dict[str, Any]],
-    series: str,
-) -> Path:
-    bodies = _altitude_series(samples, sky, series)
-    hours = [float(s["elapsed_h"]) for s in samples]
-    n = max(len(bodies), 1)
-    fig, axes = plt.subplots(
-        n,
-        1,
-        figsize=(10.0, 1.35 * n + 1.0),
-        sharex=True,
-        sharey=True,
-        facecolor=PAPER,
-        constrained_layout=True,
-    )
-    axes_list = np.atleast_1d(axes)
-    label = "planets and moon" if series == "planets" else "bright stars"
-    if not bodies:
-        ax = axes_list[0]
-        ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
-        ax.set_ylim(-15, 90)
-        if hours:
-            ax.set_xlim(min(hours), max(hours))
-        ax.set_xlabel("elapsed h")
-        ax.set_ylabel("altitude °")
-        _style_axes(ax)
-    else:
-        for ax, (kind, name, xs, ys, obs) in zip(axes_list, bodies, strict=True):
-            _draw_altitude_panel(ax, kind, name, xs, ys, obs, hours)
-        for ax in axes_list:
-            ax.label_outer()
-        axes_list[-1].set_xlabel("elapsed h")
-    fig.suptitle(
-        f"Night {night_id} · {label} (dashed 0° = geometric horizon)",
-        color=INK,
-        fontsize=11,
-    )
+    _style_axes(ax, f"Night {night_id} · {name}")
     return _savefig(fig, path)
 
 
@@ -879,12 +828,15 @@ def write_plots(
     picked = pick_best_spots(scores)
     picked_ids = {int(s["i"]) for s in picked}
     for nid, group in by_night.items():
-        written.append(
-            plot_altitude(plots_dir / f"night{nid}-alt-planets.png", nid, group, sky, "planets")
-        )
-        written.append(
-            plot_altitude(plots_dir / f"night{nid}-alt-stars.png", nid, group, sky, "stars")
-        )
+        hours = [float(s["elapsed_h"]) for s in group]
+        for series in ("planets", "stars"):
+            for kind, name, xs, ys, obs in _altitude_series(group, sky, series):
+                stem = altitude_stem(nid, kind, name)
+                written.append(
+                    plot_altitude(
+                        plots_dir / f"{stem}.png", nid, kind, name, xs, ys, obs, hours
+                    )
+                )
         for sample in group:
             if int(sample["i"]) not in picked_ids:
                 continue

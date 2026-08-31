@@ -186,8 +186,8 @@ class TestReport(unittest.TestCase):
             plots={
                 "course": "plots/course.png",
                 "spots": "plots/spots.png",
-                "night1-alt-planets": "plots/night1-alt-planets.png",
-                "night1-alt-stars": "plots/night1-alt-stars.png",
+                "night1-alt-planet-saturn": "plots/night1-alt-planet-saturn.png",
+                "night1-alt-star-vega": "plots/night1-alt-star-vega.png",
                 "night1-s0": "plots/night1-s0.png",
                 "night1-s0-ahead": "plots/night1-s0-ahead.png",
             },
@@ -203,10 +203,14 @@ class TestReport(unittest.TestCase):
         self.assertNotIn("Download chart", stop)
 
         sky_page = pages["night-1-sky.html"]
-        self.assertIn("plots/night1-alt-planets.png", sky_page)
-        self.assertIn("plots/night1-alt-stars.png", sky_page)
+        self.assertIn("plots/night1-alt-planet-saturn.png", sky_page)
+        self.assertIn("plots/night1-alt-star-vega.png", sky_page)
+        self.assertIn(">Saturn</h4>", sky_page)
+        self.assertIn(">Vega</h4>", sky_page)
         self.assertNotIn("Download chart", sky_page)
         self.assertNotIn("night1-steer", sky_page)
+        self.assertNotIn("night1-alt-planets", sky_page)
+        self.assertNotIn("night1-alt-stars", sky_page)
         self.assertNotIn("night1-alt.png", sky_page)
 
         pages_gpx = build_pages(cfg, nights, samples, sky, spots_gpx=True)
