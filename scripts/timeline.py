@@ -1,29 +1,80 @@
 from __future__ import annotations
 
 import argparse
+import csv
 from datetime import datetime, timedelta
+from datetime import time as clock_time
 from pathlib import Path
 from typing import Any
 
 import numpy as np
-from config import data_dir, load_config, race_window
+from config import REPO_ROOT, data_dir, load_config, race_window
 from dem import sample_elev_xy
 from ephem import night_windows, transition_events, twilight_intervals
-from gpx import read_track
 from horizon import load_dem_array
 from utils import LOOKAHEAD_M, cumulative_m, dump_json, heading_at, interp_at
 
+from gpx import read_track
 
-def time_at_frac(start: datetime, cutoff: datetime, frac: float) -> datetime:
-    span = cutoff - start
-    return start + timedelta(seconds=span.total_seconds() * min(max(frac, 0.0), 1.0))
+PaceKnots = list[tuple[float, datetime]]
 
 
-def frac_at_time(start: datetime, cutoff: datetime, when: datetime) -> float:
-    span = (cutoff - start).total_seconds()
-    if span <= 0:
-        return 0.0
-    return min(max((when - start).total_seconds() / span, 0.0), 1.0)
+def next_cutoff_after(prev: datetime, clock: str) -> datetime:
+    parts = clock.split(":")
+    hh, mm = int(parts[0]), int(parts[1])
+    t = datetime.combine(prev.date(), clock_time(hh, mm), tzinfo=prev.tzinfo)
+    if t <= prev:
+        t += timedelta(days=1)
+    return t
+
+
+def load_pace_knots(path: Path, start: datetime, gpx_total_m: float) -> PaceKnots:
+    with path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    if not rows:
+        raise ValueError(f"no checkpoints in {path}")
+    finish_km = max(float(r["cumulative_distance_km"]) for r in rows)
+    if finish_km <= 0:
+        raise ValueError(f"checkpoint distances are empty in {path}")
+    scale = gpx_total_m / (finish_km * 1000.0)
+    knots: PaceKnots = []
+    prev_t = start
+    for row in rows:
+        km = float(row["cumulative_distance_km"])
+        raw = (row.get("cutoff_time") or "").strip()
+        name = (row.get("checkpoint") or "").strip().lower()
+        is_start = name == "start" or km == 0.0
+        if is_start and not raw:
+            t = start
+        elif not raw:
+            continue
+        else:
+            t = next_cutoff_after(prev_t, raw)
+        knots.append((km * 1000.0 * scale, t))
+        prev_t = t
+    if not knots or knots[0][0] > 0:
+        knots.insert(0, (0.0, start))
+    return knots
+
+
+def even_pace_knots(start: datetime, cutoff: datetime, total_m: float) -> PaceKnots:
+    return [(0.0, start), (total_m, cutoff)]
+
+
+def time_at_dist(knots: PaceKnots, dist_m: float) -> datetime:
+    t0 = knots[0][1]
+    xs = [k[0] for k in knots]
+    ys = [(k[1] - t0).total_seconds() for k in knots]
+    d = min(max(dist_m, xs[0]), xs[-1])
+    return t0 + timedelta(seconds=float(np.interp(d, xs, ys)))
+
+
+def dist_at_time(knots: PaceKnots, when: datetime) -> float:
+    t0 = knots[0][1]
+    xs = [(k[1] - t0).total_seconds() for k in knots]
+    ys = [k[0] for k in knots]
+    sec = min(max((when - t0).total_seconds(), xs[0]), xs[-1])
+    return float(np.interp(sec, xs, ys))
 
 
 def pick_indices(n: int, cap: int) -> list[int]:
@@ -44,16 +95,13 @@ def pick_indices(n: int, cap: int) -> list[int]:
 
 def assign_nights(
     dist: np.ndarray,
-    start: datetime,
-    cutoff: datetime,
     nights: list[dict[str, Any]],
+    knots: PaceKnots,
 ) -> list[dict[str, Any]]:
-    total = float(dist[-1]) if len(dist) else 0.0
     rows: list[dict[str, Any]] = []
     for night in nights:
-        t0, t1 = night["start"], night["end"]
-        d0 = frac_at_time(start, cutoff, t0) * total
-        d1 = frac_at_time(start, cutoff, t1) * total
+        d0 = dist_at_time(knots, night["start"])
+        d1 = dist_at_time(knots, night["end"])
         mask = (dist >= d0) & (dist <= d1)
         idxs = np.nonzero(mask)[0]
         rows.append({**night, "dist0_m": d0, "dist1_m": d1, "sample_idx": idxs})
@@ -72,19 +120,20 @@ def build_samples(
     sample_m: float,
     max_per_night: int,
     fallback_elev: float,
+    pace_knots: PaceKnots | None = None,
 ) -> list[dict[str, Any]]:
     cum = cumulative_m(lons, lats)
     total = float(cum[-1])
     if total <= 0:
         return []
+    knots = pace_knots or even_pace_knots(start, cutoff, total)
     targets = list(np.arange(0.0, total, sample_m))
     if not targets or targets[-1] < total - 1.0:
         targets.append(total)
     dist = np.asarray(targets, dtype=float)
-    tagged = assign_nights(dist, start, cutoff, nights)
+    tagged = assign_nights(dist, nights, knots)
     samples: list[dict[str, Any]] = []
     i_out = 0
-    span_s = (cutoff - start).total_seconds()
     for night in tagged:
         idxs = list(night["sample_idx"])
         d0 = float(night["dist0_m"])
@@ -102,8 +151,8 @@ def build_samples(
                 gpx_z = float(np.interp(d, cum, gpx_eles))
                 if np.isfinite(gpx_z):
                     elev = gpx_z
-            elapsed_h = (d / total) * span_s / 3600.0 if total else 0.0
-            when = time_at_frac(start, cutoff, d / total if total else 0.0)
+            when = time_at_dist(knots, d)
+            elapsed_h = (when - start).total_seconds() / 3600.0
             samples.append(
                 {
                     "i": i_out,
@@ -125,22 +174,20 @@ def build_samples(
 def enrich_nights(
     nights: list[dict[str, Any]],
     start: datetime,
-    cutoff: datetime,
-    total_m: float,
+    knots: PaceKnots,
 ) -> list[dict[str, Any]]:
-    span_h = (cutoff - start).total_seconds() / 3600.0
     out: list[dict[str, Any]] = []
     for night in nights:
-        d0 = frac_at_time(start, cutoff, night["start"]) * total_m
-        d1 = frac_at_time(start, cutoff, night["end"]) * total_m
+        d0 = dist_at_time(knots, night["start"])
+        d1 = dist_at_time(knots, night["end"])
         out.append(
             {
                 "night_id": night["night_id"],
                 "start": night["start"].isoformat(),
                 "end": night["end"].isoformat(),
                 "label": night["label"],
-                "elapsed0_h": frac_at_time(start, cutoff, night["start"]) * span_h,
-                "elapsed1_h": frac_at_time(start, cutoff, night["end"]) * span_h,
+                "elapsed0_h": (night["start"] - start).total_seconds() / 3600.0,
+                "elapsed1_h": (night["end"] - start).total_seconds() / 3600.0,
                 "dist0_km": d0 / 1000.0,
                 "dist1_km": d1 / 1000.0,
                 "duration_h": (night["end"] - night["start"]).total_seconds() / 3600.0,
@@ -198,6 +245,16 @@ def main() -> None:
     )
     nights = night_windows(intervals)
     events = transition_events(intervals)
+    cp_rel = cfg.get("checkpoints")
+    if cp_rel:
+        cp_path = Path(str(cp_rel))
+        if not cp_path.is_absolute():
+            cp_path = REPO_ROOT / cp_path
+        knots = load_pace_knots(cp_path, start, total_m)
+        pace_model = "checkpoints"
+    else:
+        knots = even_pace_knots(start, cutoff, total_m)
+        pace_model = "even"
     samples = build_samples(
         lons,
         lats,
@@ -210,6 +267,7 @@ def main() -> None:
         sample_m,
         max_per_night,
         fallback_elev,
+        pace_knots=knots,
     )
     payload = {
         "timezone": cfg.get("timezone"),
@@ -217,14 +275,14 @@ def main() -> None:
         "cutoff": cutoff.isoformat(),
         "length_m": total_m,
         "pace_kmh": (total_m / 1000.0) / ((cutoff - start).total_seconds() / 3600.0),
+        "pace_model": pace_model,
         "observer": observer,
-        "nights": enrich_nights(nights, start, cutoff, total_m),
+        "nights": enrich_nights(nights, start, knots),
         "events": [
             {
                 **e,
                 "time": e["time"].isoformat(),
-                "elapsed_h": frac_at_time(start, cutoff, e["time"])
-                * ((cutoff - start).total_seconds() / 3600.0),
+                "elapsed_h": (e["time"] - start).total_seconds() / 3600.0,
             }
             for e in events
         ],

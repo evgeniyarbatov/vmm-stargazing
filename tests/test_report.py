@@ -143,13 +143,20 @@ class TestReport(unittest.TestCase):
             plots={
                 "course": "plots/course.png",
                 "spots": "plots/spots.png",
+                "night1-alt-planets": "plots/night1-alt-planets.png",
+                "night1-alt-stars": "plots/night1-alt-stars.png",
                 "night1-dusk": "plots/night1-dusk.png",
+                "night1-dusk-ridge": "plots/night1-dusk-ridge.png",
             },
         )
         self.assertIn("plots/course.png", page)
         self.assertIn("plots/spots.png", page)
         self.assertIn("plots/night1-dusk.png", page)
+        self.assertIn("plots/night1-dusk-ridge.png", page)
+        self.assertIn("plots/night1-alt-planets.png", page)
+        self.assertIn("plots/night1-alt-stars.png", page)
         self.assertIn('download="course.png"', page)
         self.assertIn('download="spots.png"', page)
         self.assertNotIn("steer", page)
         self.assertNotIn("night1-steer", page)
+        self.assertNotIn("night1-alt.png", page)

@@ -11,6 +11,7 @@ race:
 
 # Course track
 gpx: "gpx/vmm-100-miles-2026.gpx"
+checkpoints: "checkpoints.csv"
 
 # Timing (local time, Asia/Ho_Chi_Minh = UTC+7)
 timezone: "Asia/Ho_Chi_Minh"

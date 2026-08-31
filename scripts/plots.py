@@ -41,11 +41,37 @@ PLANET_COLORS = {
     "Jupiter": "#fe640b",
     "Saturn": "#179299",
 }
-ALT_STARS = {"Vega", "Altair", "Deneb", "Sirius", "Betelgeuse", "Antares"}
+STAR_PALETTE = (
+    "#1e66f5",
+    "#d20f39",
+    "#40a02b",
+    "#df8e1d",
+    "#8839ef",
+    "#fe640b",
+    "#179299",
+    "#e64553",
+    "#04a5e5",
+    "#ea76cb",
+    "#4a7c2c",
+    "#9d6b3a",
+    "#7287fd",
+    "#00a86b",
+    "#c6a645",
+    "#6c2c6f",
+    "#dd7878",
+    "#1e1e2e",
+)
 
 
 def altaz_to_rtheta(alt_deg: float, az_deg: float) -> tuple[float, float]:
     return 90.0 - float(alt_deg), np.radians(float(az_deg) % 360.0)
+
+
+def star_color(name: str) -> str:
+    names = sorted(NAV_STARS)
+    if name not in names:
+        return STAR
+    return STAR_PALETTE[names.index(name) % len(STAR_PALETTE)]
 
 
 def hillshade(z: np.ndarray, azimuth: float = 315.0, altitude: float = 45.0) -> np.ndarray:
@@ -271,7 +297,7 @@ def _horizon_profiles(
             float(sample["lon"]),
             float(sample["lat"]),
             float(sample["elev_m"]),
-            n_az=36,
+            n_az=72,
             max_km=15.0,
             step_m=200.0,
         )
@@ -512,11 +538,12 @@ def plot_sky_disc(
             mag = float(row["mag"]) if row.get("mag") is not None else 2.0
             size = max(8.0, 55.0 * 0.65**mag)
             is_guide = name == guide_name
+            color = star_color(name)
             ax.scatter(
                 theta,
                 r,
                 s=size * (1.6 if is_guide else 1.0),
-                c=GUIDE if is_guide else STAR,
+                c=color,
                 zorder=4,
                 alpha=0.25 if obscured else 0.95,
             )
@@ -537,7 +564,7 @@ def plot_sky_disc(
                     (theta, r),
                     textcoords="offset points",
                     xytext=(4, 4),
-                    color=GUIDE if is_guide else MUTED,
+                    color=GUIDE if is_guide else color,
                     fontsize=7,
                 )
 
@@ -549,7 +576,7 @@ def plot_sky_disc(
     fig.text(
         0.5,
         0.02,
-        "zenith centre · north up · filled edge = terrain horizon · gold = guide star",
+        "zenith centre · north up · filled edge = terrain · gold ring = ahead",
         ha="center",
         color=MUTED,
         fontsize=8,
@@ -557,22 +584,40 @@ def plot_sky_disc(
     return _savefig(fig, path)
 
 
+def _altitude_targets(
+    series: str, samples: list[dict[str, Any]], sky: list[dict[str, Any]]
+) -> list[tuple[str, str]]:
+    ids = {s["i"] for s in samples}
+    if series == "planets":
+        return [("planet", n) for n in PLANET_COLORS] + [("moon", "Moon")]
+    up = {
+        r["name"]
+        for r in sky
+        if r["kind"] == "star"
+        and r["name"] in NAV_STARS
+        and r["sample_i"] in ids
+        and float(r["alt_deg"]) > 5
+    }
+    return [("star", n) for n in sorted(up)]
+
+
+def _series_color(kind: str, name: str) -> str:
+    if kind == "star":
+        return star_color(name)
+    if kind == "moon":
+        return MOON
+    return PLANET_COLORS.get(name, INK)
+
+
 def plot_altitude(
     path: Path,
     night_id: int,
     samples: list[dict[str, Any]],
     sky: list[dict[str, Any]],
+    series: str,
 ) -> Path:
     fig, ax = plt.subplots(figsize=(10, 4.4), facecolor=PAPER)
-    names: list[tuple[str, str]] = [("planet", n) for n in PLANET_COLORS] + [("moon", "Moon")]
-    up_nav = {
-        r["name"]
-        for r in sky
-        if r["kind"] == "star" and r["name"] in ALT_STARS and float(r["alt_deg"]) > 10
-    }
-    for name in sorted(up_nav):
-        names.append(("star", name))
-
+    names = _altitude_targets(series, samples, sky)
     hours = [float(s["elapsed_h"]) for s in samples]
     for kind, name in names:
         xs: list[float] = []
@@ -591,10 +636,8 @@ def plot_altitude(
             obs.append(bool(match[0].get("obscured")))
         if not xs or max(ys) < 0:
             continue
-        color = PLANET_COLORS.get(name, STAR if kind != "moon" else MOON)
-        if kind == "star":
-            color = MUTED
-        ax.plot(xs, ys, color=color, lw=1.6 if kind != "star" else 0.9, label=name)
+        color = _series_color(kind, name)
+        ax.plot(xs, ys, color=color, lw=1.6 if kind != "star" else 1.2, label=name)
         hidden_x = [x for x, o, y in zip(xs, obs, ys, strict=True) if o or y < 0]
         hidden_y = [y for o, y in zip(obs, ys, strict=True) if o or y < 0]
         if hidden_x:
@@ -606,8 +649,69 @@ def plot_altitude(
         ax.set_xlim(min(hours), max(hours))
     ax.set_xlabel("elapsed h")
     ax.set_ylabel("altitude °")
-    _style_axes(ax, f"Night {night_id} · altitude (dashed 0° = geometric horizon)")
+    label = "planets and moon" if series == "planets" else "bright stars"
+    _style_axes(ax, f"Night {night_id} · {label} (dashed 0° = geometric horizon)")
     _legend(ax, loc="upper left", fontsize=7, ncol=3)
+    return _savefig(fig, path)
+
+
+def plot_ridge(
+    path: Path,
+    sample: dict[str, Any],
+    rows: list[dict[str, Any]],
+    profile: np.ndarray | None,
+    guide: dict[str, Any] | None = None,
+) -> Path:
+    fig, ax = plt.subplots(figsize=(10, 3.9), facecolor=PAPER)
+    az = np.linspace(0.0, 360.0, 361)
+    if profile is not None:
+        horizon = np.array([horizon_at_az(profile, a) for a in az])
+        ax.fill_between(az, horizon, -12.0, color=HORIZON_FILL, zorder=1)
+        ax.plot(az, horizon, color=HORIZON_LINE, lw=1.1, zorder=2)
+    heading = float(sample.get("heading_deg") or 0.0)
+    ax.axvline(heading, color=RUN, lw=0.9, ls="--", zorder=3, alpha=0.7)
+    ax.text(heading, 82, "run", color=RUN, ha="center", va="bottom", fontsize=8)
+    guide_name = guide["name"] if guide else None
+    for row in rows:
+        alt = float(row["alt_deg"])
+        if alt < -8:
+            continue
+        kind = row["kind"]
+        name = row["name"]
+        az_b = float(row["az_deg"]) % 360.0
+        obscured = bool(row.get("obscured"))
+        if kind == "planet":
+            color = PLANET_COLORS.get(name, INK)
+            ax.scatter(
+                az_b, alt, s=70, c=color, zorder=5, alpha=0.35 if obscured else 1.0, edgecolors=color
+            )
+            if not obscured:
+                _annotate(ax, name, (az_b, alt), color=color)
+        elif kind == "moon":
+            ax.scatter(az_b, alt, s=110, c=MOON, edgecolors=INK, zorder=5)
+            _annotate(ax, "Moon", (az_b, alt), color=MOON)
+        elif kind == "feature":
+            ax.scatter(az_b, alt, s=55, marker="*", c=MW, zorder=5)
+            _annotate(ax, "MW", (az_b, alt), color=MW)
+        elif kind == "star" and name in NAV_STARS and alt >= 5:
+            mag = float(row["mag"]) if row.get("mag") is not None else 2.0
+            size = max(10.0, 48.0 * 0.65**mag)
+            color = star_color(name)
+            is_guide = name == guide_name
+            ax.scatter(az_b, alt, s=size * (1.6 if is_guide else 1.0), c=color, zorder=4)
+            if mag <= 1.3 or is_guide:
+                label = f"{name} · ahead" if is_guide else name
+                _annotate(ax, label, (az_b, alt), color=GUIDE if is_guide else color)
+    ax.set_xlim(0, 360)
+    ax.set_xticks([0, 90, 180, 270, 360])
+    ax.set_xticklabels(["N", "E", "S", "W", "N"])
+    ax.set_ylim(-12, 90)
+    ax.set_ylabel("altitude °")
+    title = (
+        f"{fmt_time(sample['time'])}  ·  km {sample['dist_km']:.1f}  ·  "
+        f"{fmt_hours(sample['elapsed_h'])}  ·  ridge silhouette"
+    )
+    _style_axes(ax, title)
     return _savefig(fig, path)
 
 
@@ -679,19 +783,24 @@ def write_plots(
         by_night[int(sample["night_id"])].append(sample)
     keys = key_samples(samples)
     for nid, group in by_night.items():
-        written.append(plot_altitude(plots_dir / f"night{nid}-alt.png", nid, group, sky))
+        written.append(
+            plot_altitude(plots_dir / f"night{nid}-alt-planets.png", nid, group, sky, "planets")
+        )
+        written.append(
+            plot_altitude(plots_dir / f"night{nid}-alt-stars.png", nid, group, sky, "stars")
+        )
         for sample in keys:
             if int(sample["night_id"]) != nid:
                 continue
             stem = disc_stem(sample, group)
+            rows = rows_for_sample(sky, sample["i"])
+            guide = guides.get(int(sample["i"]))
+            profile = profiles.get(int(sample["i"]))
             written.append(
-                plot_sky_disc(
-                    plots_dir / f"{stem}.png",
-                    sample,
-                    rows_for_sample(sky, sample["i"]),
-                    profiles.get(int(sample["i"])),
-                    guides.get(int(sample["i"])),
-                )
+                plot_sky_disc(plots_dir / f"{stem}.png", sample, rows, profile, guide)
+            )
+            written.append(
+                plot_ridge(plots_dir / f"{stem}-ridge.png", sample, rows, profile, guide)
             )
     kept = {path.name for path in written}
     if plots_dir.is_dir():

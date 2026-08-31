@@ -37,16 +37,20 @@ docs/                     GitHub Pages (committed)
   plots/profile.png
   plots/spots.png
   plots/nightN-dusk.png
+  plots/nightN-dusk-ridge.png
   plots/nightN-midnight.png
+  plots/nightN-midnight-ridge.png
   plots/nightN-dawn.png
-  plots/nightN-alt.png
+  plots/nightN-dawn-ridge.png
+  plots/nightN-alt-planets.png
+  plots/nightN-alt-stars.png
 ```
 
 `$DATA_DIR` is not committed. The site in `docs/` is. Tests use a tiny synthetic ridge; they never download Copernicus or de421.
 
 ## Time model
 
-GPX timestamps from mapping tools are ignored. Elapsed time is linear in distance from `start_time` to `cutoff_time` (even pace to the cutoff). Night windows are true night (Sun altitude < −18°) at the course centroid. Samples exist only inside those windows, every `sampling.distance_m`, capped per night.
+GPX timestamps from mapping tools are ignored. Along-track time is piecewise-linear between published checkpoint cutoffs in `checkpoints.csv` (clock times, dates inferred from start). Official checkpoint kilometres are scaled onto the GPX length. Night windows are true night (Sun altitude < −18°) at the course centroid. Samples exist only inside those windows, every `sampling.distance_m`, capped per night.
 
 Planet alt/az barely change across this course. Terrain horizon does.
 

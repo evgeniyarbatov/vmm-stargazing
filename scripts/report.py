@@ -243,6 +243,19 @@ def build_html(
     pace = nights.get("pace_kmh")
     tz = nights.get("timezone") or "local"
     pace_note = f" ({pace:.2f} km/h)" if pace else ""
+    pace_model = nights.get("pace_model") or "even"
+    if pace_model == "checkpoints":
+        pace_line = (
+            "Positions follow the published checkpoint cutoffs. "
+            "Faster running puts you further along the course at the same clock "
+            "time; planet positions barely change across the course, terrain horizon does."
+        )
+    else:
+        pace_line = (
+            f"Positions assume even pace to cutoff{pace_note}. "
+            "Faster running puts you further along the course at the same clock "
+            "time; planet positions barely change across the course, terrain horizon does."
+        )
     night_list = list(nights.get("nights") or [])
 
     lines: list[str] = [
@@ -260,9 +273,7 @@ def build_html(
         "    <h1>Look up.</h1>",
         "    <p class='lede'>Two nights on the Hoàng Liên Sơn. If you stop, this is what is "
         "overhead — planets, a turning sky, and a few ridges worth remembering.</p>",
-        f"    <p class='meta'>Times are {esc(tz)}. Positions assume even pace to cutoff"
-        f"{esc(pace_note)}. Faster running puts you further along the course at the same clock "
-        "time; planet positions barely change across the course, terrain horizon does.</p>",
+        f"    <p class='meta'>Times are {esc(tz)}. {esc(pace_line)}</p>",
         f"    <p class='meta'>{esc(DEM_LIMITS_NOTE)}</p>",
         "  </header>",
         "  <main>",
@@ -347,13 +358,26 @@ def build_html(
             continue
         mid = min(group, key=midnightish)
         lines.append(f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, mid['i'])))}</p>")
-        lines.extend(html_figure(f"night{nid}-alt", plots, f"Night {nid} altitude"))
+        lines.extend(
+            html_figure(f"night{nid}-alt-planets", plots, f"Night {nid} planets and moon")
+        )
+        lines.extend(html_figure(f"night{nid}-alt-stars", plots, f"Night {nid} bright stars"))
         for sample in group:
             if sample["i"] not in keys:
                 continue
             rows = rows_for_sample(sky, sample["i"])
+            stem = disc_stem(sample, group)
             lines += [f"      <h3>{esc(sample_heading(sample))}</h3>"]
-            lines.extend(html_figure(disc_stem(sample, group), plots, sample_heading(sample)))
+            lines.extend(html_figure(stem, plots, sample_heading(sample)))
+            lines.extend(
+                html_figure(
+                    f"{stem}-ridge",
+                    plots,
+                    f"{sample_heading(sample)} ridge silhouette",
+                    "Filled edge is the DEM ridge line from this point. "
+                    "A star below the fill is behind terrain.",
+                )
+            )
             lines.append(f"      <p>{esc(moon_sentence(rows))}</p>")
             mw = milky_way_sentence(rows)
             if mw:

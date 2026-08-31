@@ -18,6 +18,7 @@ from plots import (
     guide_star,
     rel_bearing_deg,
     score_sample,
+    star_color,
     write_plots,
 )
 from report import disc_stem
@@ -251,10 +252,18 @@ class TestPlots(unittest.TestCase):
         self.assertIn("course", stems)
         self.assertIn("profile", stems)
         self.assertIn("spots", stems)
-        self.assertIn("night1-alt", stems)
+        self.assertIn("night1-alt-planets", stems)
+        self.assertIn("night1-alt-stars", stems)
         self.assertIn("night1-dusk", stems)
         self.assertIn("night1-dawn", stems)
+        self.assertIn("night1-dusk-ridge", stems)
+        self.assertIn("night1-dawn-ridge", stems)
+        self.assertNotIn("night1-alt", stems)
         self.assertNotIn("steer", stems)
         self.assertNotIn("night1-steer", stems)
         for path in written:
             self.assertGreater(path.stat().st_size, 1000)
+
+    def test_star_colors_differ(self) -> None:
+        self.assertNotEqual(star_color("Vega"), star_color("Altair"))
+        self.assertEqual(star_color("Vega"), star_color("Vega"))
