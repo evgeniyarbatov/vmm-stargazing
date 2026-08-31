@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="gpx.py -- https://github.com/tkrajina/gpxpy">
+  <metadata>
+    <name>Stargazing locations</name>
+  </metadata>
+  <wpt lat="22.304052374512366" lon="103.98780426643542">
+    <ele>1026.9739934033064</ele>
+    <name>Night 1 · km 62</name>
+    <desc>stargazing score 0.75</desc>
+  </wpt>
+  <wpt lat="22.274585830333244" lon="103.97326836839127">
+    <ele>751.2194197851097</ele>
+    <name>Night 1 · km 84</name>
+    <desc>stargazing score 0.60</desc>
+  </wpt>
+  <wpt lat="22.280104654747525" lon="103.92487207151486">
+    <ele>921.564067503934</ele>
+    <name>Night 1 · km 92</name>
+    <desc>stargazing score 0.57</desc>
+  </wpt>
+  <wpt lat="22.30502" lon="103.88554214734842">
+    <ele>983.4072868546909</ele>
+    <name>Night 1 · km 99</name>
+    <desc>stargazing score 0.62</desc>
+  </wpt>
+  <wpt lat="22.292118718727277" lon="103.94706348749091">
+    <ele>1396.513682455152</ele>
+    <name>Night 2 · km 152</name>
+    <desc>stargazing score 0.87</desc>
+  </wpt>
+</gpx>

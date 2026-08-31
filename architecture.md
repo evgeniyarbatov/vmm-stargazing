@@ -42,6 +42,8 @@ docs/                     GitHub Pages (committed)
   plots/nightN-alt-planets.png
   plots/nightN-alt-stars.png
   plots/constellations/nightN/*.png
+  spots.json
+  stargazing-spots.gpx
 ```
 
 `$DATA_DIR` is not committed (DEM, ephemeris, and the cloned `constellations` checkout included). The site in `docs/` is, including IAU constellation PNGs. Tests use a tiny synthetic ridge; they never download Copernicus, de421, or clone constellations.

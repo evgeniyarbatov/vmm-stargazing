@@ -16,6 +16,7 @@ from plots import (
     altaz_to_rtheta,
     guide_label,
     guide_star,
+    pick_best_spots,
     rel_bearing_deg,
     score_sample,
     star_color,
@@ -254,17 +255,28 @@ class TestPlots(unittest.TestCase):
         self.assertIn("spots", stems)
         self.assertIn("night1-alt-planets", stems)
         self.assertIn("night1-alt-stars", stems)
-        self.assertIn("night1-s0", stems)
-        self.assertIn("night1-s1", stems)
-        self.assertIn("night1-s0-ahead", stems)
-        self.assertIn("night1-s1-ahead", stems)
+        self.assertTrue({"night1-s0", "night1-s1"} & stems)
+        self.assertTrue({"night1-s0-ahead", "night1-s1-ahead"} & stems)
         self.assertNotIn("night1-dusk", stems)
         self.assertNotIn("night1-spot-ahead", stems)
         self.assertNotIn("night1-alt", stems)
         self.assertNotIn("steer", stems)
         self.assertNotIn("night1-steer", stems)
+        gpx_path = tmp / "out" / "stargazing-spots.gpx"
+        self.assertTrue(gpx_path.is_file())
+        self.assertIn("<wpt", gpx_path.read_text(encoding="utf-8"))
         for path in written:
             self.assertGreater(path.stat().st_size, 1000)
+
+    def test_pick_best_spots_keeps_gap(self) -> None:
+        scores = [
+            {"i": 0, "night_id": 1, "dist_km": 10.0, "score": 0.9, "lon": 0, "lat": 0},
+            {"i": 1, "night_id": 1, "dist_km": 12.0, "score": 0.8, "lon": 0, "lat": 0},
+            {"i": 2, "night_id": 1, "dist_km": 40.0, "score": 0.7, "lon": 0, "lat": 0},
+        ]
+        picked = pick_best_spots(scores, min_gap_km=6.0, max_per_night=4)
+        ids = [int(s["i"]) for s in picked]
+        self.assertEqual(ids, [0, 2])
 
     def test_star_colors_differ(self) -> None:
         self.assertNotEqual(star_color("Vega"), star_color("Altair"))

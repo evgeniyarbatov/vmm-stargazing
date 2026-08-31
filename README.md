@@ -2,9 +2,11 @@
 
 Night sky along the VMM 100 — look up from the Hoàng Liên Sơn, make a memory, think bigger.
 
-Pre-computed notes for Vietnam Mountain Marathon 100 Miles 2026 (Sa Pa): planets, moon, constellations, and the terrain horizon from the GPX + start/cutoff. Not a live planetarium.
+Pre-computed notes for Vietnam Mountain Marathon 100 Miles 2026 (Sa Pa): planets, moon, constellations, and DSM ridge vs stars at the **best stargazing places** on the course. Not a live planetarium.
 
 **Notes:** [GitHub Pages](https://evgeniyarbatov.github.io/vmm-stargazing/)
+
+**Waypoints:** [stargazing-spots.gpx](docs/stargazing-spots.gpx) — also a download on the site.
 
 ## Quick start
 
@@ -22,9 +24,19 @@ See [usage.md](usage.md) for knobs and [architecture.md](architecture.md) for ho
 
 - Distance: ~161 km, ~8800 m elevation gain.
 - Start: Friday 18 September 2026, 08:00 local (Asia/Ho_Chi_Minh, UTC+7) at Sapa Square.
-- Approximate finish cutoff: Sunday 20 September 2026 ~09:00 (49 h time limit).
+- Finish cutoff: Sunday 20 September 2026 ~09:00 (49 h). Predicted finishes are earlier (optimistic / realistic / conservative).
 - Location: Sa Pa / Hoàng Liên Sơn, ~22.34° N, 103.84° E.
 
-Race parameters live in `config.yaml`. The course GPX lives in-repo (`gpx/`). Predicted pace (optimistic / realistic / conservative) lives under `pace:` in that config. DEM caches and ephemeris stay out of git.
+Race start, GPX path, and predicted-pace knobs live in `config.yaml`. The course GPX lives in `gpx/`. DEM caches and ephemeris stay out of git.
 
-Along-track times follow the realistic predicted pace. Faster running shifts night locations earlier on the course; planet positions barely change across this bbox.
+Along-track *time* uses the realistic predicted pace (when you reach a place). *Which* places are good for looking up is scored from open DSM horizon, elevation, moon, and whether the Milky Way centre is above the ridge — not from aid-station cutoffs.
+
+## New course GPX
+
+1. Put the file in `gpx/` (or leave it anywhere).
+2. Set `gpx:` in `config.yaml` to that path, **or** pass it once: `make run GPX=/path/to/course.gpx`.
+3. If the course bbox changed, drop the cached DEM: `make clean-dem`.
+4. `make run`. First time on a new bbox downloads GLO-30; de421 is reused if already in `$DATA_DIR`.
+5. Commit `docs/` (including `stargazing-spots.gpx`) to update GitHub Pages.
+
+Start time, timezone, and `pace:` stay in `config.yaml`. Re-run `make constellations site` if you also want IAU plates for the new night windows.

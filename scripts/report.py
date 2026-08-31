@@ -285,6 +285,8 @@ def build_html(
     sky: list[dict[str, Any]],
     plots: dict[str, str] | None = None,
     iau_plots: dict[int, list[tuple[str, str]]] | None = None,
+    spots: list[dict[str, Any]] | None = None,
+    spots_gpx: bool = False,
 ) -> str:
     race = cfg.get("race") or {}
     title = race.get("name") or "Race"
@@ -351,7 +353,9 @@ def build_html(
         lines.append("        <li>")
         lines.append(f'          <a href="#night-{nid}">Night {nid}</a>')
         lines.append("          <ol>")
-        lines.append(f'            <li><a href="#night-{nid}-stops">Stops along the GPX</a></li>')
+        lines.append(
+            f'            <li><a href="#night-{nid}-spots">Best stargazing locations</a></li>'
+        )
         lines.append(f'            <li><a href="#night-{nid}-alt">Planets and stars</a></li>')
         if (iau_plots or {}).get(nid):
             lines.append(
@@ -429,6 +433,11 @@ def build_html(
             "and whether the Milky Way centre is above the ridge.",
         )
     )
+    if spots_gpx:
+        lines.append(
+            "      <p class='meta'><a href='stargazing-spots.gpx' "
+            "download='stargazing-spots.gpx'>Download stargazing locations (GPX)</a></p>"
+        )
     lines.append("    </section>")
 
     for n in night_list:
@@ -445,15 +454,26 @@ def build_html(
             lines.append("      <p>No along-track samples in this window at predicted pace.</p>")
             lines.append("    </section>")
             continue
-        mid = min(group, key=midnightish)
-        mid_stem = sample_stem(mid)
-        lines.append(f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, mid['i'])))}</p>")
-        lines.extend(html_figure(mid_stem, plots, sample_heading(mid)))
+        night_spots = [s for s in (spots or []) if int(s["night_id"]) == nid]
+        by_i = {int(s["i"]): s for s in group}
+        if night_spots:
+            featured = by_i.get(int(max(night_spots, key=lambda r: float(r["score"]))["i"]))
+            ordered = [by_i[int(s["i"])] for s in night_spots if int(s["i"]) in by_i]
+        else:
+            featured = min(group, key=midnightish)
+            ordered = group
+        if featured is None:
+            featured = min(group, key=midnightish)
+        feat_stem = sample_stem(featured)
+        lines.append(
+            f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, featured['i'])))}</p>"
+        )
+        lines.extend(html_figure(feat_stem, plots, sample_heading(featured)))
         lines.extend(
             html_figure(
-                f"{mid_stem}-ahead",
+                f"{feat_stem}-ahead",
                 plots,
-                f"{sample_heading(mid)} looking along the course",
+                f"{sample_heading(featured)} looking along the course",
                 "GLO-30 DSM looking up the GPX. "
                 "The filled contour is the ridge; a star below it is behind terrain.",
             )
@@ -473,7 +493,7 @@ def build_html(
                 )
             )
         stop_body: list[str] = []
-        for sample in group:
+        for sample in ordered:
             rows = rows_for_sample(sky, sample["i"])
             stem = sample_stem(sample)
             inner: list[str] = []
@@ -502,9 +522,9 @@ def build_html(
         if stop_body:
             lines.extend(
                 html_details(
-                    f"{len(group)} stops along the GPX",
+                    f"{len(ordered)} best stargazing locations",
                     stop_body,
-                    html_id=f"night-{nid}-stops",
+                    html_id=f"night-{nid}-spots",
                     css="fold",
                 )
             )
@@ -535,6 +555,13 @@ def build_html(
         "Sun altitude below −18°. Horizon masking uses GLO-30 plus a 2° buffer.</p>",
         "    <p>",
         '      <a href="data.json" download="vmm-stargazing.json">Download raw data (JSON)</a>',
+    ]
+    if spots_gpx:
+        lines.append(
+            '      <a href="stargazing-spots.gpx" download="stargazing-spots.gpx">'
+            "Stargazing locations (GPX)</a>"
+        )
+    lines += [
         f'      <a href="{REPO_URL}">Source</a>',
         f'      <a href="{REPO_URL}/blob/main/ROADMAP.md">Roadmap</a>',
         "    </p>",
@@ -572,6 +599,8 @@ def main() -> None:
     samples = load_json(datadir / "samples.json")
     sky = load_json(datadir / "sky.json")
     plot_links = {p.stem: f"plots/{p.name}" for p in sorted((site_dir / "plots").glob("*.png"))}
+    spots_path = site_dir / "spots.json"
+    spots = load_json(spots_path) if spots_path.is_file() else None
     site_dir.mkdir(parents=True, exist_ok=True)
     (site_dir / "index.html").write_text(
         build_html(
@@ -581,6 +610,8 @@ def main() -> None:
             sky,
             plots=plot_links or None,
             iau_plots=iau_plot_gallery(site_dir) or None,
+            spots=spots if isinstance(spots, list) else None,
+            spots_gpx=(site_dir / "stargazing-spots.gpx").is_file(),
         ),
         encoding="utf-8",
     )

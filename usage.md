@@ -20,7 +20,7 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 | `DATA_DIR=/exact/path` | files under that path |
 | `SITE_DIR=/exact/path` | GitHub Pages files under that path |
 
-`docs/index.html` embeds PNGs from `docs/plots/`. Raw data is `docs/data.json`; each chart has a download link on the page.
+`docs/index.html` embeds PNGs from `docs/plots/`. Raw data is `docs/data.json`. Best stargazing places are `docs/stargazing-spots.gpx` (waypoints). Each chart has a download link on the page.
 
 `make clean` removes nights/samples/sky (keeps DEM + ephemeris + `docs/`). `make clean-dem` drops the GeoTIFF.
 

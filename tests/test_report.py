@@ -94,7 +94,7 @@ class TestReport(unittest.TestCase):
         self.assertIn("predicted pace", page.lower())
         self.assertIn('href="#night-1"', page)
         self.assertIn("<details", page)
-        self.assertIn("Stops along the GPX", page)
+        self.assertIn("Best stargazing locations", page)
         self.assertIn("data.json", page)
         self.assertIn('download="vmm-stargazing.json"', page)
         self.assertNotIn("steer", page)
@@ -165,6 +165,8 @@ class TestReport(unittest.TestCase):
         self.assertNotIn("steer", page)
         self.assertNotIn("night1-steer", page)
         self.assertNotIn("night1-alt.png", page)
+        page_gpx = build_html(cfg, nights, samples, sky, spots_gpx=True)
+        self.assertIn("stargazing-spots.gpx", page_gpx)
 
     def test_html_embeds_iau_constellation_gallery(self) -> None:
         cfg = {"race": {"name": "VMM"}}

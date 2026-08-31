@@ -72,6 +72,30 @@ def write_cleaned_gpx(
     path.write_text(gpx.to_xml(), encoding="utf-8")
 
 
+def write_spots_gpx(
+    path: Path,
+    spots: list[dict],
+    name: str = "Stargazing locations",
+) -> Path:
+    gpx = gpxpy.gpx.GPX()
+    gpx.name = name
+    for spot in spots:
+        nid = int(spot["night_id"])
+        km = float(spot["dist_km"])
+        wpt = gpxpy.gpx.GPXWaypoint(
+            latitude=float(spot["lat"]),
+            longitude=float(spot["lon"]),
+            name=f"Night {nid} · km {km:.0f}",
+            description=f"stargazing score {float(spot['score']):.2f}",
+        )
+        if spot.get("elev_m") is not None and np.isfinite(float(spot["elev_m"])):
+            wpt.elevation = float(spot["elev_m"])
+        gpx.waypoints.append(wpt)
+    ensure_parent(path)
+    path.write_text(gpx.to_xml(), encoding="utf-8")
+    return path
+
+
 def write_bbox(
     path: Path,
     lons: np.ndarray,

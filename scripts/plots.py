@@ -14,9 +14,9 @@ from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
 from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
 from report import fmt_hours, fmt_time, rows_for_sample, sample_stem
-from utils import ensure_parent, load_json, sample_along
+from utils import dump_json, ensure_parent, load_json, sample_along
 
-from gpx import read_track
+from gpx import read_track, write_spots_gpx
 
 PAPER = "#ffffff"
 INK = "#1e1e2e"
@@ -166,13 +166,31 @@ def score_sample(
     }
 
 
-def best_spots(scores: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def pick_best_spots(
+    scores: list[dict[str, Any]],
+    min_gap_km: float = 6.0,
+    max_per_night: int = 4,
+) -> list[dict[str, Any]]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for row in scores:
         by_night[int(row["night_id"])].append(row)
-    return [
-        max(by_night[nid], key=lambda row: float(row["score"])) for nid in sorted(by_night)
-    ]
+    picked: list[dict[str, Any]] = []
+    for nid in sorted(by_night):
+        ranked = sorted(by_night[nid], key=lambda row: float(row["score"]), reverse=True)
+        chosen: list[dict[str, Any]] = []
+        for row in ranked:
+            if len(chosen) >= max_per_night:
+                break
+            if any(abs(float(row["dist_km"]) - float(c["dist_km"])) < min_gap_km for c in chosen):
+                continue
+            chosen.append(row)
+        chosen.sort(key=lambda row: float(row["dist_km"]))
+        picked.extend(chosen)
+    return picked
+
+
+def best_spots(scores: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return pick_best_spots(scores, min_gap_km=6.0, max_per_night=4)
 
 
 def _style_axes(ax: Any, title: str | None = None) -> None:
@@ -794,6 +812,8 @@ def write_plots(
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for sample in samples:
         by_night[int(sample["night_id"])].append(sample)
+    picked = pick_best_spots(scores)
+    picked_ids = {int(s["i"]) for s in picked}
     for nid, group in by_night.items():
         written.append(
             plot_altitude(plots_dir / f"night{nid}-alt-planets.png", nid, group, sky, "planets")
@@ -802,6 +822,8 @@ def write_plots(
             plot_altitude(plots_dir / f"night{nid}-alt-stars.png", nid, group, sky, "stars")
         )
         for sample in group:
+            if int(sample["i"]) not in picked_ids:
+                continue
             stem = sample_stem(sample)
             rows = rows_for_sample(sky, sample["i"])
             guide = guides.get(int(sample["i"]))
@@ -819,6 +841,8 @@ def write_plots(
                     guide,
                 )
             )
+    dump_json(out_dir / "spots.json", picked)
+    write_spots_gpx(out_dir / "stargazing-spots.gpx", picked)
     kept = {path.name for path in written}
     if plots_dir.is_dir():
         for old in plots_dir.glob("*.png"):
