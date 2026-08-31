@@ -261,20 +261,14 @@ def html_ul(items: list[str], empty: str) -> list[str]:
 def html_src_figure(
     src: str, alt: str, caption: str = "", loading: str = "lazy", css: str = ""
 ) -> list[str]:
-    name = Path(src).name
     tag = f'<figure class="{esc(css)}">' if css else "<figure>"
     lines = [
         tag,
         f'  <img src="{esc(src)}" alt="{esc(alt)}" loading="{loading}" />',
-        "  <figcaption>",
     ]
     if caption:
-        lines.append(f"    <span>{esc(caption)}</span>")
-    lines += [
-        f'    <a href="{esc(src)}" download="{esc(name)}">Download chart</a>',
-        "  </figcaption>",
-        "</figure>",
-    ]
+        lines.append(f"  <figcaption>{esc(caption)}</figcaption>")
+    lines.append("</figure>")
     return lines
 
 
@@ -285,9 +279,38 @@ def html_figure(stem: str, plots: dict[str, str] | None, alt: str, caption: str 
     return html_src_figure(plots[stem], alt, caption=caption, loading=loading)
 
 
-def iau_plot_gallery(site_dir: Path) -> dict[int, list[tuple[str, str]]]:
+IauFiles = list[tuple[str, str]]
+IauConstellation = tuple[str, IauFiles]
+IAU_PANEL_LABELS = (("map", "IAU chart"), ("az", "Azimuth"), ("alt", "Altitude"))
+
+
+def group_iau_pngs(folder: Path) -> list[IauConstellation]:
+    by_base: dict[str, dict[str, Path]] = defaultdict(dict)
+    for png in sorted(folder.glob("*.png")):
+        stem = png.stem
+        kind = "map"
+        base = stem
+        if stem.endswith("-az"):
+            kind, base = "az", stem[: -len("-az")]
+        elif stem.endswith("-alt"):
+            kind, base = "alt", stem[: -len("-alt")]
+        by_base[base][kind] = png
+    items: list[IauConstellation] = []
+    for base in sorted(by_base):
+        files: IauFiles = []
+        for kind, label in IAU_PANEL_LABELS:
+            png = by_base[base].get(kind)
+            if png is None:
+                continue
+            files.append((label, f"plots/constellations/{folder.name}/{png.name}"))
+        if files:
+            items.append((base.replace("_", " "), files))
+    return items
+
+
+def iau_plot_gallery(site_dir: Path) -> dict[int, list[IauConstellation]]:
     root = site_dir / "plots" / "constellations"
-    out: dict[int, list[tuple[str, str]]] = {}
+    out: dict[int, list[IauConstellation]] = {}
     if not root.is_dir():
         return out
     for folder in sorted(root.glob("night*")):
@@ -295,10 +318,7 @@ def iau_plot_gallery(site_dir: Path) -> dict[int, list[tuple[str, str]]]:
             nid = int(folder.name.removeprefix("night"))
         except ValueError:
             continue
-        items = [
-            (p.stem.replace("_", " "), f"plots/constellations/{folder.name}/{p.name}")
-            for p in sorted(folder.glob("*.png"))
-        ]
+        items = group_iau_pngs(folder)
         if items:
             out[nid] = items
     return out
@@ -329,7 +349,8 @@ def html_table(headers: list[str], rows: list[list[str]]) -> list[str]:
     lines += ["  </tr></thead>", "  <tbody>"]
     for row in rows:
         lines.append("    <tr>")
-        lines.extend(f"      <td>{esc(cell)}</td>" for cell in row)
+        for header, cell in zip(headers, row, strict=False):
+            lines.append(f'      <td data-label="{esc(header)}">{esc(cell)}</td>')
         lines.append("    </tr>")
     lines += ["  </tbody>", "</table></div>"]
     return lines
@@ -438,10 +459,10 @@ def visible_iau_names(ordered: list[dict[str, Any]], sky: list[dict[str, Any]]) 
 
 
 def filter_iau_items(
-    items: list[tuple[str, str]], visible_names: set[str]
-) -> list[tuple[str, str]]:
+    items: list[IauConstellation], visible_names: set[str]
+) -> list[IauConstellation]:
     ids = {constellation_id(n) for n in visible_names}
-    return [(title, src) for title, src in items if constellation_id(title) in ids]
+    return [(title, files) for title, files in items if constellation_id(title) in ids]
 
 
 def sample_disc_figures(sample: dict[str, Any], plots: dict[str, str] | None) -> list[str]:
@@ -597,7 +618,7 @@ class NightView:
     iau_href: str | None
     stop_hrefs: dict[int, str]
     iau_ids: set[str]
-    iau_items: list[tuple[str, str]]
+    iau_items: list[IauConstellation]
 
 
 def prepare_night_views(
@@ -605,7 +626,7 @@ def prepare_night_views(
     samples: list[dict[str, Any]],
     sky: list[dict[str, Any]],
     spots: list[dict[str, Any]] | None,
-    iau_plots: dict[int, list[tuple[str, str]]] | None,
+    iau_plots: dict[int, list[IauConstellation]] | None,
 ) -> list[NightView]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -1036,9 +1057,13 @@ def build_iau(
             f"<p class='jump'>Up: {join_linked(sorted(up), nv.iau_href, nv.iau_ids)}.</p>"
         )
     others = other_nights(views, nv.nid)
-    for plate_title, src in nv.iau_items:
+    for plate_title, files in nv.iau_items:
         cid = constellation_id(plate_title)
-        inner = html_src_figure(src, plate_title, css="wide")
+        inner: list[str] = []
+        for caption, src in files:
+            inner.extend(
+                html_src_figure(src, f"{plate_title} · {caption}", caption=caption)
+            )
         here = [s for s, names in stop_names if name_in(plate_title, names)]
         if here:
             links = ", ".join(
@@ -1084,7 +1109,7 @@ def build_pages(
     samples: list[dict[str, Any]],
     sky: list[dict[str, Any]],
     plots: dict[str, str] | None = None,
-    iau_plots: dict[int, list[tuple[str, str]]] | None = None,
+    iau_plots: dict[int, list[IauConstellation]] | None = None,
     spots: list[dict[str, Any]] | None = None,
     spots_gpx: bool = False,
 ) -> dict[str, str]:

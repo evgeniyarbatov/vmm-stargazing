@@ -14,13 +14,33 @@
 html {
   background: var(--paper);
   color: var(--ink);
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  width: 100%;
   max-width: 44rem;
   margin: 0 auto;
   padding: 2.75rem 1.25rem 5rem;
   font: 1.05rem/1.55 "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+}
+
+header,
+main,
+footer {
+  max-width: 100%;
+  min-width: 0;
+}
+
+p:not(.kicker) {
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
 }
 
 header {
@@ -36,6 +56,9 @@ header {
   text-transform: uppercase;
   color: var(--muted);
   margin: 0 0 0.85rem;
+  max-width: 100%;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 h1,
@@ -140,6 +163,7 @@ nav.crumbs {
   font-size: 0.82rem;
   color: var(--muted);
   margin: 0 0 0.85rem;
+  overflow-wrap: anywhere;
 }
 
 nav.crumbs .sep {
@@ -201,7 +225,6 @@ a {
 nav.toc a,
 nav.crumbs a,
 nav.pager a,
-figcaption a,
 footer a {
   color: var(--gold);
   text-decoration-thickness: 1px;
@@ -229,31 +252,30 @@ details.iau-item[open] {
 
 figure {
   margin: 1.4rem 0 1.8rem;
+  max-width: 100%;
 }
 
 figure img {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   background: #fff;
 }
 
 figcaption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: baseline;
   margin-top: 0.45rem;
 }
 
 .table-wrap {
-  overflow-x: auto;
+  overflow: visible;
   margin: 0.75rem 0 1.2rem;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   font-family: "Avenir Next", "Segoe UI", system-ui, sans-serif;
   font-size: 0.88rem;
 }
@@ -261,9 +283,10 @@ table {
 th,
 td {
   text-align: left;
-  padding: 0.35rem 0.6rem 0.35rem 0;
+  padding: 0.35rem 0.45rem 0.35rem 0;
   border-bottom: 1px solid var(--rule);
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 th {
@@ -278,6 +301,7 @@ ul {
 
 li {
   margin: 0.15rem 0;
+  overflow-wrap: break-word;
 }
 
 details {
@@ -344,13 +368,72 @@ footer p {
   margin: 0.4rem 0;
 }
 
-footer a + a {
-  margin-left: 1.1rem;
+footer .site-nav,
+footer p:last-of-type {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1.1rem;
+  row-gap: 0.35rem;
 }
 
-@media (max-width: 640px) {
-  figcaption {
-    flex-direction: column;
-    gap: 0.25rem;
+@media (max-width: 720px) {
+  body {
+    padding: 1.5rem 1rem 3.5rem;
+  }
+
+  .kicker {
+    letter-spacing: 0.08em;
+  }
+
+  figure,
+  figure.wide {
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: calc(100vw - 2rem);
+  }
+
+  .table-wrap table,
+  .table-wrap thead,
+  .table-wrap tbody,
+  .table-wrap th,
+  .table-wrap td,
+  .table-wrap tr {
+    display: block;
+    width: 100%;
+  }
+
+  .table-wrap thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .table-wrap tbody tr {
+    margin: 0 0 1rem;
+    padding: 0 0 0.55rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .table-wrap td {
+    display: grid;
+    grid-template-columns: minmax(7rem, 38%) 1fr;
+    gap: 0.35rem 0.75rem;
+    border-bottom: 0;
+    padding: 0.22rem 0;
+  }
+
+  .table-wrap td::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-weight: 500;
   }
 }
+
+

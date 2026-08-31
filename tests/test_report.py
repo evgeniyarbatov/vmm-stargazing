@@ -126,6 +126,8 @@ class TestReport(unittest.TestCase):
         self.assertIn("data.json", course)
         self.assertIn('download="vmm-stargazing.json"', course)
         self.assertIn('href="night-1.html"', course)
+        self.assertIn('data-label="Night"', course)
+        self.assertIn('data-label="Astro dusk"', course)
 
         night = pages["night-1.html"]
         self.assertIn("Night 1", night)
@@ -193,16 +195,17 @@ class TestReport(unittest.TestCase):
         course = pages["course.html"]
         self.assertIn("plots/course.png", course)
         self.assertIn("plots/spots.png", course)
-        self.assertIn('download="course.png"', course)
-        self.assertIn('download="spots.png"', course)
+        self.assertNotIn("Download chart", course)
 
         stop = pages["night-1-km37.html"]
         self.assertIn("plots/night1-s0.png", stop)
         self.assertIn("plots/night1-s0-ahead.png", stop)
+        self.assertNotIn("Download chart", stop)
 
         sky_page = pages["night-1-sky.html"]
         self.assertIn("plots/night1-alt-planets.png", sky_page)
         self.assertIn("plots/night1-alt-stars.png", sky_page)
+        self.assertNotIn("Download chart", sky_page)
         self.assertNotIn("night1-steer", sky_page)
         self.assertNotIn("night1-alt.png", sky_page)
 
@@ -264,8 +267,18 @@ class TestReport(unittest.TestCase):
             sky,
             iau_plots={
                 1: [
-                    ("Andromeda", "plots/constellations/night1/Andromeda.png"),
-                    ("Ara", "plots/constellations/night1/Ara.png"),
+                    (
+                        "Andromeda",
+                        [
+                            ("IAU chart", "plots/constellations/night1/Andromeda.png"),
+                            ("Azimuth", "plots/constellations/night1/Andromeda-az.png"),
+                            ("Altitude", "plots/constellations/night1/Andromeda-alt.png"),
+                        ],
+                    ),
+                    (
+                        "Ara",
+                        [("IAU chart", "plots/constellations/night1/Ara.png")],
+                    ),
                 ],
             },
         )
@@ -273,7 +286,11 @@ class TestReport(unittest.TestCase):
         iau = pages["night-1-iau.html"]
         self.assertIn("constellation this night", iau)
         self.assertIn("plots/constellations/night1/Andromeda.png", iau)
-        self.assertIn('download="Andromeda.png"', iau)
+        self.assertIn("plots/constellations/night1/Andromeda-az.png", iau)
+        self.assertIn("plots/constellations/night1/Andromeda-alt.png", iau)
+        self.assertIn("Azimuth", iau)
+        self.assertIn("Altitude", iau)
+        self.assertNotIn("Download chart", iau)
         self.assertIn("<summary>Andromeda</summary>", iau)
         self.assertIn('id="andromeda"', iau)
         self.assertIn("night-1-km37.html", iau)
@@ -322,8 +339,8 @@ class TestReport(unittest.TestCase):
             samples,
             sky,
             iau_plots={
-                1: [("Lyra", "plots/constellations/night1/Lyra.png")],
-                2: [("Lyra", "plots/constellations/night2/Lyra.png")],
+                1: [("Lyra", [("IAU chart", "plots/constellations/night1/Lyra.png")])],
+                2: [("Lyra", [("IAU chart", "plots/constellations/night2/Lyra.png")])],
             },
         )
         night1 = pages["night-1.html"]
