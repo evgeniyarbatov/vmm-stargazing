@@ -48,7 +48,7 @@ docs/                     GitHub Pages (committed)
 
 ## Time model
 
-GPX timestamps from mapping tools are ignored. Along-track time is piecewise-linear between published checkpoint cutoffs in `checkpoints.csv` (clock times, dates inferred from start). Official checkpoint kilometres are scaled onto the GPX length. Night windows are true night (Sun altitude < −18°) at the course centroid. Samples exist only inside those windows, every `sampling.distance_m`, capped per night.
+GPX timestamps from mapping tools are ignored. Along-track time uses the optimistic / realistic / conservative pace model (climb, descent, fatigue that accrues with absolute km, plus stoppage), calibrated on a VMM 100 K. Maps and samples use the realistic scenario. Night windows are true night (Sun altitude < −18°) at the course centroid. Samples exist only inside those windows, every `sampling.distance_m`, capped per night.
 
 Planet alt/az barely change across this course. Terrain horizon does.
 

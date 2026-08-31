@@ -12,6 +12,7 @@ from config import REPO_ROOT, data_dir, load_config, race_window
 from dem import sample_elev_xy
 from ephem import night_windows, transition_events, twilight_intervals
 from horizon import load_dem_array
+from pace import load_anchor, load_scenarios, per_km_buckets, scenario_knots
 from utils import LOOKAHEAD_M, cumulative_m, dump_json, heading_at, interp_at
 
 from gpx import read_track
@@ -175,24 +176,32 @@ def enrich_nights(
     nights: list[dict[str, Any]],
     start: datetime,
     knots: PaceKnots,
+    scenario_knots_map: dict[str, PaceKnots] | None = None,
 ) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for night in nights:
         d0 = dist_at_time(knots, night["start"])
         d1 = dist_at_time(knots, night["end"])
-        out.append(
-            {
-                "night_id": night["night_id"],
-                "start": night["start"].isoformat(),
-                "end": night["end"].isoformat(),
-                "label": night["label"],
-                "elapsed0_h": (night["start"] - start).total_seconds() / 3600.0,
-                "elapsed1_h": (night["end"] - start).total_seconds() / 3600.0,
-                "dist0_km": d0 / 1000.0,
-                "dist1_km": d1 / 1000.0,
-                "duration_h": (night["end"] - night["start"]).total_seconds() / 3600.0,
+        row: dict[str, Any] = {
+            "night_id": night["night_id"],
+            "start": night["start"].isoformat(),
+            "end": night["end"].isoformat(),
+            "label": night["label"],
+            "elapsed0_h": (night["start"] - start).total_seconds() / 3600.0,
+            "elapsed1_h": (night["end"] - start).total_seconds() / 3600.0,
+            "dist0_km": d0 / 1000.0,
+            "dist1_km": d1 / 1000.0,
+            "duration_h": (night["end"] - night["start"]).total_seconds() / 3600.0,
+        }
+        if scenario_knots_map:
+            row["scenarios"] = {
+                name: {
+                    "dist0_km": dist_at_time(kn, night["start"]) / 1000.0,
+                    "dist1_km": dist_at_time(kn, night["end"]) / 1000.0,
+                }
+                for name, kn in scenario_knots_map.items()
             }
-        )
+        out.append(row)
     return out
 
 
@@ -245,9 +254,37 @@ def main() -> None:
     )
     nights = night_windows(intervals)
     events = transition_events(intervals)
-    cp_rel = cfg.get("checkpoints")
-    if cp_rel:
-        cp_path = Path(str(cp_rel))
+    scenario_knots_map: dict[str, PaceKnots] | None = None
+    pace_finishes_h: dict[str, float] = {}
+    pace_scenario = "realistic"
+    if cfg.get("pace") and "base_pace" in (cfg.get("pace") or {}):
+        if dem_array is not None and dem_transform is not None:
+            elev = np.array(
+                [
+                    sample_elev_xy(dem_array, dem_transform, float(lon), float(lat), None)
+                    for lon, lat in zip(lons, lats, strict=True)
+                ],
+                dtype=float,
+            )
+            missing = ~np.isfinite(elev)
+            if np.any(missing):
+                elev[missing] = eles[missing]
+        else:
+            elev = eles
+        buckets = per_km_buckets(cumulative_m(lons, lats), elev)
+        anchor = load_anchor(cfg)
+        scenario_knots_map = {}
+        for name, knobs in load_scenarios(cfg).items():
+            kn, finish_h = scenario_knots(start, buckets, anchor, knobs)
+            scenario_knots_map[name] = kn
+            pace_finishes_h[name] = finish_h
+        pace_scenario = str((cfg.get("pace") or {}).get("scenario") or "realistic")
+        if pace_scenario not in scenario_knots_map:
+            pace_scenario = "realistic"
+        knots = scenario_knots_map[pace_scenario]
+        pace_model = "scenarios"
+    elif cfg.get("checkpoints"):
+        cp_path = Path(str(cfg["checkpoints"]))
         if not cp_path.is_absolute():
             cp_path = REPO_ROOT / cp_path
         knots = load_pace_knots(cp_path, start, total_m)
@@ -269,15 +306,18 @@ def main() -> None:
         fallback_elev,
         pace_knots=knots,
     )
+    finish_h = pace_finishes_h.get(pace_scenario) or (cutoff - start).total_seconds() / 3600.0
     payload = {
         "timezone": cfg.get("timezone"),
         "start": start.isoformat(),
         "cutoff": cutoff.isoformat(),
         "length_m": total_m,
-        "pace_kmh": (total_m / 1000.0) / ((cutoff - start).total_seconds() / 3600.0),
+        "pace_kmh": (total_m / 1000.0) / finish_h if finish_h else None,
         "pace_model": pace_model,
+        "pace_scenario": pace_scenario,
+        "pace_finishes_h": pace_finishes_h,
         "observer": observer,
-        "nights": enrich_nights(nights, start, knots),
+        "nights": enrich_nights(nights, start, knots, scenario_knots_map),
         "events": [
             {
                 **e,

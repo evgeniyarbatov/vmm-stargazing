@@ -25,6 +25,6 @@ See [usage.md](usage.md) for knobs and [architecture.md](architecture.md) for ho
 - Approximate finish cutoff: Sunday 20 September 2026 ~09:00 (49 h time limit).
 - Location: Sa Pa / Hoàng Liên Sơn, ~22.34° N, 103.84° E.
 
-Race parameters live in `config.yaml`. The course GPX lives in-repo (`gpx/`). Checkpoint cutoffs live in `checkpoints.csv`. DEM caches and ephemeris stay out of git.
+Race parameters live in `config.yaml`. The course GPX lives in-repo (`gpx/`). Predicted pace (optimistic / realistic / conservative) lives under `pace:` in that config. DEM caches and ephemeris stay out of git.
 
-Along-track times follow those checkpoint cutoffs, not even pace to the finish. Faster running shifts night locations earlier on the course; planet positions barely change across this bbox.
+Along-track times follow the realistic predicted pace. Faster running shifts night locations earlier on the course; planet positions barely change across this bbox.

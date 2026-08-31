@@ -91,6 +91,7 @@ class TestReport(unittest.TestCase):
         self.assertIn("Night 1", page)
         self.assertIn("Look up.", page)
         self.assertIn("Contents", page)
+        self.assertIn("predicted pace", page.lower())
         self.assertIn('href="#night-1"', page)
         self.assertIn("<details", page)
         self.assertIn("Stops along the GPX", page)

@@ -185,10 +185,13 @@ def html_ul(items: list[str], empty: str) -> list[str]:
     return ["<ul>", *[f"  {item}" for item in items], "</ul>"]
 
 
-def html_src_figure(src: str, alt: str, caption: str = "", loading: str = "lazy") -> list[str]:
+def html_src_figure(
+    src: str, alt: str, caption: str = "", loading: str = "lazy", css: str = ""
+) -> list[str]:
     name = Path(src).name
+    tag = f'<figure class="{esc(css)}">' if css else "<figure>"
     lines = [
-        "<figure>",
+        tag,
         f'  <img src="{esc(src)}" alt="{esc(alt)}" loading="{loading}" />',
         "  <figcaption>",
     ]
@@ -290,7 +293,15 @@ def build_html(
     tz = nights.get("timezone") or "local"
     pace_note = f" ({pace:.2f} km/h)" if pace else ""
     pace_model = nights.get("pace_model") or "even"
-    if pace_model == "checkpoints":
+    if pace_model == "scenarios":
+        scenario = nights.get("pace_scenario") or "realistic"
+        pace_line = (
+            f"Maps use the {scenario} predicted pace "
+            "(optimistic / realistic / conservative from a calibrated 100 K model). "
+            "Faster running puts you further along the course at the same clock "
+            "time; planet positions barely change across the course, terrain horizon does."
+        )
+    elif pace_model == "checkpoints":
         pace_line = (
             "Positions follow the published checkpoint cutoffs. "
             "Faster running puts you further along the course at the same clock "
@@ -353,25 +364,43 @@ def build_html(
     lines += [
         '    <section id="map">',
         "      <h2>Where night falls</h2>",
-        "      <p class='lede'>Two nights, a ridgeline, cutoff pace. "
+        "      <p class='lede'>Two nights, a ridgeline, predicted pace. "
         "Open a night when a stop or a name catches you.</p>",
     ]
-    lines.extend(
-        html_table(
-            ["Night", "Astro dusk", "Astro dawn", "Length", "Elapsed", "km (cutoff pace)"],
-            [
-                [
-                    str(n["night_id"]),
-                    fmt_time(n["start"]),
-                    fmt_time(n["end"]),
-                    fmt_hours(n["duration_h"]),
-                    f"{fmt_hours(n['elapsed0_h'])}–{fmt_hours(n['elapsed1_h'])}",
-                    f"{n['dist0_km']:.0f}–{n['dist1_km']:.0f}",
-                ]
-                for n in night_list
-            ],
-        )
-    )
+    finishes = nights.get("pace_finishes_h") or {}
+    if finishes:
+        bits = []
+        for name in ("optimistic", "realistic", "conservative"):
+            if name in finishes:
+                bits.append(f"{name} {fmt_hours(float(finishes[name]))}")
+        if bits:
+            lines.append(f"      <p class='meta'>Predicted finish: {esc(', '.join(bits))}.</p>")
+    km_headers = ["Night", "Astro dusk", "Astro dawn", "Length"]
+    if any(n.get("scenarios") for n in night_list):
+        km_headers += ["Optimistic km", "Realistic km", "Conservative km"]
+    else:
+        km_headers += ["Elapsed", "km"]
+    km_rows = []
+    for n in night_list:
+        row = [
+            str(n["night_id"]),
+            fmt_time(n["start"]),
+            fmt_time(n["end"]),
+            fmt_hours(n["duration_h"]),
+        ]
+        sc = n.get("scenarios") or {}
+        if sc:
+            for name in ("optimistic", "realistic", "conservative"):
+                block = sc.get(name) or {}
+                if block:
+                    row.append(f"{block['dist0_km']:.0f}–{block['dist1_km']:.0f}")
+                else:
+                    row.append("—")
+        else:
+            row.append(f"{fmt_hours(n['elapsed0_h'])}–{fmt_hours(n['elapsed1_h'])}")
+            row.append(f"{n['dist0_km']:.0f}–{n['dist1_km']:.0f}")
+        km_rows.append(row)
+    lines.extend(html_table(km_headers, km_rows))
     wanted = {
         "sunset",
         "civil_dusk",
@@ -410,10 +439,10 @@ def build_html(
             f"      <h2>Night {nid}</h2>",
             f"      <p>{esc(fmt_time(n['start']))} → {esc(fmt_time(n['end']))} "
             f"(elapsed {esc(fmt_hours(n['elapsed0_h']))}–{esc(fmt_hours(n['elapsed1_h']))}, "
-            f"km {n['dist0_km']:.0f}–{n['dist1_km']:.0f} at cutoff pace).</p>",
+            f"km {n['dist0_km']:.0f}–{n['dist1_km']:.0f} at predicted pace).</p>",
         ]
         if not group:
-            lines.append("      <p>No along-track samples in this window at cutoff pace.</p>")
+            lines.append("      <p>No along-track samples in this window at predicted pace.</p>")
             lines.append("    </section>")
             continue
         mid = min(group, key=midnightish)
@@ -486,7 +515,9 @@ def build_html(
                 "astronomical dusk to dawn. Open a name.</p>"
             ]
             for title, src in iau:
-                iau_body.extend(html_details(title, html_src_figure(src, title), css="iau-item"))
+                iau_body.extend(
+                    html_details(title, html_src_figure(src, title, css="wide"), css="iau-item")
+                )
             lines.extend(
                 html_details(
                     f"{len(iau)} IAU constellations this night",

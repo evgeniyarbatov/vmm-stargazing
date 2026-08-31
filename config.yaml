@@ -13,6 +13,28 @@ race:
 gpx: "gpx/vmm-100-miles-2026.gpx"
 checkpoints: "checkpoints.csv"
 
+pace:
+  scenario: realistic
+  max_climb_pace: 40.0
+  base_pace: 8.01
+  ele_penalty: 0.0322
+  descent_benefit: 0.0113
+  end_fatigue: 1.538
+  calib_distance_km: 108.6
+  scenarios:
+    optimistic:
+      terrain: 0.97
+      fatigue_scale: 0.90
+      extra_stoppage_h: 1.0
+    realistic:
+      terrain: 1.03
+      fatigue_scale: 1.00
+      extra_stoppage_h: 2.5
+    conservative:
+      terrain: 1.10
+      fatigue_scale: 1.15
+      extra_stoppage_h: 4.0
+
 # Timing (local time, Asia/Ho_Chi_Minh = UTC+7)
 timezone: "Asia/Ho_Chi_Minh"
 start_time: "2026-09-18T08:00:00+07:00"

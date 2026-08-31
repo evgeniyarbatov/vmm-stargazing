@@ -11,7 +11,7 @@
     <p class="kicker">Sa Pa, Lào Cai, Vietnam · VMM 100 Miles 2026</p>
     <h1>Look up.</h1>
     <p class='lede'>Two nights on the Hoàng Liên Sơn. If you stop, this is what is overhead — planets, a turning sky, and a few ridges worth remembering.</p>
-    <p class='meta'>Times are Asia/Ho_Chi_Minh. Positions follow the published checkpoint cutoffs. Faster running puts you further along the course at the same clock time; planet positions barely change across the course, terrain horizon does.</p>
+    <p class='meta'>Times are Asia/Ho_Chi_Minh. Maps use the realistic predicted pace (optimistic / realistic / conservative from a calibrated 100 K model). Faster running puts you further along the course at the same clock time; planet positions barely change across the course, terrain horizon does.</p>
     <p class='meta'>Copernicus GLO-30 is a ~30 m DSM: major landforms only, not the trail surface.</p>
   </header>
   <main>
@@ -39,15 +39,17 @@
     </nav>
     <section id="map">
       <h2>Where night falls</h2>
-      <p class='lede'>Two nights, a ridgeline, cutoff pace. Open a night when a stop or a name catches you.</p>
+      <p class='lede'>Two nights, a ridgeline, predicted pace. Open a night when a stop or a name catches you.</p>
+      <p class='meta'>Predicted finish: optimistic 32h 06m, realistic 36h 28m, conservative 41h 48m.</p>
 <div class='table-wrap'><table>
   <thead><tr>
     <th>Night</th>
     <th>Astro dusk</th>
     <th>Astro dawn</th>
     <th>Length</th>
-    <th>Elapsed</th>
-    <th>km (cutoff pace)</th>
+    <th>Optimistic km</th>
+    <th>Realistic km</th>
+    <th>Conservative km</th>
   </tr></thead>
   <tbody>
     <tr>
@@ -55,16 +57,18 @@
       <td>Fri 18 Sep 19:19</td>
       <td>Sat 19 Sep 04:37</td>
       <td>9h 18m</td>
-      <td>11h 20m–20h 37m</td>
-      <td>36–66</td>
+      <td>67–109</td>
+      <td>60–99</td>
+      <td>53–89</td>
     </tr>
     <tr>
       <td>2</td>
       <td>Sat 19 Sep 19:18</td>
       <td>Sun 20 Sep 04:37</td>
       <td>9h 19m</td>
-      <td>35h 19m–44h 38m</td>
-      <td>116–144</td>
+      <td>157–157</td>
+      <td>152–157</td>
+      <td>136–157</td>
     </tr>
   </tbody>
 </table></div>
@@ -182,16 +186,16 @@
     </section>
     <section id="night-1">
       <h2>Night 1</h2>
-      <p>Fri 18 Sep 19:19 → Sat 19 Sep 04:37 (elapsed 11h 20m–20h 37m, km 36–66 at cutoff pace).</p>
-      <p class='lede'>Moon first quarter, 49% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Andromeda, Aries, Pegasus.</p>
+      <p>Fri 18 Sep 19:19 → Sat 19 Sep 04:37 (elapsed 11h 20m–20h 37m, km 60–99 at predicted pace).</p>
+      <p class='lede'>Moon first quarter, 49% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Andromeda, Pegasus.</p>
 <figure>
-  <img src="plots/night1-s6.png" alt="Sat 19 Sep 00:16 · elapsed 16h 16m · km 52.0 · 937 m" loading="lazy" />
+  <img src="plots/night1-s6.png" alt="Fri 18 Sep 23:51 · elapsed 15h 51m · km 80.0 · 551 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s6.png" download="night1-s6.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s6-ahead.png" alt="Sat 19 Sep 00:16 · elapsed 16h 16m · km 52.0 · 937 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s6-ahead.png" alt="Fri 18 Sep 23:51 · elapsed 15h 51m · km 80.0 · 551 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s6-ahead.png" download="night1-s6-ahead.png">Download chart</a>
@@ -215,15 +219,15 @@
 <details id="night-1-stops" class="fold">
   <summary>12 stops along the GPX</summary>
 <details class="stop">
-  <summary>Fri 18 Sep 19:19 · elapsed 11h 20m · km 36.1 · 969 m</summary>
+  <summary>Fri 18 Sep 19:19 · elapsed 11h 20m · km 59.6 · 781 m</summary>
 <figure>
-  <img src="plots/night1-s0.png" alt="Fri 18 Sep 19:19 · elapsed 11h 20m · km 36.1 · 969 m" loading="lazy" />
+  <img src="plots/night1-s0.png" alt="Fri 18 Sep 19:19 · elapsed 11h 20m · km 59.6 · 781 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s0.png" download="night1-s0.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s0-ahead.png" alt="Fri 18 Sep 19:19 · elapsed 11h 20m · km 36.1 · 969 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s0-ahead.png" alt="Fri 18 Sep 19:19 · elapsed 11h 20m · km 59.6 · 781 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s0-ahead.png" download="night1-s0-ahead.png">Download chart</a>
@@ -234,108 +238,109 @@
 <h4>Planets</h4>
 <ul>
   <li><strong>Venus</strong>: 5° W (248°), mag -4.8 — behind terrain</li>
-  <li><strong>Saturn</strong>: 4° E (89°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 4° E (89°), mag 0.4 — behind terrain</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aquila, Cygnus, Lyra, Ophiuchus</li>
   <li>Up: Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Pegasus, Sagittarius, Scorpius, Serpens</li>
-  <li>Rising: Andromeda, Grus, Piscis Austrinus, Ursa Minor</li>
-  <li>Setting: Ursa Major</li>
+  <li>Rising: Andromeda, Grus, Pavo, Piscis Austrinus, Ursa Minor</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
   <li>Vega (Lyra): 72° N (342°), mag 0.0</li>
   <li>Altair (Aquila): 73° SE (138°), mag 0.8</li>
+  <li>Antares (Scorpius): 29° SW (219°), mag 1.0</li>
   <li>Fomalhaut (Piscis Austrinus): 14° SE (130°), mag 1.2</li>
   <li>Deneb (Cygnus): 60° NE (35°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Fri 18 Sep 19:53 · elapsed 11h 53m · km 38.0 · 907 m</summary>
+  <summary>Fri 18 Sep 19:58 · elapsed 11h 58m · km 62.0 · 1027 m</summary>
 <figure>
-  <img src="plots/night1-s1.png" alt="Fri 18 Sep 19:53 · elapsed 11h 53m · km 38.0 · 907 m" loading="lazy" />
+  <img src="plots/night1-s1.png" alt="Fri 18 Sep 19:58 · elapsed 11h 58m · km 62.0 · 1027 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s1.png" download="night1-s1.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s1-ahead.png" alt="Fri 18 Sep 19:53 · elapsed 11h 53m · km 38.0 · 907 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s1-ahead.png" alt="Fri 18 Sep 19:58 · elapsed 11h 58m · km 62.0 · 1027 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s1-ahead.png" download="night1-s1-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 47% lit, 29° SW (215°).</p>
-<p>Milky Way centre 32° SW (209°).</p>
+<p>Moon first quarter, 47% lit, 29° SW (216°).</p>
+<p>Milky Way centre 31° SW (210°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 12° E (92°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 13° E (93°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aquila, Cygnus, Lyra</li>
   <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Ophiuchus, Pegasus, Sagittarius, Serpens</li>
-  <li>Rising: Grus, Pavo, Piscis Austrinus</li>
+  <li>Rising: Cetus, Grus, Pavo, Piscis Austrinus</li>
   <li>Setting: Scorpius</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 69° NW (325°), mag 0.0</li>
-  <li>Altair (Aquila): 76° S (166°), mag 0.8</li>
-  <li>Antares (Scorpius): 23° SW (225°), mag 1.0</li>
-  <li>Fomalhaut (Piscis Austrinus): 19° SE (135°), mag 1.2</li>
-  <li>Deneb (Cygnus): 64° NE (25°), mag 1.2</li>
+  <li>Vega (Lyra): 68° NW (323°), mag 0.0</li>
+  <li>Altair (Aquila): 77° S (172°), mag 0.8</li>
+  <li>Antares (Scorpius): 22° SW (226°), mag 1.0</li>
+  <li>Fomalhaut (Piscis Austrinus): 20° SE (136°), mag 1.2</li>
+  <li>Deneb (Cygnus): 64° NE (24°), mag 1.2</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Fri 18 Sep 21:08 · elapsed 13h 08m · km 42.0 · 957 m</summary>
+  <summary>Fri 18 Sep 20:36 · elapsed 12h 36m · km 66.0 · 412 m</summary>
 <figure>
-  <img src="plots/night1-s2.png" alt="Fri 18 Sep 21:08 · elapsed 13h 08m · km 42.0 · 957 m" loading="lazy" />
+  <img src="plots/night1-s2.png" alt="Fri 18 Sep 20:36 · elapsed 12h 36m · km 66.0 · 412 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s2.png" download="night1-s2.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s2-ahead.png" alt="Fri 18 Sep 21:08 · elapsed 13h 08m · km 42.0 · 957 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s2-ahead.png" alt="Fri 18 Sep 20:36 · elapsed 12h 36m · km 66.0 · 412 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s2-ahead.png" download="night1-s2-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 48% lit, 18° SW (227°).</p>
-<p>Milky Way centre 22° SW (223°).</p>
+<p>Moon first quarter, 47% lit, 23° SW (222°).</p>
+<p>Milky Way centre 27° SW (218°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 29° E (100°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 22° E (97°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Aquarius, Aquila, Cygnus, Pegasus</li>
-  <li>Up: Andromeda, Capricornus, Cassiopeia, Cepheus, Draco, Lyra, Ophiuchus, Piscis Austrinus, Sagittarius</li>
-  <li>Rising: Aries, Cetus, Grus, Perseus, Phoenix, Pisces, Ursa Minor</li>
-  <li>Setting: Pavo, Scorpius</li>
+  <li>Overhead: Aquila, Cygnus, Lyra, Pegasus</li>
+  <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Ophiuchus, Piscis Austrinus, Sagittarius</li>
+  <li>Rising: Aries, Grus, Pavo, Perseus, Ursa Minor</li>
+  <li>Setting: Scorpius, Serpens</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 57° NW (308°), mag 0.0</li>
-  <li>Altair (Aquila): 70° SW (231°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 30° SE (149°), mag 1.2</li>
-  <li>Deneb (Cygnus): 67° N (355°), mag 1.2</li>
+  <li>Vega (Lyra): 62° NW (312°), mag 0.0</li>
+  <li>Altair (Aquila): 75° SW (210°), mag 0.8</li>
+  <li>Antares (Scorpius): 16° SW (232°), mag 1.0</li>
+  <li>Fomalhaut (Piscis Austrinus): 26° SE (142°), mag 1.2</li>
+  <li>Deneb (Cygnus): 67° N (9°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Fri 18 Sep 21:45 · elapsed 13h 46m · km 44.0 · 961 m</summary>
+  <summary>Fri 18 Sep 21:26 · elapsed 13h 27m · km 70.0 · 327 m</summary>
 <figure>
-  <img src="plots/night1-s3.png" alt="Fri 18 Sep 21:45 · elapsed 13h 46m · km 44.0 · 961 m" loading="lazy" />
+  <img src="plots/night1-s3.png" alt="Fri 18 Sep 21:26 · elapsed 13h 27m · km 70.0 · 327 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s3.png" download="night1-s3.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s3-ahead.png" alt="Fri 18 Sep 21:45 · elapsed 13h 46m · km 44.0 · 961 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s3-ahead.png" alt="Fri 18 Sep 21:26 · elapsed 13h 27m · km 70.0 · 327 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s3-ahead.png" download="night1-s3-ahead.png">Download chart</a>
@@ -345,32 +350,33 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 38° E (105°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 34° E (103°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aquarius, Aquila, Cygnus, Pegasus</li>
-  <li>Up: Andromeda, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Draco, Lyra, Ophiuchus, Piscis Austrinus, Sagittarius</li>
-  <li>Rising: Grus, Phoenix, Pisces</li>
+  <li>Up: Andromeda, Capricornus, Cassiopeia, Cepheus, Draco, Lyra, Ophiuchus, Piscis Austrinus, Sagittarius</li>
+  <li>Rising: Cetus, Ursa Minor</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 50° NW (304°), mag 0.0</li>
-  <li>Altair (Aquila): 63° SW (245°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 34° SE (157°), mag 1.2</li>
-  <li>Deneb (Cygnus): 65° N (339°), mag 1.2</li>
+  <li>Vega (Lyra): 53° NW (306°), mag 0.0</li>
+  <li>Altair (Aquila): 66° SW (239°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 32° SE (153°), mag 1.2</li>
+  <li>Deneb (Cygnus): 66° N (347°), mag 1.2</li>
+  <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Fri 18 Sep 22:23 · elapsed 14h 24m · km 46.0 · 821 m</summary>
+  <summary>Fri 18 Sep 22:33 · elapsed 14h 33m · km 74.0 · 712 m</summary>
 <figure>
-  <img src="plots/night1-s4.png" alt="Fri 18 Sep 22:23 · elapsed 14h 24m · km 46.0 · 821 m" loading="lazy" />
+  <img src="plots/night1-s4.png" alt="Fri 18 Sep 22:33 · elapsed 14h 33m · km 74.0 · 712 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s4.png" download="night1-s4.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s4-ahead.png" alt="Fri 18 Sep 22:23 · elapsed 14h 24m · km 46.0 · 821 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s4-ahead.png" alt="Fri 18 Sep 22:33 · elapsed 14h 33m · km 74.0 · 712 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s4-ahead.png" download="night1-s4-ahead.png">Download chart</a>
@@ -380,44 +386,82 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 46° E (111°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 48° SE (113°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Andromeda, Aquarius, Cygnus, Pegasus</li>
-  <li>Up: Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Draco, Lyra, Perseus, Pisces, Piscis Austrinus</li>
-  <li>Rising: Grus, Phoenix, Ursa Minor</li>
-  <li>Setting: Ophiuchus, Sagittarius</li>
+  <li>Overhead: Andromeda, Aquarius, Pegasus</li>
+  <li>Up: Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Draco, Lyra, Perseus, Pisces, Piscis Austrinus</li>
+  <li>Rising: Auriga, Ursa Minor</li>
+  <li>Setting: Ophiuchus</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 42° NW (303°), mag 0.0</li>
-  <li>Altair (Aquila): 54° W (254°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 37° S (167°), mag 1.2</li>
-  <li>Deneb (Cygnus): 61° NW (328°), mag 1.2</li>
+  <li>Vega (Lyra): 40° NW (303°), mag 0.0</li>
+  <li>Capella (Auriga): 6° NE (42°), mag 0.1</li>
+  <li>Altair (Aquila): 52° W (255°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 37° S (169°), mag 1.2</li>
+  <li>Deneb (Cygnus): 60° NW (325°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Fri 18 Sep 23:38 · elapsed 15h 39m · km 50.0 · 962 m</summary>
+  <summary>Fri 18 Sep 23:26 · elapsed 15h 27m · km 78.0 · 633 m</summary>
 <figure>
-  <img src="plots/night1-s5.png" alt="Fri 18 Sep 23:38 · elapsed 15h 39m · km 50.0 · 962 m" loading="lazy" />
+  <img src="plots/night1-s5.png" alt="Fri 18 Sep 23:26 · elapsed 15h 27m · km 78.0 · 633 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s5.png" download="night1-s5.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s5-ahead.png" alt="Fri 18 Sep 23:38 · elapsed 15h 39m · km 50.0 · 962 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s5-ahead.png" alt="Fri 18 Sep 23:26 · elapsed 15h 27m · km 78.0 · 633 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s5-ahead.png" download="night1-s5-ahead.png">Download chart</a>
+  </figcaption>
+</figure>
+<p>Moon first quarter, 48% lit, below the terrain horizon.</p>
+<p>Milky Way centre is below the local horizon.</p>
+<h4>Planets</h4>
+<ul>
+  <li><strong>Saturn</strong>: 59° SE (127°), mag 0.4</li>
+</ul>
+<h4>Constellations</h4>
+<ul>
+  <li>Overhead: Andromeda, Pegasus</li>
+  <li>Up: Aquarius, Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Lyra, Perseus, Pisces, Piscis Austrinus</li>
+  <li>Rising: Ursa Minor</li>
+  <li>Setting: Draco, Ophiuchus</li>
+</ul>
+<h4>Bright stars</h4>
+<ul>
+  <li>Vega (Lyra): 30° NW (303°), mag 0.0</li>
+  <li>Altair (Aquila): 40° W (263°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 38° S (184°), mag 1.2</li>
+  <li>Deneb (Cygnus): 52° NW (316°), mag 1.2</li>
+  <li>Polaris (Ursa Minor): 23° N (1°), mag 2.0</li>
+</ul>
+</details>
+<details class="stop">
+  <summary>Fri 18 Sep 23:51 · elapsed 15h 51m · km 80.0 · 551 m</summary>
+<figure>
+  <img src="plots/night1-s6.png" alt="Fri 18 Sep 23:51 · elapsed 15h 51m · km 80.0 · 551 m" loading="lazy" />
+  <figcaption>
+    <a href="plots/night1-s6.png" download="night1-s6.png">Download chart</a>
+  </figcaption>
+</figure>
+<figure>
+  <img src="plots/night1-s6-ahead.png" alt="Fri 18 Sep 23:51 · elapsed 15h 51m · km 80.0 · 551 m looking along the course" loading="lazy" />
+  <figcaption>
+    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
+    <a href="plots/night1-s6-ahead.png" download="night1-s6-ahead.png">Download chart</a>
   </figcaption>
 </figure>
 <p>Moon first quarter, 49% lit, below the terrain horizon.</p>
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 61° SE (131°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 63° SE (136°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
@@ -428,65 +472,25 @@
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 28° NW (303°), mag 0.0</li>
-  <li>Capella (Auriga): 17° NE (47°), mag 0.1</li>
-  <li>Altair (Aquila): 37° W (264°), mag 0.8</li>
-  <li>Aldebaran (Taurus): 17° E (79°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 38° S (187°), mag 1.2</li>
-  <li>Deneb (Cygnus): 50° NW (315°), mag 1.2</li>
+  <li>Vega (Lyra): 25° NW (304°), mag 0.0</li>
+  <li>Capella (Auriga): 19° NE (47°), mag 0.1</li>
+  <li>Altair (Aquila): 34° W (266°), mag 0.8</li>
+  <li>Aldebaran (Taurus): 20° E (80°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 37° S (191°), mag 1.2</li>
+  <li>Deneb (Cygnus): 48° NW (314°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 23° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 00:16 · elapsed 16h 16m · km 52.0 · 937 m</summary>
+  <summary>Sat 19 Sep 00:56 · elapsed 16h 56m · km 84.0 · 751 m</summary>
 <figure>
-  <img src="plots/night1-s6.png" alt="Sat 19 Sep 00:16 · elapsed 16h 16m · km 52.0 · 937 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night1-s6.png" download="night1-s6.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night1-s6-ahead.png" alt="Sat 19 Sep 00:16 · elapsed 16h 16m · km 52.0 · 937 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night1-s6-ahead.png" download="night1-s6-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 49% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Saturn</strong>: 67° SE (148°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Andromeda, Aries, Pegasus</li>
-  <li>Up: Aquarius, Aquila, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Perseus, Phoenix, Pisces, Piscis Austrinus, Taurus</li>
-  <li>Rising: Eridanus, Orion, Ursa Minor</li>
-  <li>Setting: Draco, Grus, Lyra</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Vega (Lyra): 20° NW (305°), mag 0.0</li>
-  <li>Rigel (Orion): 8° E (102°), mag 0.1</li>
-  <li>Achernar (Eridanus): 8° S (167°), mag 0.5</li>
-  <li>Altair (Aquila): 29° W (268°), mag 0.8</li>
-  <li>Aldebaran (Taurus): 26° E (82°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 36° S (197°), mag 1.2</li>
-  <li>Deneb (Cygnus): 43° NW (312°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sat 19 Sep 01:31 · elapsed 17h 32m · km 56.0 · 581 m</summary>
-<figure>
-  <img src="plots/night1-s7.png" alt="Sat 19 Sep 01:31 · elapsed 17h 32m · km 56.0 · 581 m" loading="lazy" />
+  <img src="plots/night1-s7.png" alt="Sat 19 Sep 00:56 · elapsed 16h 56m · km 84.0 · 751 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s7.png" download="night1-s7.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s7-ahead.png" alt="Sat 19 Sep 01:31 · elapsed 17h 32m · km 56.0 · 581 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s7-ahead.png" alt="Sat 19 Sep 00:56 · elapsed 16h 56m · km 84.0 · 751 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s7-ahead.png" download="night1-s7-ahead.png">Download chart</a>
@@ -496,78 +500,78 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Mars</strong>: 2° NE (67°), mag 1.2 — behind terrain</li>
-  <li><strong>Saturn</strong>: 69° S (200°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 70° S (174°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Andromeda, Aries, Pegasus, Pisces</li>
-  <li>Up: Aquarius, Auriga, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Orion, Perseus, Piscis Austrinus, Taurus</li>
-  <li>Rising: Lepus</li>
-  <li>Setting: Phoenix</li>
+  <li>Up: Aquarius, Auriga, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Perseus, Phoenix, Piscis Austrinus, Taurus</li>
+  <li>Rising: Lepus, Orion, Ursa Minor</li>
+  <li>Setting: Aquila, Grus</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Capella (Auriga): 36° NE (48°), mag 0.1</li>
-  <li>Rigel (Orion): 24° E (111°), mag 0.1</li>
-  <li>Betelgeuse (Orion): 22° E (91°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 43° E (88°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 28° SW (214°), mag 1.2</li>
-  <li>Deneb (Cygnus): 30° NW (311°), mag 1.2</li>
+  <li>Capella (Auriga): 30° NE (49°), mag 0.1</li>
+  <li>Rigel (Orion): 17° E (106°), mag 0.1</li>
+  <li>Betelgeuse (Orion): 13° E (87°), mag 0.4</li>
+  <li>Altair (Aquila): 19° W (272°), mag 0.8</li>
+  <li>Aldebaran (Taurus): 35° E (85°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 33° SW (207°), mag 1.2</li>
+  <li>Deneb (Cygnus): 36° NW (311°), mag 1.2</li>
+  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 02:09 · elapsed 18h 09m · km 58.0 · 598 m</summary>
+  <summary>Sat 19 Sep 01:58 · elapsed 17h 59m · km 88.0 · 960 m</summary>
 <figure>
-  <img src="plots/night1-s8.png" alt="Sat 19 Sep 02:09 · elapsed 18h 09m · km 58.0 · 598 m" loading="lazy" />
+  <img src="plots/night1-s8.png" alt="Sat 19 Sep 01:58 · elapsed 17h 59m · km 88.0 · 960 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s8.png" download="night1-s8.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s8-ahead.png" alt="Sat 19 Sep 02:09 · elapsed 18h 09m · km 58.0 · 598 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s8-ahead.png" alt="Sat 19 Sep 01:58 · elapsed 17h 59m · km 88.0 · 960 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s8-ahead.png" download="night1-s8-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 50% lit, below the terrain horizon.</p>
+<p>Moon first quarter, 49% lit, below the terrain horizon.</p>
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Mars</strong>: 10° E (70°), mag 1.2</li>
-  <li><strong>Saturn</strong>: 65° SW (221°), mag 0.4</li>
+  <li><strong>Mars</strong>: 8° E (69°), mag 1.2 — behind terrain</li>
+  <li><strong>Saturn</strong>: 66° SW (216°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Andromeda, Aries, Cetus, Pegasus, Perseus, Pisces</li>
-  <li>Up: Auriga, Cassiopeia, Cepheus, Orion, Taurus</li>
-  <li>Rising: Columba, Gemini, Lepus, Ursa Minor</li>
-  <li>Setting: Aquarius, Capricornus, Cygnus, Eridanus, Phoenix, Piscis Austrinus</li>
+  <li>Up: Auriga, Cassiopeia, Cepheus, Cygnus, Orion, Taurus</li>
+  <li>Rising: Canis Major, Columba, Lepus</li>
+  <li>Setting: Aquarius, Capricornus, Eridanus, Phoenix, Piscis Austrinus</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Capella (Auriga): 43° NE (47°), mag 0.1</li>
-  <li>Rigel (Orion): 32° SE (116°), mag 0.1</li>
-  <li>Betelgeuse (Orion): 30° E (95°), mag 0.4</li>
-  <li>Achernar (Eridanus): 11° S (182°), mag 0.5</li>
-  <li>Aldebaran (Taurus): 52° E (91°), mag 0.8</li>
-  <li>Pollux (Gemini): 12° NE (65°), mag 1.1</li>
-  <li>Fomalhaut (Piscis Austrinus): 23° SW (221°), mag 1.2</li>
-  <li>Deneb (Cygnus): 24° NW (311°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
+  <li>Sirius (Canis Major): 7° E (111°), mag -1.5</li>
+  <li>Capella (Auriga): 41° NE (48°), mag 0.1</li>
+  <li>Rigel (Orion): 30° SE (115°), mag 0.1</li>
+  <li>Betelgeuse (Orion): 28° E (93°), mag 0.4</li>
+  <li>Achernar (Eridanus): 11° S (181°), mag 0.5</li>
+  <li>Aldebaran (Taurus): 49° E (90°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 25° SW (219°), mag 1.2</li>
+  <li>Deneb (Cygnus): 25° NW (311°), mag 1.2</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 02:46 · elapsed 18h 47m · km 60.0 · 838 m</summary>
+  <summary>Sat 19 Sep 02:55 · elapsed 18h 56m · km 92.0 · 922 m</summary>
 <figure>
-  <img src="plots/night1-s9.png" alt="Sat 19 Sep 02:46 · elapsed 18h 47m · km 60.0 · 838 m" loading="lazy" />
+  <img src="plots/night1-s9.png" alt="Sat 19 Sep 02:55 · elapsed 18h 56m · km 92.0 · 922 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s9.png" download="night1-s9.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s9-ahead.png" alt="Sat 19 Sep 02:46 · elapsed 18h 47m · km 60.0 · 838 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s9-ahead.png" alt="Sat 19 Sep 02:55 · elapsed 18h 56m · km 92.0 · 922 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s9-ahead.png" download="night1-s9-ahead.png">Download chart</a>
@@ -577,38 +581,39 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Mars</strong>: 19° E (73°), mag 1.2</li>
-  <li><strong>Saturn</strong>: 58° SW (235°), mag 0.4</li>
+  <li><strong>Mars</strong>: 21° E (74°), mag 1.2</li>
+  <li><strong>Saturn</strong>: 56° SW (238°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aries, Cetus, Perseus, Pisces, Taurus</li>
-  <li>Up: Andromeda, Auriga, Cassiopeia, Lepus, Orion, Pegasus</li>
-  <li>Rising: Canis Major, Canis Minor, Columba, Gemini, Ursa Minor</li>
-  <li>Setting: Cepheus, Phoenix</li>
+  <li>Up: Andromeda, Auriga, Cassiopeia, Gemini, Lepus, Orion, Pegasus</li>
+  <li>Rising: Canis Major, Canis Minor, Columba, Ursa Minor</li>
+  <li>Setting: Cepheus, Cygnus</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Sirius (Canis Major): 17° SE (117°), mag -1.5</li>
-  <li>Capella (Auriga): 49° NE (44°), mag 0.1</li>
-  <li>Rigel (Orion): 40° SE (123°), mag 0.1</li>
-  <li>Procyon (Canis Minor): 14° E (90°), mag 0.3</li>
-  <li>Betelgeuse (Orion): 39° E (99°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 60° E (96°), mag 0.8</li>
-  <li>Pollux (Gemini): 20° NE (67°), mag 1.1</li>
+  <li>Sirius (Canis Major): 19° SE (118°), mag -1.5</li>
+  <li>Capella (Auriga): 51° NE (43°), mag 0.1</li>
+  <li>Rigel (Orion): 42° SE (125°), mag 0.1</li>
+  <li>Procyon (Canis Minor): 16° E (91°), mag 0.3</li>
+  <li>Betelgeuse (Orion): 41° E (100°), mag 0.4</li>
+  <li>Aldebaran (Taurus): 62° E (97°), mag 0.8</li>
+  <li>Pollux (Gemini): 22° E (68°), mag 1.1</li>
+  <li>Deneb (Cygnus): 16° NW (313°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 04:02 · elapsed 20h 02m · km 64.0 · 653 m</summary>
+  <summary>Sat 19 Sep 03:57 · elapsed 19h 57m · km 96.0 · 1017 m</summary>
 <figure>
-  <img src="plots/night1-s10.png" alt="Sat 19 Sep 04:02 · elapsed 20h 02m · km 64.0 · 653 m" loading="lazy" />
+  <img src="plots/night1-s10.png" alt="Sat 19 Sep 03:57 · elapsed 19h 57m · km 96.0 · 1017 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s10.png" download="night1-s10.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s10-ahead.png" alt="Sat 19 Sep 04:02 · elapsed 20h 02m · km 64.0 · 653 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s10-ahead.png" alt="Sat 19 Sep 03:57 · elapsed 19h 57m · km 96.0 · 1017 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s10-ahead.png" download="night1-s10-ahead.png">Download chart</a>
@@ -618,39 +623,38 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Mars</strong>: 36° E (78°), mag 1.2</li>
-  <li><strong>Jupiter</strong>: 13° E (78°), mag -1.8</li>
-  <li><strong>Saturn</strong>: 42° W (252°), mag 0.4</li>
+  <li><strong>Mars</strong>: 34° E (78°), mag 1.2</li>
+  <li><strong>Jupiter</strong>: 12° E (77°), mag -1.8 — behind terrain</li>
+  <li><strong>Saturn</strong>: 43° W (251°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Aries, Auriga, Cetus, Orion, Perseus, Taurus</li>
-  <li>Up: Andromeda, Canis Major, Canis Minor, Cassiopeia, Columba, Gemini, Lepus, Pegasus, Pisces</li>
-  <li>Rising: Carina</li>
-  <li>Setting: Phoenix</li>
+  <li>Overhead: Aries, Cetus, Orion, Perseus, Taurus</li>
+  <li>Up: Andromeda, Auriga, Canis Major, Canis Minor, Cassiopeia, Columba, Gemini, Lepus, Pegasus, Pisces</li>
+  <li>Setting: Cepheus, Ursa Minor</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Sirius (Canis Major): 32° SE (128°), mag -1.5</li>
-  <li>Canopus (Carina): 8° SE (157°), mag -0.7</li>
-  <li>Capella (Auriga): 60° NE (32°), mag 0.1</li>
-  <li>Rigel (Orion): 53° SE (143°), mag 0.1</li>
-  <li>Procyon (Canis Minor): 32° E (98°), mag 0.3</li>
-  <li>Betelgeuse (Orion): 56° E (111°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 77° SE (115°), mag 0.8</li>
-  <li>Pollux (Gemini): 36° E (71°), mag 1.1</li>
+  <li>Sirius (Canis Major): 31° SE (127°), mag -1.5</li>
+  <li>Capella (Auriga): 59° NE (33°), mag 0.1</li>
+  <li>Rigel (Orion): 52° SE (141°), mag 0.1</li>
+  <li>Procyon (Canis Minor): 30° E (97°), mag 0.3</li>
+  <li>Betelgeuse (Orion): 55° E (110°), mag 0.4</li>
+  <li>Aldebaran (Taurus): 76° E (112°), mag 0.8</li>
+  <li>Pollux (Gemini): 35° E (71°), mag 1.1</li>
+  <li>Polaris (Ursa Minor): 23° N (360°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 04:37 · elapsed 20h 37m · km 65.9 · 416 m</summary>
+  <summary>Sat 19 Sep 04:37 · elapsed 20h 37m · km 98.9 · 983 m</summary>
 <figure>
-  <img src="plots/night1-s11.png" alt="Sat 19 Sep 04:37 · elapsed 20h 37m · km 65.9 · 416 m" loading="lazy" />
+  <img src="plots/night1-s11.png" alt="Sat 19 Sep 04:37 · elapsed 20h 37m · km 98.9 · 983 m" loading="lazy" />
   <figcaption>
     <a href="plots/night1-s11.png" download="night1-s11.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night1-s11-ahead.png" alt="Sat 19 Sep 04:37 · elapsed 20h 37m · km 65.9 · 416 m looking along the course" loading="lazy" />
+  <img src="plots/night1-s11-ahead.png" alt="Sat 19 Sep 04:37 · elapsed 20h 37m · km 98.9 · 983 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night1-s11-ahead.png" download="night1-s11-ahead.png">Download chart</a>
@@ -660,7 +664,7 @@
 <p>Milky Way centre is below the local horizon.</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Mars</strong>: 44° E (80°), mag 1.2</li>
+  <li><strong>Mars</strong>: 43° E (80°), mag 1.2</li>
   <li><strong>Jupiter</strong>: 21° E (80°), mag -1.8</li>
   <li><strong>Saturn</strong>: 34° W (257°), mag 0.4</li>
 </ul>
@@ -668,7 +672,7 @@
 <ul>
   <li>Overhead: Auriga, Cetus, Orion, Perseus, Taurus</li>
   <li>Up: Andromeda, Aries, Canis Major, Canis Minor, Cassiopeia, Columba, Gemini, Lepus, Pegasus, Pisces</li>
-  <li>Rising: Ursa Major</li>
+  <li>Rising: Hydra</li>
   <li>Setting: Ursa Minor</li>
 </ul>
 <h4>Bright stars</h4>
@@ -678,7 +682,7 @@
   <li>Rigel (Orion): 57° SE (156°), mag 0.1</li>
   <li>Procyon (Canis Minor): 40° E (102°), mag 0.3</li>
   <li>Betelgeuse (Orion): 63° SE (120°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 84° SE (152°), mag 0.8</li>
+  <li>Aldebaran (Taurus): 83° SE (151°), mag 0.8</li>
   <li>Pollux (Gemini): 44° E (72°), mag 1.1</li>
   <li>Polaris (Ursa Minor): 23° N (360°), mag 2.0</li>
 </ul>
@@ -689,7 +693,7 @@
 <p class='meta'>Visibility from the course centroid, astronomical dusk to dawn. Open a name.</p>
 <details class="iau-item">
   <summary>Andromeda</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Andromeda.png" alt="Andromeda" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Andromeda.png" download="Andromeda.png">Download chart</a>
@@ -698,7 +702,7 @@
 </details>
 <details class="iau-item">
   <summary>Aquarius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Aquarius.png" alt="Aquarius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Aquarius.png" download="Aquarius.png">Download chart</a>
@@ -707,7 +711,7 @@
 </details>
 <details class="iau-item">
   <summary>Aquila</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Aquila.png" alt="Aquila" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Aquila.png" download="Aquila.png">Download chart</a>
@@ -716,7 +720,7 @@
 </details>
 <details class="iau-item">
   <summary>Ara</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Ara.png" alt="Ara" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Ara.png" download="Ara.png">Download chart</a>
@@ -725,7 +729,7 @@
 </details>
 <details class="iau-item">
   <summary>Aries</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Aries.png" alt="Aries" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Aries.png" download="Aries.png">Download chart</a>
@@ -734,7 +738,7 @@
 </details>
 <details class="iau-item">
   <summary>Auriga</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Auriga.png" alt="Auriga" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Auriga.png" download="Auriga.png">Download chart</a>
@@ -743,7 +747,7 @@
 </details>
 <details class="iau-item">
   <summary>Bootes</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Bootes.png" alt="Bootes" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Bootes.png" download="Bootes.png">Download chart</a>
@@ -752,7 +756,7 @@
 </details>
 <details class="iau-item">
   <summary>Caelum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Caelum.png" alt="Caelum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Caelum.png" download="Caelum.png">Download chart</a>
@@ -761,7 +765,7 @@
 </details>
 <details class="iau-item">
   <summary>Camelopardalis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Camelopardalis.png" alt="Camelopardalis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Camelopardalis.png" download="Camelopardalis.png">Download chart</a>
@@ -770,7 +774,7 @@
 </details>
 <details class="iau-item">
   <summary>Cancer</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Cancer.png" alt="Cancer" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Cancer.png" download="Cancer.png">Download chart</a>
@@ -779,7 +783,7 @@
 </details>
 <details class="iau-item">
   <summary>Canes Venatici</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Canes_Venatici.png" alt="Canes Venatici" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Canes_Venatici.png" download="Canes_Venatici.png">Download chart</a>
@@ -788,7 +792,7 @@
 </details>
 <details class="iau-item">
   <summary>Canis Major</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Canis_Major.png" alt="Canis Major" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Canis_Major.png" download="Canis_Major.png">Download chart</a>
@@ -797,7 +801,7 @@
 </details>
 <details class="iau-item">
   <summary>Canis Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Canis_Minor.png" alt="Canis Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Canis_Minor.png" download="Canis_Minor.png">Download chart</a>
@@ -806,7 +810,7 @@
 </details>
 <details class="iau-item">
   <summary>Capricornus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Capricornus.png" alt="Capricornus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Capricornus.png" download="Capricornus.png">Download chart</a>
@@ -815,7 +819,7 @@
 </details>
 <details class="iau-item">
   <summary>Cassiopeia</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Cassiopeia.png" alt="Cassiopeia" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Cassiopeia.png" download="Cassiopeia.png">Download chart</a>
@@ -824,7 +828,7 @@
 </details>
 <details class="iau-item">
   <summary>Cepheus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Cepheus.png" alt="Cepheus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Cepheus.png" download="Cepheus.png">Download chart</a>
@@ -833,7 +837,7 @@
 </details>
 <details class="iau-item">
   <summary>Cetus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Cetus.png" alt="Cetus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Cetus.png" download="Cetus.png">Download chart</a>
@@ -842,7 +846,7 @@
 </details>
 <details class="iau-item">
   <summary>Columba</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Columba.png" alt="Columba" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Columba.png" download="Columba.png">Download chart</a>
@@ -851,7 +855,7 @@
 </details>
 <details class="iau-item">
   <summary>Corona Australis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Corona_Australis.png" alt="Corona Australis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Corona_Australis.png" download="Corona_Australis.png">Download chart</a>
@@ -860,7 +864,7 @@
 </details>
 <details class="iau-item">
   <summary>Corona Borealis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Corona_Borealis.png" alt="Corona Borealis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Corona_Borealis.png" download="Corona_Borealis.png">Download chart</a>
@@ -869,7 +873,7 @@
 </details>
 <details class="iau-item">
   <summary>Cygnus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Cygnus.png" alt="Cygnus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Cygnus.png" download="Cygnus.png">Download chart</a>
@@ -878,7 +882,7 @@
 </details>
 <details class="iau-item">
   <summary>Delphinus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Delphinus.png" alt="Delphinus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Delphinus.png" download="Delphinus.png">Download chart</a>
@@ -887,7 +891,7 @@
 </details>
 <details class="iau-item">
   <summary>Dorado</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Dorado.png" alt="Dorado" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Dorado.png" download="Dorado.png">Download chart</a>
@@ -896,7 +900,7 @@
 </details>
 <details class="iau-item">
   <summary>Draco</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Draco.png" alt="Draco" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Draco.png" download="Draco.png">Download chart</a>
@@ -905,7 +909,7 @@
 </details>
 <details class="iau-item">
   <summary>Equuleus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Equuleus.png" alt="Equuleus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Equuleus.png" download="Equuleus.png">Download chart</a>
@@ -914,7 +918,7 @@
 </details>
 <details class="iau-item">
   <summary>Eridanus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Eridanus.png" alt="Eridanus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Eridanus.png" download="Eridanus.png">Download chart</a>
@@ -923,7 +927,7 @@
 </details>
 <details class="iau-item">
   <summary>Fornax</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Fornax.png" alt="Fornax" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Fornax.png" download="Fornax.png">Download chart</a>
@@ -932,7 +936,7 @@
 </details>
 <details class="iau-item">
   <summary>Gemini</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Gemini.png" alt="Gemini" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Gemini.png" download="Gemini.png">Download chart</a>
@@ -941,7 +945,7 @@
 </details>
 <details class="iau-item">
   <summary>Grus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Grus.png" alt="Grus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Grus.png" download="Grus.png">Download chart</a>
@@ -950,7 +954,7 @@
 </details>
 <details class="iau-item">
   <summary>Hercules</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Hercules.png" alt="Hercules" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Hercules.png" download="Hercules.png">Download chart</a>
@@ -959,7 +963,7 @@
 </details>
 <details class="iau-item">
   <summary>Horologium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Horologium.png" alt="Horologium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Horologium.png" download="Horologium.png">Download chart</a>
@@ -968,7 +972,7 @@
 </details>
 <details class="iau-item">
   <summary>Indus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Indus.png" alt="Indus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Indus.png" download="Indus.png">Download chart</a>
@@ -977,7 +981,7 @@
 </details>
 <details class="iau-item">
   <summary>Lacerta</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Lacerta.png" alt="Lacerta" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Lacerta.png" download="Lacerta.png">Download chart</a>
@@ -986,7 +990,7 @@
 </details>
 <details class="iau-item">
   <summary>Leo Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Leo_Minor.png" alt="Leo Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Leo_Minor.png" download="Leo_Minor.png">Download chart</a>
@@ -995,7 +999,7 @@
 </details>
 <details class="iau-item">
   <summary>Lepus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Lepus.png" alt="Lepus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Lepus.png" download="Lepus.png">Download chart</a>
@@ -1004,7 +1008,7 @@
 </details>
 <details class="iau-item">
   <summary>Libra</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Libra.png" alt="Libra" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Libra.png" download="Libra.png">Download chart</a>
@@ -1013,7 +1017,7 @@
 </details>
 <details class="iau-item">
   <summary>Lupus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Lupus.png" alt="Lupus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Lupus.png" download="Lupus.png">Download chart</a>
@@ -1022,7 +1026,7 @@
 </details>
 <details class="iau-item">
   <summary>Lynx</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Lynx.png" alt="Lynx" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Lynx.png" download="Lynx.png">Download chart</a>
@@ -1031,7 +1035,7 @@
 </details>
 <details class="iau-item">
   <summary>Lyra</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Lyra.png" alt="Lyra" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Lyra.png" download="Lyra.png">Download chart</a>
@@ -1040,7 +1044,7 @@
 </details>
 <details class="iau-item">
   <summary>Microscopium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Microscopium.png" alt="Microscopium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Microscopium.png" download="Microscopium.png">Download chart</a>
@@ -1049,7 +1053,7 @@
 </details>
 <details class="iau-item">
   <summary>Monoceros</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Monoceros.png" alt="Monoceros" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Monoceros.png" download="Monoceros.png">Download chart</a>
@@ -1058,7 +1062,7 @@
 </details>
 <details class="iau-item">
   <summary>Norma</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Norma.png" alt="Norma" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Norma.png" download="Norma.png">Download chart</a>
@@ -1067,7 +1071,7 @@
 </details>
 <details class="iau-item">
   <summary>Ophiuchus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Ophiuchus.png" alt="Ophiuchus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Ophiuchus.png" download="Ophiuchus.png">Download chart</a>
@@ -1076,7 +1080,7 @@
 </details>
 <details class="iau-item">
   <summary>Orion</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Orion.png" alt="Orion" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Orion.png" download="Orion.png">Download chart</a>
@@ -1085,7 +1089,7 @@
 </details>
 <details class="iau-item">
   <summary>Pavo</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Pavo.png" alt="Pavo" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Pavo.png" download="Pavo.png">Download chart</a>
@@ -1094,7 +1098,7 @@
 </details>
 <details class="iau-item">
   <summary>Pegasus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Pegasus.png" alt="Pegasus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Pegasus.png" download="Pegasus.png">Download chart</a>
@@ -1103,7 +1107,7 @@
 </details>
 <details class="iau-item">
   <summary>Perseus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Perseus.png" alt="Perseus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Perseus.png" download="Perseus.png">Download chart</a>
@@ -1112,7 +1116,7 @@
 </details>
 <details class="iau-item">
   <summary>Phoenix</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Phoenix.png" alt="Phoenix" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Phoenix.png" download="Phoenix.png">Download chart</a>
@@ -1121,7 +1125,7 @@
 </details>
 <details class="iau-item">
   <summary>Pictor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Pictor.png" alt="Pictor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Pictor.png" download="Pictor.png">Download chart</a>
@@ -1130,7 +1134,7 @@
 </details>
 <details class="iau-item">
   <summary>Pisces</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Pisces.png" alt="Pisces" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Pisces.png" download="Pisces.png">Download chart</a>
@@ -1139,7 +1143,7 @@
 </details>
 <details class="iau-item">
   <summary>Piscis Austrinus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Piscis_Austrinus.png" alt="Piscis Austrinus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Piscis_Austrinus.png" download="Piscis_Austrinus.png">Download chart</a>
@@ -1148,7 +1152,7 @@
 </details>
 <details class="iau-item">
   <summary>Puppis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Puppis.png" alt="Puppis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Puppis.png" download="Puppis.png">Download chart</a>
@@ -1157,7 +1161,7 @@
 </details>
 <details class="iau-item">
   <summary>Pyxis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Pyxis.png" alt="Pyxis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Pyxis.png" download="Pyxis.png">Download chart</a>
@@ -1166,7 +1170,7 @@
 </details>
 <details class="iau-item">
   <summary>Reticulum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Reticulum.png" alt="Reticulum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Reticulum.png" download="Reticulum.png">Download chart</a>
@@ -1175,7 +1179,7 @@
 </details>
 <details class="iau-item">
   <summary>Sagitta</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Sagitta.png" alt="Sagitta" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Sagitta.png" download="Sagitta.png">Download chart</a>
@@ -1184,7 +1188,7 @@
 </details>
 <details class="iau-item">
   <summary>Sagittarius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Sagittarius.png" alt="Sagittarius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Sagittarius.png" download="Sagittarius.png">Download chart</a>
@@ -1193,7 +1197,7 @@
 </details>
 <details class="iau-item">
   <summary>Scorpius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Scorpius.png" alt="Scorpius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Scorpius.png" download="Scorpius.png">Download chart</a>
@@ -1202,7 +1206,7 @@
 </details>
 <details class="iau-item">
   <summary>Sculptor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Sculptor.png" alt="Sculptor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Sculptor.png" download="Sculptor.png">Download chart</a>
@@ -1211,7 +1215,7 @@
 </details>
 <details class="iau-item">
   <summary>Scutum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Scutum.png" alt="Scutum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Scutum.png" download="Scutum.png">Download chart</a>
@@ -1220,7 +1224,7 @@
 </details>
 <details class="iau-item">
   <summary>Serpens Caput</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Serpens_Caput.png" alt="Serpens Caput" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Serpens_Caput.png" download="Serpens_Caput.png">Download chart</a>
@@ -1229,7 +1233,7 @@
 </details>
 <details class="iau-item">
   <summary>Serpens Cauda</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Serpens_Cauda.png" alt="Serpens Cauda" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Serpens_Cauda.png" download="Serpens_Cauda.png">Download chart</a>
@@ -1238,7 +1242,7 @@
 </details>
 <details class="iau-item">
   <summary>Taurus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Taurus.png" alt="Taurus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Taurus.png" download="Taurus.png">Download chart</a>
@@ -1247,7 +1251,7 @@
 </details>
 <details class="iau-item">
   <summary>Telescopium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Telescopium.png" alt="Telescopium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Telescopium.png" download="Telescopium.png">Download chart</a>
@@ -1256,7 +1260,7 @@
 </details>
 <details class="iau-item">
   <summary>Triangulum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Triangulum.png" alt="Triangulum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Triangulum.png" download="Triangulum.png">Download chart</a>
@@ -1265,7 +1269,7 @@
 </details>
 <details class="iau-item">
   <summary>Tucana</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Tucana.png" alt="Tucana" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Tucana.png" download="Tucana.png">Download chart</a>
@@ -1274,7 +1278,7 @@
 </details>
 <details class="iau-item">
   <summary>Ursa Major</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Ursa_Major.png" alt="Ursa Major" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Ursa_Major.png" download="Ursa_Major.png">Download chart</a>
@@ -1283,7 +1287,7 @@
 </details>
 <details class="iau-item">
   <summary>Ursa Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Ursa_Minor.png" alt="Ursa Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Ursa_Minor.png" download="Ursa_Minor.png">Download chart</a>
@@ -1292,7 +1296,7 @@
 </details>
 <details class="iau-item">
   <summary>Vulpecula</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night1/Vulpecula.png" alt="Vulpecula" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night1/Vulpecula.png" download="Vulpecula.png">Download chart</a>
@@ -1303,19 +1307,19 @@
     </section>
     <section id="night-2">
       <h2>Night 2</h2>
-      <p>Sat 19 Sep 19:18 → Sun 20 Sep 04:37 (elapsed 35h 19m–44h 38m, km 116–144 at cutoff pace).</p>
-      <p class='lede'>Moon first quarter, 58% lit, below the terrain horizon. Milky Way centre is below the local horizon. Overhead: Andromeda, Pegasus.</p>
+      <p>Sat 19 Sep 19:18 → Sun 20 Sep 04:37 (elapsed 35h 19m–44h 38m, km 152–157 at predicted pace).</p>
+      <p class='lede'>Moon first quarter, 57% lit, 32° SW (211°). Bright enough to wash out the Milky Way and faint constellations. Milky Way centre 27° SW (217°). Overhead: Aquila, Cygnus, Lyra, Pegasus.</p>
 <figure>
-  <img src="plots/night2-s18.png" alt="Sun 20 Sep 00:01 · elapsed 40h 01m · km 130.0 · 1466 m" loading="lazy" />
+  <img src="plots/night2-s16.png" alt="Sat 19 Sep 20:28 · elapsed 36h 28m · km 156.8 · 948 m" loading="lazy" />
   <figcaption>
-    <a href="plots/night2-s18.png" download="night2-s18.png">Download chart</a>
+    <a href="plots/night2-s16.png" download="night2-s16.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s18-ahead.png" alt="Sun 20 Sep 00:01 · elapsed 40h 01m · km 130.0 · 1466 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s16-ahead.png" alt="Sat 19 Sep 20:28 · elapsed 36h 28m · km 156.8 · 948 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s18-ahead.png" download="night2-s18-ahead.png">Download chart</a>
+    <a href="plots/night2-s16-ahead.png" download="night2-s16-ahead.png">Download chart</a>
   </figcaption>
 </figure>
 <details id="night-2-alt" class="fold">
@@ -1334,40 +1338,39 @@
 </figure>
 </details>
 <details id="night-2-stops" class="fold">
-  <summary>12 stops along the GPX</summary>
+  <summary>5 stops along the GPX</summary>
 <details class="stop">
-  <summary>Sat 19 Sep 19:18 · elapsed 35h 19m · km 115.9 · 1574 m</summary>
+  <summary>Sat 19 Sep 19:18 · elapsed 35h 19m · km 151.8 · 1397 m</summary>
 <figure>
-  <img src="plots/night2-s12.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 115.9 · 1574 m" loading="lazy" />
+  <img src="plots/night2-s12.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 151.8 · 1397 m" loading="lazy" />
   <figcaption>
     <a href="plots/night2-s12.png" download="night2-s12.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s12-ahead.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 115.9 · 1574 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s12-ahead.png" alt="Sat 19 Sep 19:18 · elapsed 35h 19m · km 151.8 · 1397 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night2-s12-ahead.png" download="night2-s12-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 56% lit, 38° S (194°). Bright enough to wash out the Milky Way and faint constellations.</p>
-<p>Milky Way centre 35° S (201°).</p>
+<p>Moon first quarter, 56% lit, 38° S (195°). Bright enough to wash out the Milky Way and faint constellations.</p>
+<p>Milky Way centre 35° S (202°).</p>
 <h4>Planets</h4>
 <ul>
   <li><strong>Venus</strong>: 5° SW (247°), mag -4.8 — behind terrain</li>
-  <li><strong>Saturn</strong>: 5° E (89°), mag 0.4 — behind terrain</li>
+  <li><strong>Saturn</strong>: 5° E (89°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aquila, Cygnus, Lyra, Ophiuchus</li>
   <li>Up: Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Pegasus, Sagittarius, Scorpius, Serpens</li>
   <li>Rising: Andromeda, Grus, Pavo, Piscis Austrinus, Ursa Minor</li>
-  <li>Setting: Boötes, Ursa Major</li>
+  <li>Setting: Ursa Major</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Arcturus (Boötes): 23° W (282°), mag -0.1</li>
-  <li>Vega (Lyra): 72° N (341°), mag 0.0</li>
+  <li>Vega (Lyra): 72° N (340°), mag 0.0</li>
   <li>Altair (Aquila): 73° SE (140°), mag 0.8</li>
   <li>Antares (Scorpius): 28° SW (220°), mag 1.0</li>
   <li>Fomalhaut (Piscis Austrinus): 14° SE (131°), mag 1.2</li>
@@ -1376,15 +1379,15 @@
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 19:20 · elapsed 35h 21m · km 116.0 · 1595 m</summary>
+  <summary>Sat 19 Sep 19:21 · elapsed 35h 22m · km 152.0 · 1387 m</summary>
 <figure>
-  <img src="plots/night2-s13.png" alt="Sat 19 Sep 19:20 · elapsed 35h 21m · km 116.0 · 1595 m" loading="lazy" />
+  <img src="plots/night2-s13.png" alt="Sat 19 Sep 19:21 · elapsed 35h 22m · km 152.0 · 1387 m" loading="lazy" />
   <figcaption>
     <a href="plots/night2-s13.png" download="night2-s13.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s13-ahead.png" alt="Sat 19 Sep 19:20 · elapsed 35h 21m · km 116.0 · 1595 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s13-ahead.png" alt="Sat 19 Sep 19:21 · elapsed 35h 22m · km 152.0 · 1387 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night2-s13-ahead.png" download="night2-s13-ahead.png">Download chart</a>
@@ -1394,418 +1397,135 @@
 <p>Milky Way centre 35° S (202°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Venus</strong>: 5° W (248°), mag -4.8 — behind terrain</li>
-  <li><strong>Saturn</strong>: 5° E (90°), mag 0.4 — behind terrain</li>
+  <li><strong>Venus</strong>: 4° W (248°), mag -4.8 — behind terrain</li>
+  <li><strong>Saturn</strong>: 6° E (90°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
   <li>Overhead: Aquila, Cygnus, Lyra, Ophiuchus</li>
   <li>Up: Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Pegasus, Sagittarius, Scorpius, Serpens</li>
   <li>Rising: Andromeda, Grus, Pavo, Piscis Austrinus, Ursa Minor</li>
-  <li>Setting: Boötes, Ursa Major</li>
+  <li>Setting: Ursa Major</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Arcturus (Boötes): 22° W (282°), mag -0.1</li>
   <li>Vega (Lyra): 72° N (339°), mag 0.0</li>
-  <li>Altair (Aquila): 73° SE (141°), mag 0.8</li>
-  <li>Antares (Scorpius): 28° SW (220°), mag 1.0</li>
-  <li>Fomalhaut (Piscis Austrinus): 14° SE (131°), mag 1.2</li>
-  <li>Deneb (Cygnus): 60° NE (34°), mag 1.2</li>
+  <li>Altair (Aquila): 73° SE (142°), mag 0.8</li>
+  <li>Antares (Scorpius): 28° SW (221°), mag 1.0</li>
+  <li>Fomalhaut (Piscis Austrinus): 15° SE (131°), mag 1.2</li>
+  <li>Deneb (Cygnus): 60° NE (33°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 20:44 · elapsed 36h 45m · km 120.0 · 2188 m</summary>
+  <summary>Sat 19 Sep 19:46 · elapsed 35h 46m · km 154.0 · 1074 m</summary>
 <figure>
-  <img src="plots/night2-s14.png" alt="Sat 19 Sep 20:44 · elapsed 36h 45m · km 120.0 · 2188 m" loading="lazy" />
+  <img src="plots/night2-s14.png" alt="Sat 19 Sep 19:46 · elapsed 35h 46m · km 154.0 · 1074 m" loading="lazy" />
   <figcaption>
     <a href="plots/night2-s14.png" download="night2-s14.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s14-ahead.png" alt="Sat 19 Sep 20:44 · elapsed 36h 45m · km 120.0 · 2188 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s14-ahead.png" alt="Sat 19 Sep 19:46 · elapsed 35h 46m · km 154.0 · 1074 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night2-s14-ahead.png" download="night2-s14-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 57% lit, 30° SW (215°). Bright enough to wash out the Milky Way and faint constellations.</p>
-<p>Milky Way centre 25° SW (220°).</p>
+<p>Moon first quarter, 56% lit, 36° S (202°). Bright enough to wash out the Milky Way and faint constellations.</p>
+<p>Milky Way centre 32° SW (208°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 25° E (98°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 11° E (92°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Aquila, Cygnus, Lyra, Pegasus</li>
-  <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Draco, Ophiuchus, Piscis Austrinus, Sagittarius</li>
-  <li>Rising: Aries, Cetus, Grus, Perseus, Pisces, Ursa Minor</li>
-  <li>Setting: Corona Borealis, Pavo, Scorpius, Serpens</li>
+  <li>Overhead: Aquila, Cygnus, Lyra</li>
+  <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Ophiuchus, Pegasus, Sagittarius, Serpens</li>
+  <li>Rising: Grus, Piscis Austrinus, Ursa Minor</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 60° NW (310°), mag 0.0</li>
-  <li>Altair (Aquila): 73° SW (218°), mag 0.8</li>
-  <li>Antares (Scorpius): 14° SW (233°), mag 1.0</li>
-  <li>Fomalhaut (Piscis Austrinus): 27° SE (144°), mag 1.2</li>
-  <li>Deneb (Cygnus): 67° N (4°), mag 1.2</li>
+  <li>Vega (Lyra): 69° NW (326°), mag 0.0</li>
+  <li>Altair (Aquila): 76° S (163°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 19° SE (135°), mag 1.2</li>
+  <li>Deneb (Cygnus): 63° NE (27°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 21:23 · elapsed 37h 24m · km 122.0 · 2148 m</summary>
+  <summary>Sat 19 Sep 20:15 · elapsed 36h 16m · km 156.0 · 958 m</summary>
 <figure>
-  <img src="plots/night2-s15.png" alt="Sat 19 Sep 21:23 · elapsed 37h 24m · km 122.0 · 2148 m" loading="lazy" />
+  <img src="plots/night2-s15.png" alt="Sat 19 Sep 20:15 · elapsed 36h 16m · km 156.0 · 958 m" loading="lazy" />
   <figcaption>
     <a href="plots/night2-s15.png" download="night2-s15.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s15-ahead.png" alt="Sat 19 Sep 21:23 · elapsed 37h 24m · km 122.0 · 2148 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s15-ahead.png" alt="Sat 19 Sep 20:15 · elapsed 36h 16m · km 156.0 · 958 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night2-s15-ahead.png" download="night2-s15-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 57% lit, 24° SW (222°). Bright enough to wash out the Milky Way and faint constellations.</p>
-<p>Milky Way centre 19° SW (226°).</p>
+<p>Moon first quarter, 57% lit, 33° SW (209°). Bright enough to wash out the Milky Way and faint constellations.</p>
+<p>Milky Way centre 29° SW (214°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 34° E (103°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 18° E (95°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Aquarius, Aquila, Cygnus, Pegasus</li>
-  <li>Up: Andromeda, Capricornus, Cassiopeia, Cepheus, Draco, Lyra, Ophiuchus, Piscis Austrinus, Sagittarius</li>
-  <li>Rising: Aries, Cetus, Grus, Perseus, Phoenix, Pisces, Ursa Minor</li>
-  <li>Setting: Corona Borealis, Pavo, Scorpius, Serpens</li>
+  <li>Overhead: Aquila, Cygnus, Lyra, Pegasus</li>
+  <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Ophiuchus, Sagittarius, Serpens</li>
+  <li>Rising: Aries, Cetus, Grus, Piscis Austrinus, Ursa Minor</li>
+  <li>Setting: Scorpius</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 53° NW (305°), mag 0.0</li>
-  <li>Altair (Aquila): 66° SW (239°), mag 0.8</li>
-  <li>Antares (Scorpius): 6° SW (238°), mag 1.0</li>
-  <li>Fomalhaut (Piscis Austrinus): 32° SE (153°), mag 1.2</li>
-  <li>Deneb (Cygnus): 66° N (347°), mag 1.2</li>
+  <li>Vega (Lyra): 65° NW (316°), mag 0.0</li>
+  <li>Altair (Aquila): 76° S (194°), mag 0.8</li>
+  <li>Fomalhaut (Piscis Austrinus): 23° SE (139°), mag 1.2</li>
+  <li>Deneb (Cygnus): 66° N (16°), mag 1.2</li>
   <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 <details class="stop">
-  <summary>Sat 19 Sep 22:03 · elapsed 38h 03m · km 124.0 · 1603 m</summary>
+  <summary>Sat 19 Sep 20:28 · elapsed 36h 28m · km 156.8 · 948 m</summary>
 <figure>
-  <img src="plots/night2-s16.png" alt="Sat 19 Sep 22:03 · elapsed 38h 03m · km 124.0 · 1603 m" loading="lazy" />
+  <img src="plots/night2-s16.png" alt="Sat 19 Sep 20:28 · elapsed 36h 28m · km 156.8 · 948 m" loading="lazy" />
   <figcaption>
     <a href="plots/night2-s16.png" download="night2-s16.png">Download chart</a>
   </figcaption>
 </figure>
 <figure>
-  <img src="plots/night2-s16-ahead.png" alt="Sat 19 Sep 22:03 · elapsed 38h 03m · km 124.0 · 1603 m looking along the course" loading="lazy" />
+  <img src="plots/night2-s16-ahead.png" alt="Sat 19 Sep 20:28 · elapsed 36h 28m · km 156.8 · 948 m looking along the course" loading="lazy" />
   <figcaption>
     <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
     <a href="plots/night2-s16-ahead.png" download="night2-s16-ahead.png">Download chart</a>
   </figcaption>
 </figure>
-<p>Moon first quarter, 57% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
+<p>Moon first quarter, 57% lit, 32° SW (211°). Bright enough to wash out the Milky Way and faint constellations.</p>
+<p>Milky Way centre 27° SW (217°).</p>
 <h4>Planets</h4>
 <ul>
-  <li><strong>Saturn</strong>: 43° E (108°), mag 0.4</li>
+  <li><strong>Saturn</strong>: 21° E (96°), mag 0.4</li>
 </ul>
 <h4>Constellations</h4>
 <ul>
-  <li>Overhead: Aquarius, Cygnus, Pegasus</li>
-  <li>Up: Andromeda, Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Draco, Lyra, Ophiuchus, Pisces, Piscis Austrinus, Sagittarius</li>
-  <li>Rising: Grus, Perseus, Phoenix, Ursa Minor</li>
+  <li>Overhead: Aquila, Cygnus, Lyra, Pegasus</li>
+  <li>Up: Andromeda, Aquarius, Capricornus, Cassiopeia, Cepheus, Corona Borealis, Draco, Ophiuchus, Piscis Austrinus, Sagittarius</li>
+  <li>Rising: Aries, Cetus, Grus, Pavo, Perseus, Ursa Minor</li>
+  <li>Setting: Scorpius, Serpens</li>
 </ul>
 <h4>Bright stars</h4>
 <ul>
-  <li>Vega (Lyra): 46° NW (303°), mag 0.0</li>
-  <li>Altair (Aquila): 58° W (250°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 36° S (162°), mag 1.2</li>
-  <li>Deneb (Cygnus): 63° NW (332°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (1°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sat 19 Sep 23:21 · elapsed 39h 22m · km 128.0 · 1313 m</summary>
-<figure>
-  <img src="plots/night2-s17.png" alt="Sat 19 Sep 23:21 · elapsed 39h 22m · km 128.0 · 1313 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s17.png" download="night2-s17.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s17-ahead.png" alt="Sat 19 Sep 23:21 · elapsed 39h 22m · km 128.0 · 1313 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s17-ahead.png" download="night2-s17-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 58% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Saturn</strong>: 59° SE (126°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Andromeda, Pegasus</li>
-  <li>Up: Aquarius, Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Lyra, Perseus, Pisces, Piscis Austrinus</li>
-  <li>Rising: Phoenix, Ursa Minor</li>
-  <li>Setting: Draco, Grus</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Vega (Lyra): 30° NW (303°), mag 0.0</li>
-  <li>Altair (Aquila): 40° W (263°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 38° S (183°), mag 1.2</li>
-  <li>Deneb (Cygnus): 52° NW (316°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (1°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 00:01 · elapsed 40h 01m · km 130.0 · 1466 m</summary>
-<figure>
-  <img src="plots/night2-s18.png" alt="Sun 20 Sep 00:01 · elapsed 40h 01m · km 130.0 · 1466 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s18.png" download="night2-s18.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s18-ahead.png" alt="Sun 20 Sep 00:01 · elapsed 40h 01m · km 130.0 · 1466 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s18-ahead.png" download="night2-s18-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 58% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Saturn</strong>: 65° SE (142°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Andromeda, Pegasus</li>
-  <li>Up: Aquarius, Aquila, Aries, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Perseus, Pisces, Piscis Austrinus</li>
-  <li>Rising: Auriga, Phoenix, Taurus, Ursa Minor</li>
-  <li>Setting: Draco, Lyra</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Vega (Lyra): 23° NW (304°), mag 0.0</li>
-  <li>Capella (Auriga): 21° NE (48°), mag 0.1</li>
-  <li>Altair (Aquila): 31° W (267°), mag 0.8</li>
-  <li>Aldebaran (Taurus): 23° E (81°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 37° S (194°), mag 1.2</li>
-  <li>Deneb (Cygnus): 45° NW (313°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (1°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 01:20 · elapsed 41h 20m · km 134.0 · 1234 m</summary>
-<figure>
-  <img src="plots/night2-s19.png" alt="Sun 20 Sep 01:20 · elapsed 41h 20m · km 134.0 · 1234 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s19.png" download="night2-s19.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s19-ahead.png" alt="Sun 20 Sep 01:20 · elapsed 41h 20m · km 134.0 · 1234 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s19-ahead.png" download="night2-s19-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 59% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Mars</strong>: 0° NE (66°), mag 1.2 — behind terrain</li>
-  <li><strong>Saturn</strong>: 69° S (195°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Andromeda, Aries, Pegasus, Pisces</li>
-  <li>Up: Aquarius, Auriga, Capricornus, Cassiopeia, Cepheus, Cetus, Cygnus, Orion, Perseus, Piscis Austrinus, Taurus</li>
-  <li>Rising: Ursa Minor</li>
-  <li>Setting: Phoenix</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Capella (Auriga): 35° NE (49°), mag 0.1</li>
-  <li>Aldebaran (Taurus): 41° E (87°), mag 0.8</li>
-  <li>Fomalhaut (Piscis Austrinus): 29° SW (213°), mag 1.2</li>
-  <li>Deneb (Cygnus): 32° NW (311°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 02:00 · elapsed 42h 00m · km 136.0 · 1532 m</summary>
-<figure>
-  <img src="plots/night2-s20.png" alt="Sun 20 Sep 02:00 · elapsed 42h 00m · km 136.0 · 1532 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s20.png" download="night2-s20.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s20-ahead.png" alt="Sun 20 Sep 02:00 · elapsed 42h 00m · km 136.0 · 1532 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s20-ahead.png" download="night2-s20-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 59% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Mars</strong>: 9° E (70°), mag 1.2 — behind terrain</li>
-  <li><strong>Saturn</strong>: 65° SW (218°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Andromeda, Aries, Cetus, Pegasus, Perseus, Pisces</li>
-  <li>Up: Auriga, Cassiopeia, Cepheus, Orion, Taurus</li>
-  <li>Rising: Gemini, Lepus, Ursa Minor</li>
-  <li>Setting: Aquarius, Capricornus, Cygnus, Eridanus, Phoenix, Piscis Austrinus</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Capella (Auriga): 42° NE (47°), mag 0.1</li>
-  <li>Rigel (Orion): 31° SE (115°), mag 0.1</li>
-  <li>Betelgeuse (Orion): 29° E (94°), mag 0.4</li>
-  <li>Achernar (Eridanus): 11° S (182°), mag 0.5</li>
-  <li>Aldebaran (Taurus): 50° E (91°), mag 0.8</li>
-  <li>Pollux (Gemini): 11° NE (64°), mag 1.1</li>
-  <li>Fomalhaut (Piscis Austrinus): 24° SW (220°), mag 1.2</li>
-  <li>Deneb (Cygnus): 25° NW (311°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 02:39 · elapsed 42h 40m · km 138.0 · 1651 m</summary>
-<figure>
-  <img src="plots/night2-s21.png" alt="Sun 20 Sep 02:39 · elapsed 42h 40m · km 138.0 · 1651 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s21.png" download="night2-s21.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s21-ahead.png" alt="Sun 20 Sep 02:39 · elapsed 42h 40m · km 138.0 · 1651 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s21-ahead.png" download="night2-s21-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 59% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Mars</strong>: 17° E (73°), mag 1.2</li>
-  <li><strong>Saturn</strong>: 59° SW (234°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Aries, Cetus, Perseus, Pisces</li>
-  <li>Up: Andromeda, Auriga, Cassiopeia, Cepheus, Lepus, Orion, Pegasus, Taurus</li>
-  <li>Rising: Gemini, Ursa Minor</li>
-  <li>Setting: Aquarius, Capricornus, Cygnus, Eridanus, Phoenix, Piscis Austrinus</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Capella (Auriga): 49° NE (45°), mag 0.1</li>
-  <li>Rigel (Orion): 39° SE (122°), mag 0.1</li>
-  <li>Betelgeuse (Orion): 38° E (98°), mag 0.4</li>
-  <li>Achernar (Eridanus): 10° S (187°), mag 0.5</li>
-  <li>Aldebaran (Taurus): 60° E (95°), mag 0.8</li>
-  <li>Pollux (Gemini): 19° NE (67°), mag 1.1</li>
-  <li>Fomalhaut (Piscis Austrinus): 17° SW (227°), mag 1.2</li>
-  <li>Deneb (Cygnus): 18° NW (313°), mag 1.2</li>
-  <li>Polaris (Ursa Minor): 23° N (0°), mag 2.0</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 03:59 · elapsed 43h 59m · km 142.0 · 1669 m</summary>
-<figure>
-  <img src="plots/night2-s22.png" alt="Sun 20 Sep 03:59 · elapsed 43h 59m · km 142.0 · 1669 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s22.png" download="night2-s22.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s22-ahead.png" alt="Sun 20 Sep 03:59 · elapsed 43h 59m · km 142.0 · 1669 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s22-ahead.png" download="night2-s22-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 60% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Mars</strong>: 35° E (78°), mag 1.2</li>
-  <li><strong>Jupiter</strong>: 13° E (78°), mag -1.8 — behind terrain</li>
-  <li><strong>Saturn</strong>: 42° W (252°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Aries, Auriga, Cetus, Orion, Perseus, Taurus</li>
-  <li>Up: Andromeda, Canis Major, Canis Minor, Cassiopeia, Columba, Gemini, Lepus, Pegasus, Pisces</li>
-  <li>Rising: Carina, Puppis</li>
-  <li>Setting: Phoenix</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Sirius (Canis Major): 32° SE (128°), mag -1.5</li>
-  <li>Canopus (Carina): 8° S (158°), mag -0.7</li>
-  <li>Capella (Auriga): 60° NE (32°), mag 0.1</li>
-  <li>Rigel (Orion): 53° SE (143°), mag 0.1</li>
-  <li>Procyon (Canis Minor): 32° E (98°), mag 0.3</li>
-  <li>Betelgeuse (Orion): 56° E (111°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 77° SE (115°), mag 0.8</li>
-  <li>Pollux (Gemini): 37° E (71°), mag 1.1</li>
-</ul>
-</details>
-<details class="stop">
-  <summary>Sun 20 Sep 04:37 · elapsed 44h 38m · km 144.0 · 1442 m</summary>
-<figure>
-  <img src="plots/night2-s23.png" alt="Sun 20 Sep 04:37 · elapsed 44h 38m · km 144.0 · 1442 m" loading="lazy" />
-  <figcaption>
-    <a href="plots/night2-s23.png" download="night2-s23.png">Download chart</a>
-  </figcaption>
-</figure>
-<figure>
-  <img src="plots/night2-s23-ahead.png" alt="Sun 20 Sep 04:37 · elapsed 44h 38m · km 144.0 · 1442 m looking along the course" loading="lazy" />
-  <figcaption>
-    <span>GLO-30 DSM looking up the GPX. The filled contour is the ridge; a star below it is behind terrain.</span>
-    <a href="plots/night2-s23-ahead.png" download="night2-s23-ahead.png">Download chart</a>
-  </figcaption>
-</figure>
-<p>Moon first quarter, 60% lit, below the terrain horizon.</p>
-<p>Milky Way centre is below the local horizon.</p>
-<h4>Planets</h4>
-<ul>
-  <li><strong>Mars</strong>: 44° E (80°), mag 1.2</li>
-  <li><strong>Jupiter</strong>: 21° E (81°), mag -1.8 — behind terrain</li>
-  <li><strong>Saturn</strong>: 33° W (258°), mag 0.4</li>
-</ul>
-<h4>Constellations</h4>
-<ul>
-  <li>Overhead: Auriga, Cetus, Orion, Perseus, Taurus</li>
-  <li>Up: Andromeda, Aries, Canis Major, Canis Minor, Cassiopeia, Columba, Gemini, Lepus, Pegasus, Pisces</li>
-  <li>Rising: Carina, Puppis</li>
-</ul>
-<h4>Bright stars</h4>
-<ul>
-  <li>Sirius (Canis Major): 38° SE (136°), mag -1.5</li>
-  <li>Canopus (Carina): 11° S (163°), mag -0.7</li>
-  <li>Capella (Auriga): 64° N (20°), mag 0.1</li>
-  <li>Rigel (Orion): 57° S (158°), mag 0.1</li>
-  <li>Procyon (Canis Minor): 41° E (103°), mag 0.3</li>
-  <li>Betelgeuse (Orion): 64° SE (122°), mag 0.4</li>
-  <li>Aldebaran (Taurus): 84° S (160°), mag 0.8</li>
-  <li>Pollux (Gemini): 45° E (72°), mag 1.1</li>
+  <li>Vega (Lyra): 63° NW (313°), mag 0.0</li>
+  <li>Altair (Aquila): 75° SW (206°), mag 0.8</li>
+  <li>Antares (Scorpius): 17° SW (231°), mag 1.0</li>
+  <li>Fomalhaut (Piscis Austrinus): 25° SE (141°), mag 1.2</li>
+  <li>Deneb (Cygnus): 66° N (11°), mag 1.2</li>
+  <li>Polaris (Ursa Minor): 22° N (1°), mag 2.0</li>
 </ul>
 </details>
 </details>
@@ -1814,7 +1534,7 @@
 <p class='meta'>Visibility from the course centroid, astronomical dusk to dawn. Open a name.</p>
 <details class="iau-item">
   <summary>Andromeda</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Andromeda.png" alt="Andromeda" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Andromeda.png" download="Andromeda.png">Download chart</a>
@@ -1823,7 +1543,7 @@
 </details>
 <details class="iau-item">
   <summary>Aquarius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Aquarius.png" alt="Aquarius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Aquarius.png" download="Aquarius.png">Download chart</a>
@@ -1832,7 +1552,7 @@
 </details>
 <details class="iau-item">
   <summary>Aquila</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Aquila.png" alt="Aquila" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Aquila.png" download="Aquila.png">Download chart</a>
@@ -1841,7 +1561,7 @@
 </details>
 <details class="iau-item">
   <summary>Ara</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Ara.png" alt="Ara" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Ara.png" download="Ara.png">Download chart</a>
@@ -1850,7 +1570,7 @@
 </details>
 <details class="iau-item">
   <summary>Aries</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Aries.png" alt="Aries" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Aries.png" download="Aries.png">Download chart</a>
@@ -1859,7 +1579,7 @@
 </details>
 <details class="iau-item">
   <summary>Auriga</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Auriga.png" alt="Auriga" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Auriga.png" download="Auriga.png">Download chart</a>
@@ -1868,7 +1588,7 @@
 </details>
 <details class="iau-item">
   <summary>Bootes</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Bootes.png" alt="Bootes" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Bootes.png" download="Bootes.png">Download chart</a>
@@ -1877,7 +1597,7 @@
 </details>
 <details class="iau-item">
   <summary>Caelum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Caelum.png" alt="Caelum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Caelum.png" download="Caelum.png">Download chart</a>
@@ -1886,7 +1606,7 @@
 </details>
 <details class="iau-item">
   <summary>Camelopardalis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Camelopardalis.png" alt="Camelopardalis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Camelopardalis.png" download="Camelopardalis.png">Download chart</a>
@@ -1895,7 +1615,7 @@
 </details>
 <details class="iau-item">
   <summary>Cancer</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Cancer.png" alt="Cancer" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Cancer.png" download="Cancer.png">Download chart</a>
@@ -1904,7 +1624,7 @@
 </details>
 <details class="iau-item">
   <summary>Canes Venatici</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Canes_Venatici.png" alt="Canes Venatici" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Canes_Venatici.png" download="Canes_Venatici.png">Download chart</a>
@@ -1913,7 +1633,7 @@
 </details>
 <details class="iau-item">
   <summary>Canis Major</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Canis_Major.png" alt="Canis Major" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Canis_Major.png" download="Canis_Major.png">Download chart</a>
@@ -1922,7 +1642,7 @@
 </details>
 <details class="iau-item">
   <summary>Canis Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Canis_Minor.png" alt="Canis Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Canis_Minor.png" download="Canis_Minor.png">Download chart</a>
@@ -1931,7 +1651,7 @@
 </details>
 <details class="iau-item">
   <summary>Capricornus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Capricornus.png" alt="Capricornus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Capricornus.png" download="Capricornus.png">Download chart</a>
@@ -1940,7 +1660,7 @@
 </details>
 <details class="iau-item">
   <summary>Cassiopeia</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Cassiopeia.png" alt="Cassiopeia" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Cassiopeia.png" download="Cassiopeia.png">Download chart</a>
@@ -1949,7 +1669,7 @@
 </details>
 <details class="iau-item">
   <summary>Cepheus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Cepheus.png" alt="Cepheus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Cepheus.png" download="Cepheus.png">Download chart</a>
@@ -1958,7 +1678,7 @@
 </details>
 <details class="iau-item">
   <summary>Cetus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Cetus.png" alt="Cetus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Cetus.png" download="Cetus.png">Download chart</a>
@@ -1967,7 +1687,7 @@
 </details>
 <details class="iau-item">
   <summary>Columba</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Columba.png" alt="Columba" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Columba.png" download="Columba.png">Download chart</a>
@@ -1976,7 +1696,7 @@
 </details>
 <details class="iau-item">
   <summary>Corona Australis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Corona_Australis.png" alt="Corona Australis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Corona_Australis.png" download="Corona_Australis.png">Download chart</a>
@@ -1985,7 +1705,7 @@
 </details>
 <details class="iau-item">
   <summary>Corona Borealis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Corona_Borealis.png" alt="Corona Borealis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Corona_Borealis.png" download="Corona_Borealis.png">Download chart</a>
@@ -1994,7 +1714,7 @@
 </details>
 <details class="iau-item">
   <summary>Cygnus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Cygnus.png" alt="Cygnus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Cygnus.png" download="Cygnus.png">Download chart</a>
@@ -2003,7 +1723,7 @@
 </details>
 <details class="iau-item">
   <summary>Delphinus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Delphinus.png" alt="Delphinus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Delphinus.png" download="Delphinus.png">Download chart</a>
@@ -2012,7 +1732,7 @@
 </details>
 <details class="iau-item">
   <summary>Dorado</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Dorado.png" alt="Dorado" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Dorado.png" download="Dorado.png">Download chart</a>
@@ -2021,7 +1741,7 @@
 </details>
 <details class="iau-item">
   <summary>Draco</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Draco.png" alt="Draco" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Draco.png" download="Draco.png">Download chart</a>
@@ -2030,7 +1750,7 @@
 </details>
 <details class="iau-item">
   <summary>Equuleus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Equuleus.png" alt="Equuleus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Equuleus.png" download="Equuleus.png">Download chart</a>
@@ -2039,7 +1759,7 @@
 </details>
 <details class="iau-item">
   <summary>Eridanus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Eridanus.png" alt="Eridanus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Eridanus.png" download="Eridanus.png">Download chart</a>
@@ -2048,7 +1768,7 @@
 </details>
 <details class="iau-item">
   <summary>Fornax</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Fornax.png" alt="Fornax" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Fornax.png" download="Fornax.png">Download chart</a>
@@ -2057,7 +1777,7 @@
 </details>
 <details class="iau-item">
   <summary>Gemini</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Gemini.png" alt="Gemini" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Gemini.png" download="Gemini.png">Download chart</a>
@@ -2066,7 +1786,7 @@
 </details>
 <details class="iau-item">
   <summary>Grus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Grus.png" alt="Grus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Grus.png" download="Grus.png">Download chart</a>
@@ -2075,7 +1795,7 @@
 </details>
 <details class="iau-item">
   <summary>Hercules</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Hercules.png" alt="Hercules" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Hercules.png" download="Hercules.png">Download chart</a>
@@ -2084,7 +1804,7 @@
 </details>
 <details class="iau-item">
   <summary>Horologium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Horologium.png" alt="Horologium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Horologium.png" download="Horologium.png">Download chart</a>
@@ -2093,7 +1813,7 @@
 </details>
 <details class="iau-item">
   <summary>Indus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Indus.png" alt="Indus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Indus.png" download="Indus.png">Download chart</a>
@@ -2102,7 +1822,7 @@
 </details>
 <details class="iau-item">
   <summary>Lacerta</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Lacerta.png" alt="Lacerta" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Lacerta.png" download="Lacerta.png">Download chart</a>
@@ -2111,7 +1831,7 @@
 </details>
 <details class="iau-item">
   <summary>Leo Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Leo_Minor.png" alt="Leo Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Leo_Minor.png" download="Leo_Minor.png">Download chart</a>
@@ -2120,7 +1840,7 @@
 </details>
 <details class="iau-item">
   <summary>Lepus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Lepus.png" alt="Lepus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Lepus.png" download="Lepus.png">Download chart</a>
@@ -2129,7 +1849,7 @@
 </details>
 <details class="iau-item">
   <summary>Libra</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Libra.png" alt="Libra" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Libra.png" download="Libra.png">Download chart</a>
@@ -2138,7 +1858,7 @@
 </details>
 <details class="iau-item">
   <summary>Lupus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Lupus.png" alt="Lupus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Lupus.png" download="Lupus.png">Download chart</a>
@@ -2147,7 +1867,7 @@
 </details>
 <details class="iau-item">
   <summary>Lynx</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Lynx.png" alt="Lynx" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Lynx.png" download="Lynx.png">Download chart</a>
@@ -2156,7 +1876,7 @@
 </details>
 <details class="iau-item">
   <summary>Lyra</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Lyra.png" alt="Lyra" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Lyra.png" download="Lyra.png">Download chart</a>
@@ -2165,7 +1885,7 @@
 </details>
 <details class="iau-item">
   <summary>Microscopium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Microscopium.png" alt="Microscopium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Microscopium.png" download="Microscopium.png">Download chart</a>
@@ -2174,7 +1894,7 @@
 </details>
 <details class="iau-item">
   <summary>Monoceros</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Monoceros.png" alt="Monoceros" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Monoceros.png" download="Monoceros.png">Download chart</a>
@@ -2183,7 +1903,7 @@
 </details>
 <details class="iau-item">
   <summary>Norma</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Norma.png" alt="Norma" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Norma.png" download="Norma.png">Download chart</a>
@@ -2192,7 +1912,7 @@
 </details>
 <details class="iau-item">
   <summary>Ophiuchus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Ophiuchus.png" alt="Ophiuchus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Ophiuchus.png" download="Ophiuchus.png">Download chart</a>
@@ -2201,7 +1921,7 @@
 </details>
 <details class="iau-item">
   <summary>Orion</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Orion.png" alt="Orion" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Orion.png" download="Orion.png">Download chart</a>
@@ -2210,7 +1930,7 @@
 </details>
 <details class="iau-item">
   <summary>Pavo</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Pavo.png" alt="Pavo" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Pavo.png" download="Pavo.png">Download chart</a>
@@ -2219,7 +1939,7 @@
 </details>
 <details class="iau-item">
   <summary>Pegasus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Pegasus.png" alt="Pegasus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Pegasus.png" download="Pegasus.png">Download chart</a>
@@ -2228,7 +1948,7 @@
 </details>
 <details class="iau-item">
   <summary>Perseus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Perseus.png" alt="Perseus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Perseus.png" download="Perseus.png">Download chart</a>
@@ -2237,7 +1957,7 @@
 </details>
 <details class="iau-item">
   <summary>Phoenix</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Phoenix.png" alt="Phoenix" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Phoenix.png" download="Phoenix.png">Download chart</a>
@@ -2246,7 +1966,7 @@
 </details>
 <details class="iau-item">
   <summary>Pictor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Pictor.png" alt="Pictor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Pictor.png" download="Pictor.png">Download chart</a>
@@ -2255,7 +1975,7 @@
 </details>
 <details class="iau-item">
   <summary>Pisces</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Pisces.png" alt="Pisces" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Pisces.png" download="Pisces.png">Download chart</a>
@@ -2264,7 +1984,7 @@
 </details>
 <details class="iau-item">
   <summary>Piscis Austrinus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Piscis_Austrinus.png" alt="Piscis Austrinus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Piscis_Austrinus.png" download="Piscis_Austrinus.png">Download chart</a>
@@ -2273,7 +1993,7 @@
 </details>
 <details class="iau-item">
   <summary>Puppis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Puppis.png" alt="Puppis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Puppis.png" download="Puppis.png">Download chart</a>
@@ -2282,7 +2002,7 @@
 </details>
 <details class="iau-item">
   <summary>Pyxis</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Pyxis.png" alt="Pyxis" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Pyxis.png" download="Pyxis.png">Download chart</a>
@@ -2291,7 +2011,7 @@
 </details>
 <details class="iau-item">
   <summary>Reticulum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Reticulum.png" alt="Reticulum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Reticulum.png" download="Reticulum.png">Download chart</a>
@@ -2300,7 +2020,7 @@
 </details>
 <details class="iau-item">
   <summary>Sagitta</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Sagitta.png" alt="Sagitta" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Sagitta.png" download="Sagitta.png">Download chart</a>
@@ -2309,7 +2029,7 @@
 </details>
 <details class="iau-item">
   <summary>Sagittarius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Sagittarius.png" alt="Sagittarius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Sagittarius.png" download="Sagittarius.png">Download chart</a>
@@ -2318,7 +2038,7 @@
 </details>
 <details class="iau-item">
   <summary>Scorpius</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Scorpius.png" alt="Scorpius" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Scorpius.png" download="Scorpius.png">Download chart</a>
@@ -2327,7 +2047,7 @@
 </details>
 <details class="iau-item">
   <summary>Sculptor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Sculptor.png" alt="Sculptor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Sculptor.png" download="Sculptor.png">Download chart</a>
@@ -2336,7 +2056,7 @@
 </details>
 <details class="iau-item">
   <summary>Scutum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Scutum.png" alt="Scutum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Scutum.png" download="Scutum.png">Download chart</a>
@@ -2345,7 +2065,7 @@
 </details>
 <details class="iau-item">
   <summary>Serpens Caput</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Serpens_Caput.png" alt="Serpens Caput" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Serpens_Caput.png" download="Serpens_Caput.png">Download chart</a>
@@ -2354,7 +2074,7 @@
 </details>
 <details class="iau-item">
   <summary>Serpens Cauda</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Serpens_Cauda.png" alt="Serpens Cauda" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Serpens_Cauda.png" download="Serpens_Cauda.png">Download chart</a>
@@ -2363,7 +2083,7 @@
 </details>
 <details class="iau-item">
   <summary>Taurus</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Taurus.png" alt="Taurus" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Taurus.png" download="Taurus.png">Download chart</a>
@@ -2372,7 +2092,7 @@
 </details>
 <details class="iau-item">
   <summary>Telescopium</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Telescopium.png" alt="Telescopium" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Telescopium.png" download="Telescopium.png">Download chart</a>
@@ -2381,7 +2101,7 @@
 </details>
 <details class="iau-item">
   <summary>Triangulum</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Triangulum.png" alt="Triangulum" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Triangulum.png" download="Triangulum.png">Download chart</a>
@@ -2390,7 +2110,7 @@
 </details>
 <details class="iau-item">
   <summary>Tucana</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Tucana.png" alt="Tucana" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Tucana.png" download="Tucana.png">Download chart</a>
@@ -2399,7 +2119,7 @@
 </details>
 <details class="iau-item">
   <summary>Ursa Major</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Ursa_Major.png" alt="Ursa Major" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Ursa_Major.png" download="Ursa_Major.png">Download chart</a>
@@ -2408,7 +2128,7 @@
 </details>
 <details class="iau-item">
   <summary>Ursa Minor</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Ursa_Minor.png" alt="Ursa Minor" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Ursa_Minor.png" download="Ursa_Minor.png">Download chart</a>
@@ -2417,7 +2137,7 @@
 </details>
 <details class="iau-item">
   <summary>Vulpecula</summary>
-<figure>
+<figure class="wide">
   <img src="plots/constellations/night2/Vulpecula.png" alt="Vulpecula" loading="lazy" />
   <figcaption>
     <a href="plots/constellations/night2/Vulpecula.png" download="Vulpecula.png">Download chart</a>
