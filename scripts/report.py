@@ -228,6 +228,25 @@ def iau_plot_gallery(site_dir: Path) -> dict[int, list[tuple[str, str]]]:
     return out
 
 
+def html_details(
+    summary: str,
+    body: list[str],
+    *,
+    opened: bool = False,
+    html_id: str | None = None,
+    css: str = "",
+) -> list[str]:
+    attrs: list[str] = []
+    if html_id:
+        attrs.append(f'id="{esc(html_id)}"')
+    if css:
+        attrs.append(f'class="{esc(css)}"')
+    if opened:
+        attrs.append("open")
+    attr = f" {' '.join(attrs)}" if attrs else ""
+    return [f"<details{attr}>", f"  <summary>{esc(summary)}</summary>", *body, "</details>"]
+
+
 def html_table(headers: list[str], rows: list[list[str]]) -> list[str]:
     lines = ["<div class='table-wrap'><table>", "  <thead><tr>"]
     lines.extend(f"    <th>{esc(h)}</th>" for h in headers)
@@ -306,14 +325,37 @@ def build_html(
         "  <main>",
     ]
 
-    if len(night_list) > 1:
-        lines.append('    <nav class="nights">')
-        for n in night_list:
-            nid = int(n["night_id"])
-            lines.append(f'      <a href="#night-{nid}">Night {nid}</a>')
-        lines.append("    </nav>")
+    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for s in samples:
+        by_night[int(s["night_id"])].append(s)
 
-    lines += ["    <section>", "      <h2>Night windows</h2>"]
+    lines += [
+        '    <nav class="toc" aria-label="Contents">',
+        "      <p class='toc-label'>Contents</p>",
+        "      <ol>",
+        '        <li><a href="#map">Where night falls</a></li>',
+    ]
+    for n in night_list:
+        nid = int(n["night_id"])
+        lines.append("        <li>")
+        lines.append(f'          <a href="#night-{nid}">Night {nid}</a>')
+        lines.append("          <ol>")
+        lines.append(f'            <li><a href="#night-{nid}-stops">Stops along the GPX</a></li>')
+        lines.append(f'            <li><a href="#night-{nid}-alt">Planets and stars</a></li>')
+        if (iau_plots or {}).get(nid):
+            lines.append(
+                f'            <li><a href="#night-{nid}-iau">IAU constellations</a></li>'
+            )
+        lines.append("          </ol>")
+        lines.append("        </li>")
+    lines += ["      </ol>", "    </nav>"]
+
+    lines += [
+        '    <section id="map">',
+        "      <h2>Where night falls</h2>",
+        "      <p class='lede'>Two nights, a ridgeline, cutoff pace. "
+        "Open a night when a stop or a name catches you.</p>",
+    ]
     lines.extend(
         html_table(
             ["Night", "Astro dusk", "Astro dawn", "Length", "Elapsed", "km (cutoff pace)"],
@@ -330,7 +372,6 @@ def build_html(
             ],
         )
     )
-
     wanted = {
         "sunset",
         "civil_dusk",
@@ -347,10 +388,7 @@ def build_html(
         if e["event"] in wanted
     ]
     if twilight_rows:
-        lines.append("      <details><summary>Twilight (context)</summary>")
-        lines.extend(html_table(["Event", "Local time", "Elapsed"], twilight_rows))
-        lines.append("      </details>")
-
+        lines.extend(html_details("Twilight (context)", html_table(["Event", "Local time", "Elapsed"], twilight_rows)))
     lines.extend(html_figure("course", plots, "Course with night samples"))
     lines.extend(html_figure("profile", plots, "Elevation profile with night windows"))
     lines.extend(
@@ -363,10 +401,6 @@ def build_html(
         )
     )
     lines.append("    </section>")
-
-    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
-    for s in samples:
-        by_night[int(s["night_id"])].append(s)
 
     for n in night_list:
         nid = int(n["night_id"])
@@ -383,17 +417,39 @@ def build_html(
             lines.append("    </section>")
             continue
         mid = min(group, key=midnightish)
+        mid_stem = sample_stem(mid)
         lines.append(f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, mid['i'])))}</p>")
+        lines.extend(html_figure(mid_stem, plots, sample_heading(mid)))
         lines.extend(
+            html_figure(
+                f"{mid_stem}-ahead",
+                plots,
+                f"{sample_heading(mid)} looking along the course",
+                "GLO-30 DSM looking up the GPX. "
+                "The filled contour is the ridge; a star below it is behind terrain.",
+            )
+        )
+        alt_body: list[str] = []
+        alt_body.extend(
             html_figure(f"night{nid}-alt-planets", plots, f"Night {nid} planets and moon")
         )
-        lines.extend(html_figure(f"night{nid}-alt-stars", plots, f"Night {nid} bright stars"))
+        alt_body.extend(html_figure(f"night{nid}-alt-stars", plots, f"Night {nid} bright stars"))
+        if alt_body:
+            lines.extend(
+                html_details(
+                    "Planets and stars through the night",
+                    alt_body,
+                    html_id=f"night-{nid}-alt",
+                    css="fold",
+                )
+            )
+        stop_body: list[str] = []
         for sample in group:
             rows = rows_for_sample(sky, sample["i"])
             stem = sample_stem(sample)
-            lines += [f"      <h3>{esc(sample_heading(sample))}</h3>"]
-            lines.extend(html_figure(stem, plots, sample_heading(sample)))
-            lines.extend(
+            inner: list[str] = []
+            inner.extend(html_figure(stem, plots, sample_heading(sample)))
+            inner.extend(
                 html_figure(
                     f"{stem}-ahead",
                     plots,
@@ -402,26 +458,43 @@ def build_html(
                     "The filled contour is the ridge; a star below it is behind terrain.",
                 )
             )
-            lines.append(f"      <p>{esc(moon_sentence(rows))}</p>")
+            inner.append(f"<p>{esc(moon_sentence(rows))}</p>")
             mw = milky_way_sentence(rows)
             if mw:
-                lines.append(f"      <p>{esc(mw)}</p>")
-            lines.append("      <h4>Planets</h4>")
-            lines.extend(html_ul(planet_items(rows), "none above the geometric horizon"))
-            lines.extend(constellation_block(rows))
+                inner.append(f"<p>{esc(mw)}</p>")
+            inner.append("<h4>Planets</h4>")
+            inner.extend(html_ul(planet_items(rows), "none above the geometric horizon"))
+            inner.extend(constellation_block(rows))
             nav = nav_star_items(rows)
             if nav:
-                lines.append("      <h4>Bright stars</h4>")
-                lines.extend(html_ul(nav, ""))
+                inner.append("<h4>Bright stars</h4>")
+                inner.extend(html_ul(nav, ""))
+            stop_body.extend(html_details(sample_heading(sample), inner, css="stop"))
+        if stop_body:
+            lines.extend(
+                html_details(
+                    f"{len(group)} stops along the GPX",
+                    stop_body,
+                    html_id=f"night-{nid}-stops",
+                    css="fold",
+                )
+            )
         iau = (iau_plots or {}).get(nid) or []
         if iau:
-            lines.append("      <h3>IAU constellations this night</h3>")
-            lines.append(
-                "      <p class='meta'>Visibility from the course centroid, "
-                "astronomical dusk to dawn.</p>"
-            )
+            iau_body = [
+                "<p class='meta'>Visibility from the course centroid, "
+                "astronomical dusk to dawn. Open a name.</p>"
+            ]
             for title, src in iau:
-                lines.extend(html_src_figure(src, title))
+                iau_body.extend(html_details(title, html_src_figure(src, title), css="iau-item"))
+            lines.extend(
+                html_details(
+                    f"{len(iau)} IAU constellations this night",
+                    iau_body,
+                    html_id=f"night-{nid}-iau",
+                    css="fold",
+                )
+            )
         lines.append("    </section>")
 
     lines += [
@@ -435,6 +508,19 @@ def build_html(
         f'      <a href="{REPO_URL}/blob/main/ROADMAP.md">Roadmap</a>',
         "    </p>",
         "  </footer>",
+        "  <script>",
+        "    function openTarget() {",
+        "      var id = location.hash.slice(1);",
+        "      if (!id) return;",
+        "      var el = document.getElementById(id);",
+        "      if (!el) return;",
+        "      if (el.tagName === 'DETAILS') el.open = true;",
+        "      var parent = el.closest('details');",
+        "      if (parent) parent.open = true;",
+        "    }",
+        "    openTarget();",
+        "    window.addEventListener('hashchange', openTarget);",
+        "  </script>",
         "</body>",
         "</html>",
         "",

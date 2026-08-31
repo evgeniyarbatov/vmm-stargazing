@@ -90,6 +90,10 @@ class TestReport(unittest.TestCase):
         self.assertIn("waxing gibbous", page)
         self.assertIn("Night 1", page)
         self.assertIn("Look up.", page)
+        self.assertIn("Contents", page)
+        self.assertIn('href="#night-1"', page)
+        self.assertIn("<details", page)
+        self.assertIn("Stops along the GPX", page)
         self.assertIn("data.json", page)
         self.assertIn('download="vmm-stargazing.json"', page)
         self.assertNotIn("steer", page)
@@ -201,5 +205,7 @@ class TestReport(unittest.TestCase):
             },
         )
         self.assertIn("IAU constellations this night", page)
+        self.assertIn('href="#night-1-iau"', page)
         self.assertIn("plots/constellations/night1/Andromeda.png", page)
         self.assertIn('download="Andromeda.png"', page)
+        self.assertIn("<summary>Andromeda</summary>", page)
