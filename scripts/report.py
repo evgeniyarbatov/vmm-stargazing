@@ -185,12 +185,8 @@ def html_ul(items: list[str], empty: str) -> list[str]:
     return ["<ul>", *[f"  {item}" for item in items], "</ul>"]
 
 
-def html_figure(stem: str, plots: dict[str, str] | None, alt: str, caption: str = "") -> list[str]:
-    if not plots or stem not in plots:
-        return []
-    src = plots[stem]
+def html_src_figure(src: str, alt: str, caption: str = "", loading: str = "lazy") -> list[str]:
     name = Path(src).name
-    loading = "eager" if stem == "course" else "lazy"
     lines = [
         "<figure>",
         f'  <img src="{esc(src)}" alt="{esc(alt)}" loading="{loading}" />',
@@ -204,6 +200,32 @@ def html_figure(stem: str, plots: dict[str, str] | None, alt: str, caption: str 
         "</figure>",
     ]
     return lines
+
+
+def html_figure(stem: str, plots: dict[str, str] | None, alt: str, caption: str = "") -> list[str]:
+    if not plots or stem not in plots:
+        return []
+    loading = "eager" if stem == "course" else "lazy"
+    return html_src_figure(plots[stem], alt, caption=caption, loading=loading)
+
+
+def iau_plot_gallery(site_dir: Path) -> dict[int, list[tuple[str, str]]]:
+    root = site_dir / "plots" / "constellations"
+    out: dict[int, list[tuple[str, str]]] = {}
+    if not root.is_dir():
+        return out
+    for folder in sorted(root.glob("night*")):
+        try:
+            nid = int(folder.name.removeprefix("night"))
+        except ValueError:
+            continue
+        items = [
+            (p.stem.replace("_", " "), f"plots/constellations/{folder.name}/{p.name}")
+            for p in sorted(folder.glob("*.png"))
+        ]
+        if items:
+            out[nid] = items
+    return out
 
 
 def html_table(headers: list[str], rows: list[list[str]]) -> list[str]:
@@ -240,6 +262,7 @@ def build_html(
     samples: list[dict[str, Any]],
     sky: list[dict[str, Any]],
     plots: dict[str, str] | None = None,
+    iau_plots: dict[int, list[tuple[str, str]]] | None = None,
 ) -> str:
     race = cfg.get("race") or {}
     title = race.get("name") or "Race"
@@ -390,6 +413,15 @@ def build_html(
             if nav:
                 lines.append("      <h4>Bright stars</h4>")
                 lines.extend(html_ul(nav, ""))
+        iau = (iau_plots or {}).get(nid) or []
+        if iau:
+            lines.append("      <h3>IAU constellations this night</h3>")
+            lines.append(
+                "      <p class='meta'>Visibility from the course centroid, "
+                "astronomical dusk to dawn.</p>"
+            )
+            for title, src in iau:
+                lines.extend(html_src_figure(src, title))
         lines.append("    </section>")
 
     lines += [
@@ -425,7 +457,14 @@ def main() -> None:
     plot_links = {p.stem: f"plots/{p.name}" for p in sorted((site_dir / "plots").glob("*.png"))}
     site_dir.mkdir(parents=True, exist_ok=True)
     (site_dir / "index.html").write_text(
-        build_html(cfg, nights, samples, sky, plots=plot_links or None),
+        build_html(
+            cfg,
+            nights,
+            samples,
+            sky,
+            plots=plot_links or None,
+            iau_plots=iau_plot_gallery(site_dir) or None,
+        ),
         encoding="utf-8",
     )
     dump_json(

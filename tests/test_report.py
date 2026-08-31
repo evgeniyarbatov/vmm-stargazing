@@ -160,3 +160,46 @@ class TestReport(unittest.TestCase):
         self.assertNotIn("steer", page)
         self.assertNotIn("night1-steer", page)
         self.assertNotIn("night1-alt.png", page)
+
+    def test_html_embeds_iau_constellation_gallery(self) -> None:
+        cfg = {"race": {"name": "VMM"}}
+        nights = {
+            "timezone": "Asia/Ho_Chi_Minh",
+            "nights": [
+                {
+                    "night_id": 1,
+                    "start": "2026-09-18T19:40:00+07:00",
+                    "end": "2026-09-19T04:50:00+07:00",
+                    "duration_h": 9.0,
+                    "elapsed0_h": 11.7,
+                    "elapsed1_h": 20.8,
+                    "dist0_km": 37.0,
+                    "dist1_km": 67.0,
+                }
+            ],
+            "events": [],
+        }
+        samples = [
+            {
+                "i": 0,
+                "night_id": 1,
+                "time": "2026-09-18T19:40:00+07:00",
+                "elapsed_h": 11.7,
+                "dist_km": 37.0,
+                "elev_m": 900,
+                "heading_deg": 10,
+            }
+        ]
+        sky: list[dict] = []
+        page = build_html(
+            cfg,
+            nights,
+            samples,
+            sky,
+            iau_plots={
+                1: [("Andromeda", "plots/constellations/night1/Andromeda.png")],
+            },
+        )
+        self.assertIn("IAU constellations this night", page)
+        self.assertIn("plots/constellations/night1/Andromeda.png", page)
+        self.assertIn('download="Andromeda.png"', page)

@@ -19,7 +19,7 @@ SAMPLES = $(DATA_DIR)/samples.json
 SKY = $(DATA_DIR)/sky.json
 
 .PHONY: install lock test lint help \
-	gpx dem timeline sky plots site run \
+	gpx dem timeline sky plots constellations site run \
 	clean clean-dem
 
 install:
@@ -66,13 +66,18 @@ plots: install
 	@uv run python scripts/plots.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
 		--site-dir "$(SITE_DIR)"
 
+constellations: install
+	@test -f "$(NIGHTS)" || (echo "Error: missing $(NIGHTS). Run: make timeline" >&2; exit 1)
+	@uv run python scripts/constellations.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
+		--site-dir "$(SITE_DIR)"
+
 site: install
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
 	@mkdir -p "$(SITE_DIR)"
 	@uv run python scripts/report.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
 		--site-dir "$(SITE_DIR)"
 
-run: gpx dem timeline sky plots site
+run: gpx dem timeline sky plots constellations site
 	@echo "Done: $(SITE_DIR)"
 
 clean:
@@ -92,9 +97,10 @@ help:
 	@echo "dem         - cache Copernicus GLO-30 for bbox"
 	@echo "timeline    - astronomical night windows + along-track samples"
 	@echo "sky         - planets, moon, stars, terrain horizon"
-	@echo "plots       - course map, sky discs, altitude / spots → docs/plots/"
-	@echo "site        - GitHub Pages HTML + data.json under docs/"
-	@echo "run         - gpx → dem → timeline → sky → plots → site"
+	@echo "plots          - course map, sky discs, altitude / spots → docs/plots/"
+	@echo "constellations - clone IAU constellation plots for each night → docs/plots/"
+	@echo "site           - GitHub Pages HTML + data.json under docs/"
+	@echo "run            - gpx → dem → timeline → sky → plots → constellations → site"
 	@echo "clean       - remove nights/samples/sky (keep DEM + ephemeris + docs/)"
 	@echo "clean-dem   - remove cached DEM"
 	@echo ""

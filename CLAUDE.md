@@ -15,6 +15,7 @@ make install
 make test
 make run
 make plots
+make constellations
 make site
 make lint
 ```
@@ -23,6 +24,6 @@ Run scripts via `uv run python scripts/…` or Make. Python ≥ 3.11.
 
 ## Do not
 
-- Commit DEM tiles, ephemeris, or `$DATA_DIR` cache.
-- Call live Copernicus or download de421 from `make test`.
+- Commit DEM tiles, ephemeris, `$DATA_DIR` cache, or the cloned constellations checkout.
+- Call live Copernicus, download de421, or clone constellations from `make test`.
 - Add a live planetarium or heavy star-catalogue rendering.

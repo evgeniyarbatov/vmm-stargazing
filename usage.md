@@ -6,7 +6,7 @@ make test
 make run
 ```
 
-Python ≥ 3.11, `uv` on `PATH`. `make test` is offline (synthetic GPX + GeoTIFF). The first `make dem` downloads GLO-30; the first `make timeline` downloads de421 into `$DATA_DIR/ephemeris/`.
+Python ≥ 3.11, `uv` on `PATH`. `make test` is offline (synthetic GPX + GeoTIFF). The first `make dem` downloads GLO-30; the first `make timeline` downloads de421 into `$DATA_DIR/ephemeris/`. `make constellations` clones [constellations](https://github.com/evgeniyarbatov/constellations) into `$DATA_DIR` and copies that night's IAU plots into `docs/plots/constellations/`.
 
 How the stages fit together: [architecture.md](architecture.md).
 
@@ -33,6 +33,7 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 | start/cutoff in `config.yaml` | `make timeline sky plots site` |
 | `checkpoints.csv` | `make timeline sky plots site` |
 | sampling / magnitude / horizon buffer | `make timeline sky plots site` |
+| IAU constellation charts | `make constellations site` |
 
 ## Knobs
 

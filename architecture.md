@@ -9,6 +9,7 @@ config.yaml + GPX
   → timeline.py  astronomical night windows + along-track samples
   → sky.py       planets / moon / stars + DEM horizon at each sample
   → plots.py     course map, sky discs, altitude, spots → docs/plots/
+  → constellations.py  clone IAU plots for each night → docs/plots/constellations/
   → report.py    GitHub Pages HTML + data.json → docs/
 ```
 
@@ -40,9 +41,10 @@ docs/                     GitHub Pages (committed)
   plots/nightN-sI-ahead.png
   plots/nightN-alt-planets.png
   plots/nightN-alt-stars.png
+  plots/constellations/nightN/*.png
 ```
 
-`$DATA_DIR` is not committed. The site in `docs/` is. Tests use a tiny synthetic ridge; they never download Copernicus or de421.
+`$DATA_DIR` is not committed (DEM, ephemeris, and the cloned `constellations` checkout included). The site in `docs/` is, including IAU constellation PNGs. Tests use a tiny synthetic ridge; they never download Copernicus, de421, or clone constellations.
 
 ## Time model
 
