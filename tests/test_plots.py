@@ -3,8 +3,10 @@ from __future__ import annotations
 import sys
 import tempfile
 import unittest
+from datetime import datetime
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -14,6 +16,8 @@ from helpers import FIXTURES, write_ridge_dem
 from horizon import load_dem_array
 from plots import (
     _altitude_series,
+    _clock_axis,
+    _local_time,
     altaz_to_rtheta,
     guide_label,
     guide_star,
@@ -287,10 +291,30 @@ class TestPlots(unittest.TestCase):
         self.assertNotEqual(star_color("Vega"), star_color("Altair"))
         self.assertEqual(star_color("Vega"), star_color("Vega"))
 
+    def test_local_time_drops_offset(self) -> None:
+        self.assertEqual(
+            _local_time("2026-09-18T19:40:00+07:00"),
+            datetime(2026, 9, 18, 19, 40),
+        )
+
+    def test_clock_axis_hhmm_ticks(self) -> None:
+        fig, ax = plt.subplots()
+        span = [datetime(2026, 9, 18, 19, 40), datetime(2026, 9, 19, 4, 50)]
+        ax.plot(span, [10.0, 40.0])
+        _clock_axis(ax, span)
+        fig.canvas.draw()
+        labels = [t.get_text() for t in ax.get_xticklabels() if t.get_text()]
+        xlabel = ax.get_xlabel()
+        plt.close(fig)
+        self.assertTrue(labels)
+        self.assertTrue(all(len(t) == 5 and t[2] == ":" for t in labels))
+        self.assertIn("20:00", labels)
+        self.assertNotEqual(xlabel, "elapsed h")
+
     def test_altitude_series_one_body_each(self) -> None:
         samples = [
-            {"i": 0, "elapsed_h": 12.0},
-            {"i": 1, "elapsed_h": 18.0},
+            {"i": 0, "elapsed_h": 12.0, "time": "2026-09-18T20:00:00+07:00"},
+            {"i": 1, "elapsed_h": 18.0, "time": "2026-09-19T02:00:00+07:00"},
         ]
         sky = [
             {
@@ -352,5 +376,6 @@ class TestPlots(unittest.TestCase):
         ]
         planets = _altitude_series(samples, sky, "planets")
         self.assertEqual([name for _kind, name, *_rest in planets], ["Saturn", "Moon"])
+        self.assertEqual(planets[0][2], [datetime(2026, 9, 18, 20, 0), datetime(2026, 9, 19, 2, 0)])
         stars = _altitude_series(samples, sky, "stars")
         self.assertEqual([name for _kind, name, *_rest in stars], ["Altair", "Vega"])

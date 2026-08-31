@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.dates as mdates  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
 from catalog import NAV_STARS
@@ -631,10 +633,22 @@ def _series_color(kind: str, name: str) -> str:
     return PLANET_COLORS.get(name, INK)
 
 
+def _local_time(value: str | datetime) -> datetime:
+    dt = datetime.fromisoformat(value) if isinstance(value, str) else value
+    return dt.replace(tzinfo=None)
+
+
+def _clock_axis(ax: Any, span: list[datetime]) -> None:
+    if span:
+        ax.set_xlim(min(span), max(span))
+    ax.xaxis.set_major_locator(mdates.HourLocator())
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
+
+
 def _body_altitude(
     samples: list[dict[str, Any]], sky: list[dict[str, Any]], kind: str, name: str
-) -> tuple[list[float], list[float], list[bool]]:
-    xs: list[float] = []
+) -> tuple[list[datetime], list[float], list[bool]]:
+    xs: list[datetime] = []
     ys: list[float] = []
     obs: list[bool] = []
     for sample in samples:
@@ -645,7 +659,7 @@ def _body_altitude(
         ]
         if not match:
             continue
-        xs.append(float(sample["elapsed_h"]))
+        xs.append(_local_time(sample["time"]))
         ys.append(float(match[0]["alt_deg"]))
         obs.append(bool(match[0].get("obscured")))
     return xs, ys, obs
@@ -653,8 +667,8 @@ def _body_altitude(
 
 def _altitude_series(
     samples: list[dict[str, Any]], sky: list[dict[str, Any]], series: str
-) -> list[tuple[str, str, list[float], list[float], list[bool]]]:
-    out: list[tuple[str, str, list[float], list[float], list[bool]]] = []
+) -> list[tuple[str, str, list[datetime], list[float], list[bool]]]:
+    out: list[tuple[str, str, list[datetime], list[float], list[bool]]] = []
     for kind, name in _altitude_targets(series, samples, sky):
         xs, ys, obs = _body_altitude(samples, sky, kind, name)
         if not xs or max(ys) < 0:
@@ -668,10 +682,10 @@ def plot_altitude(
     night_id: int,
     kind: str,
     name: str,
-    xs: list[float],
+    xs: list[datetime],
     ys: list[float],
     obs: list[bool],
-    hours: list[float],
+    span: list[datetime],
 ) -> Path:
     fig, ax = plt.subplots(figsize=(10.0, 4.4), facecolor=PAPER)
     color = _series_color(kind, name)
@@ -682,9 +696,7 @@ def plot_altitude(
         ax.scatter(hidden_x, hidden_y, s=16, c=color, alpha=0.25, zorder=2)
     ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
     ax.set_ylim(-15, 90)
-    if hours:
-        ax.set_xlim(min(hours), max(hours))
-    ax.set_xlabel("elapsed h")
+    _clock_axis(ax, span)
     ax.set_ylabel("altitude °")
     _style_axes(ax, f"Night {night_id} · {name}")
     return _savefig(fig, path)
@@ -828,13 +840,13 @@ def write_plots(
     picked = pick_best_spots(scores)
     picked_ids = {int(s["i"]) for s in picked}
     for nid, group in by_night.items():
-        hours = [float(s["elapsed_h"]) for s in group]
+        span = [_local_time(s["time"]) for s in group]
         for series in ("planets", "stars"):
             for kind, name, xs, ys, obs in _altitude_series(group, sky, series):
                 stem = altitude_stem(nid, kind, name)
                 written.append(
                     plot_altitude(
-                        plots_dir / f"{stem}.png", nid, kind, name, xs, ys, obs, hours
+                        plots_dir / f"{stem}.png", nid, kind, name, xs, ys, obs, span
                     )
                 )
         for sample in group:
