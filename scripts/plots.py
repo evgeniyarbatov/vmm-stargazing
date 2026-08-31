@@ -631,6 +631,72 @@ def _series_color(kind: str, name: str) -> str:
     return PLANET_COLORS.get(name, INK)
 
 
+def _body_altitude(
+    samples: list[dict[str, Any]], sky: list[dict[str, Any]], kind: str, name: str
+) -> tuple[list[float], list[float], list[bool]]:
+    xs: list[float] = []
+    ys: list[float] = []
+    obs: list[bool] = []
+    for sample in samples:
+        match = [
+            r
+            for r in rows_for_sample(sky, sample["i"])
+            if r["kind"] == kind and r["name"] == name
+        ]
+        if not match:
+            continue
+        xs.append(float(sample["elapsed_h"]))
+        ys.append(float(match[0]["alt_deg"]))
+        obs.append(bool(match[0].get("obscured")))
+    return xs, ys, obs
+
+
+def _altitude_series(
+    samples: list[dict[str, Any]], sky: list[dict[str, Any]], series: str
+) -> list[tuple[str, str, list[float], list[float], list[bool]]]:
+    out: list[tuple[str, str, list[float], list[float], list[bool]]] = []
+    for kind, name in _altitude_targets(series, samples, sky):
+        xs, ys, obs = _body_altitude(samples, sky, kind, name)
+        if not xs or max(ys) < 0:
+            continue
+        out.append((kind, name, xs, ys, obs))
+    return out
+
+
+def _draw_altitude_panel(
+    ax: Any,
+    kind: str,
+    name: str,
+    xs: list[float],
+    ys: list[float],
+    obs: list[bool],
+    hours: list[float],
+) -> None:
+    color = _series_color(kind, name)
+    ax.plot(xs, ys, color=color, lw=1.6)
+    hidden_x = [x for x, o, y in zip(xs, obs, ys, strict=True) if o or y < 0]
+    hidden_y = [y for o, y in zip(obs, ys, strict=True) if o or y < 0]
+    if hidden_x:
+        ax.scatter(hidden_x, hidden_y, s=12, c=color, alpha=0.25, zorder=2)
+    ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
+    ax.set_ylim(-15, 90)
+    if hours:
+        ax.set_xlim(min(hours), max(hours))
+    ax.set_ylabel("altitude °")
+    _style_axes(ax)
+    ax.text(
+        0.012,
+        0.90,
+        name,
+        transform=ax.transAxes,
+        color=color,
+        fontsize=9,
+        va="top",
+        zorder=6,
+        bbox={"facecolor": PAPER, "edgecolor": "none", "alpha": 0.85, "pad": 1.2},
+    )
+
+
 def plot_altitude(
     path: Path,
     night_id: int,
@@ -638,42 +704,40 @@ def plot_altitude(
     sky: list[dict[str, Any]],
     series: str,
 ) -> Path:
-    fig, ax = plt.subplots(figsize=(10, 4.4), facecolor=PAPER)
-    names = _altitude_targets(series, samples, sky)
+    bodies = _altitude_series(samples, sky, series)
     hours = [float(s["elapsed_h"]) for s in samples]
-    for kind, name in names:
-        xs: list[float] = []
-        ys: list[float] = []
-        obs: list[bool] = []
-        for sample in samples:
-            match = [
-                r
-                for r in rows_for_sample(sky, sample["i"])
-                if r["kind"] == kind and r["name"] == name
-            ]
-            if not match:
-                continue
-            xs.append(float(sample["elapsed_h"]))
-            ys.append(float(match[0]["alt_deg"]))
-            obs.append(bool(match[0].get("obscured")))
-        if not xs or max(ys) < 0:
-            continue
-        color = _series_color(kind, name)
-        ax.plot(xs, ys, color=color, lw=1.6 if kind != "star" else 1.2, label=name)
-        hidden_x = [x for x, o, y in zip(xs, obs, ys, strict=True) if o or y < 0]
-        hidden_y = [y for o, y in zip(obs, ys, strict=True) if o or y < 0]
-        if hidden_x:
-            ax.scatter(hidden_x, hidden_y, s=12, c=color, alpha=0.25, zorder=2)
-
-    ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
-    ax.set_ylim(-15, 90)
-    if hours:
-        ax.set_xlim(min(hours), max(hours))
-    ax.set_xlabel("elapsed h")
-    ax.set_ylabel("altitude °")
+    n = max(len(bodies), 1)
+    fig, axes = plt.subplots(
+        n,
+        1,
+        figsize=(10.0, 1.35 * n + 1.0),
+        sharex=True,
+        sharey=True,
+        facecolor=PAPER,
+        constrained_layout=True,
+    )
+    axes_list = np.atleast_1d(axes)
     label = "planets and moon" if series == "planets" else "bright stars"
-    _style_axes(ax, f"Night {night_id} · {label} (dashed 0° = geometric horizon)")
-    _legend(ax, loc="upper left", fontsize=7, ncol=3)
+    if not bodies:
+        ax = axes_list[0]
+        ax.axhline(0.0, color=MUTED, lw=0.8, ls="--")
+        ax.set_ylim(-15, 90)
+        if hours:
+            ax.set_xlim(min(hours), max(hours))
+        ax.set_xlabel("elapsed h")
+        ax.set_ylabel("altitude °")
+        _style_axes(ax)
+    else:
+        for ax, (kind, name, xs, ys, obs) in zip(axes_list, bodies, strict=True):
+            _draw_altitude_panel(ax, kind, name, xs, ys, obs, hours)
+        for ax in axes_list:
+            ax.label_outer()
+        axes_list[-1].set_xlabel("elapsed h")
+    fig.suptitle(
+        f"Night {night_id} · {label} (dashed 0° = geometric horizon)",
+        color=INK,
+        fontsize=11,
+    )
     return _savefig(fig, path)
 
 

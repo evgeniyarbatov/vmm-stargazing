@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from helpers import FIXTURES, write_ridge_dem
 from horizon import load_dem_array
 from plots import (
+    _altitude_series,
     altaz_to_rtheta,
     guide_label,
     guide_star,
@@ -281,3 +282,71 @@ class TestPlots(unittest.TestCase):
     def test_star_colors_differ(self) -> None:
         self.assertNotEqual(star_color("Vega"), star_color("Altair"))
         self.assertEqual(star_color("Vega"), star_color("Vega"))
+
+    def test_altitude_series_one_body_each(self) -> None:
+        samples = [
+            {"i": 0, "elapsed_h": 12.0},
+            {"i": 1, "elapsed_h": 18.0},
+        ]
+        sky = [
+            {
+                "sample_i": 0,
+                "kind": "planet",
+                "name": "Saturn",
+                "alt_deg": 20.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 1,
+                "kind": "planet",
+                "name": "Saturn",
+                "alt_deg": 40.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 0,
+                "kind": "moon",
+                "name": "Moon",
+                "alt_deg": 10.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 1,
+                "kind": "moon",
+                "name": "Moon",
+                "alt_deg": -5.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 0,
+                "kind": "planet",
+                "name": "Venus",
+                "alt_deg": -20.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 1,
+                "kind": "planet",
+                "name": "Venus",
+                "alt_deg": -10.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 0,
+                "kind": "star",
+                "name": "Vega",
+                "alt_deg": 70.0,
+                "obscured": False,
+            },
+            {
+                "sample_i": 1,
+                "kind": "star",
+                "name": "Altair",
+                "alt_deg": 45.0,
+                "obscured": False,
+            },
+        ]
+        planets = _altitude_series(samples, sky, "planets")
+        self.assertEqual([name for _kind, name, *_rest in planets], ["Saturn", "Moon"])
+        stars = _altitude_series(samples, sky, "stars")
+        self.assertEqual([name for _kind, name, *_rest in stars], ["Altair", "Vega"])
