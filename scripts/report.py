@@ -106,14 +106,14 @@ def midnightish(sample: dict[str, Any]) -> float:
     return min(abs(hour - 0), abs(hour - 24))
 
 
-def planet_items(rows: list[dict[str, Any]]) -> list[str]:
+def planet_items(rows: list[dict[str, Any]], nv: NightView | None = None) -> list[str]:
     planets = [r for r in rows if r["kind"] == "planet" and float(r["alt_deg"]) >= 0]
     items = []
     for r in planets:
         mag = f", mag {r['mag']:.1f}" if r.get("mag") is not None else ""
         extra = " — behind terrain" if r.get("obscured") else ""
         items.append(
-            f"<li><strong>{linked_sky_name(r['name'])}</strong>: "
+            f"<li><strong>{linked_site_name(r['name'], nv=nv)}</strong>: "
             f"{esc(fmt_altaz(r['alt_deg'], r['az_deg']))}{esc(mag)}{esc(extra)}</li>"
         )
     return items
@@ -140,14 +140,14 @@ def constellation_groups(rows: list[dict[str, Any]]) -> dict[str, list[str]]:
     return by_tag
 
 
-def moon_sentence(rows: list[dict[str, Any]]) -> str:
+def moon_sentence(rows: list[dict[str, Any]], nv: NightView | None = None) -> str:
     moons = [r for r in rows if r["kind"] == "moon"]
     if not moons:
-        return f"{linked_sky_name('Moon')} not computed."
+        return f"{linked_site_name('Moon', nv=nv)} not computed."
     r = moons[0]
     pct = int(round(float(r.get("illumination") or 0) * 100))
     phase = r.get("phase_name") or "unknown phase"
-    moon = linked_sky_name("Moon")
+    moon = linked_site_name("Moon", nv=nv)
     if float(r["alt_deg"]) < 0 or r.get("obscured"):
         return f"{moon} {esc(phase)}, {pct}% lit, below the terrain horizon."
     wash = ""
@@ -159,12 +159,12 @@ def moon_sentence(rows: list[dict[str, Any]]) -> str:
     )
 
 
-def milky_way_sentence(rows: list[dict[str, Any]]) -> str:
+def milky_way_sentence(rows: list[dict[str, Any]], nv: NightView | None = None) -> str:
     feats = [r for r in rows if r["kind"] == "feature" and r["name"] == "Milky Way centre"]
     if not feats:
         return ""
     r = feats[0]
-    name = linked_sky_name("Milky Way centre")
+    name = linked_site_name("Milky Way centre", nv=nv)
     if float(r["alt_deg"]) < 0 or r.get("obscured"):
         return f"{name} is below the local horizon."
     return f"{name} {esc(fmt_altaz(r['alt_deg'], r['az_deg']))}."
@@ -208,6 +208,14 @@ def altitude_stems(plots: dict[str, str] | None, night_id: int, series: str) -> 
     return out
 
 
+def sky_plot_ids(plots: dict[str, str] | None, night_id: int) -> set[str]:
+    return {
+        constellation_id(altitude_name(stem, night_id))
+        for series in ("planets", "stars")
+        for stem in altitude_stems(plots, night_id, series)
+    }
+
+
 def html_altitude_block(
     night_id: int, plots: dict[str, str] | None, series: str
 ) -> list[str]:
@@ -222,41 +230,83 @@ def html_altitude_block(
         name = altitude_name(stem, night_id)
         html_id = constellation_id(name)
         jump.append(f'<a href="#{esc(html_id)}">{esc(name)}</a>')
-        figs.append(f'<h4 id="{esc(html_id)}">{linked_sky_name(name)}</h4>')
+        figs.append(f'<h4 id="{esc(html_id)}">{esc(name)}</h4>')
         figs.extend(html_figure(stem, plots, f"Night {night_id} · {name}"))
+        figs.append(f"<p class='meta'>{encyclopedia_links(name)}</p>")
     if len(jump) > 1:
         lines.append(f"<p class='jump'>{' · '.join(jump)}</p>")
     lines.extend(figs)
     return lines
 
 
-def linked_sky_name(
-    name: str,
-    *,
-    iau_page: str | None = None,
-    iau_ids: set[str] | None = None,
-) -> str:
+def linked_site_name(name: str, nv: NightView | None = None) -> str:
+    cid = constellation_id(name)
+    if nv is not None and nv.iau_href and cid in nv.iau_ids:
+        return f'<a href="{esc(nv.iau_href)}#{esc(cid)}">{esc(name)}</a>'
+    if nv is not None and cid in nv.sky_ids:
+        return f'<a href="{esc(nv.sky_href)}#{esc(cid)}">{esc(name)}</a>'
+    return esc(name)
+
+
+def encyclopedia_links(name: str) -> str:
     entry = sky_entry(name)
     grok = entry["grokipedia"]
     wiki = entry["wikipedia"]
-    bits = [
-        f'<a href="{esc(grok)}" target="_blank" rel="noopener noreferrer">{esc(name)}</a>'
-    ]
-    if wiki != grok:
+    bits: list[str] = []
+    if grok != wiki:
         bits.append(
-            f'<a class="wiki" href="{esc(wiki)}" target="_blank" rel="noopener noreferrer">'
-            "Wikipedia</a>"
+            f'<a href="{esc(grok)}" target="_blank" rel="noopener noreferrer">Grokipedia</a>'
         )
-    cid = constellation_id(name)
-    if iau_page and iau_ids and cid in iau_ids:
-        bits.append(f'<a class="chart" href="{esc(iau_page)}#{esc(cid)}">chart</a>')
-    return " ".join(bits)
-
-
-def join_linked(names: list[str], iau_page: str | None, iau_ids: set[str]) -> str:
-    return ", ".join(
-        linked_sky_name(n, iau_page=iau_page, iau_ids=iau_ids) for n in names
+    bits.append(
+        f'<a href="{esc(wiki)}" target="_blank" rel="noopener noreferrer">Wikipedia</a>'
     )
+    return " · ".join(bits)
+
+
+def unique_ref_names(names: list[str]) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for name in names:
+        cid = constellation_id(name)
+        if cid in seen:
+            continue
+        seen.add(cid)
+        out.append(name)
+    out.sort(key=lambda n: n.lower())
+    return out
+
+
+def sample_ref_names(rows: list[dict[str, Any]]) -> list[str]:
+    names: list[str] = []
+    if any(r["kind"] == "moon" for r in rows):
+        names.append("Moon")
+    if any(r["kind"] == "feature" and r["name"] == "Milky Way centre" for r in rows):
+        names.append("Milky Way centre")
+    for r in rows:
+        if r["kind"] == "planet" and float(r["alt_deg"]) >= 0:
+            names.append(r["name"])
+    groups = constellation_groups(rows)
+    for key in ("overhead", "up", "rising", "setting"):
+        names.extend(groups[key])
+    for r in rows:
+        if r["kind"] == "star" and r["name"] in NAV_STARS and visible(r, min_alt=5):
+            names.append(r["name"])
+    return names
+
+
+def references_block(names: list[str]) -> list[str]:
+    ordered = unique_ref_names(names)
+    if not ordered:
+        return []
+    lines = ["<h3>References</h3>", "<ul class='refs'>"]
+    for name in ordered:
+        lines.append(f"  <li>{esc(name)} · {encyclopedia_links(name)}</li>")
+    lines.append("</ul>")
+    return lines
+
+
+def join_linked(names: list[str], nv: NightView | None = None) -> str:
+    return ", ".join(linked_site_name(n, nv) for n in names)
 
 
 def name_in(title: str, names: set[str]) -> bool:
@@ -264,25 +314,19 @@ def name_in(title: str, names: set[str]) -> bool:
     return any(constellation_id(n) == tid for n in names)
 
 
-def nav_star_items(
-    rows: list[dict[str, Any]],
-    *,
-    iau_page: str | None = None,
-    iau_ids: set[str] | None = None,
-) -> list[str]:
+def nav_star_items(rows: list[dict[str, Any]], nv: NightView | None = None) -> list[str]:
     stars = [
         r for r in rows if r["kind"] == "star" and r["name"] in NAV_STARS and visible(r, min_alt=5)
     ]
     stars.sort(
         key=lambda r: (r.get("mag") is None, r.get("mag") if r.get("mag") is not None else 99)
     )
-    ids = iau_ids or set()
     items = []
     for r in stars[:12]:
         mag = f", mag {r['mag']:.1f}" if r.get("mag") is not None else ""
-        constel = linked_sky_name(r["constellation"], iau_page=iau_page, iau_ids=ids)
+        constel = linked_site_name(r["constellation"], nv)
         items.append(
-            f"<li>{linked_sky_name(r['name'])} ({constel}): "
+            f"<li>{linked_site_name(r['name'], nv)} ({constel}): "
             f"{esc(fmt_altaz(r['alt_deg'], r['az_deg']))}{esc(mag)}</li>"
         )
     return items
@@ -319,14 +363,14 @@ def sample_step_m(cfg: dict[str, Any]) -> float:
     return float(raw) if raw else 2000.0
 
 
-def sky_lede(rows: list[dict[str, Any]]) -> str:
-    parts = [moon_sentence(rows)]
-    mw = milky_way_sentence(rows)
+def sky_lede(rows: list[dict[str, Any]], nv: NightView | None = None) -> str:
+    parts = [moon_sentence(rows, nv)]
+    mw = milky_way_sentence(rows, nv)
     if mw:
         parts.append(mw)
     groups = constellation_groups(rows)
     if groups["overhead"]:
-        parts.append(f"Overhead: {join_linked(groups['overhead'], None, set())}.")
+        parts.append(f"Overhead: {join_linked(groups['overhead'], nv)}.")
     return " ".join(parts)
 
 
@@ -434,14 +478,8 @@ def html_table(headers: list[str], rows: list[list[str]]) -> list[str]:
     return lines
 
 
-def constellation_block(
-    rows: list[dict[str, Any]],
-    *,
-    iau_page: str | None = None,
-    iau_ids: set[str] | None = None,
-) -> list[str]:
+def constellation_block(rows: list[dict[str, Any]], nv: NightView | None = None) -> list[str]:
     groups = constellation_groups(rows)
-    ids = iau_ids or set()
     items = []
     for label, key in (
         ("Overhead", "overhead"),
@@ -450,7 +488,7 @@ def constellation_block(
         ("Setting", "setting"),
     ):
         if groups[key]:
-            items.append(f"<li>{label}: {join_linked(groups[key], iau_page, ids)}</li>")
+            items.append(f"<li>{label}: {join_linked(groups[key], nv)}</li>")
     lines = ["<h4>Constellations</h4>"]
     lines.extend(html_ul(items, "none tagged in this snapshot"))
     return lines
@@ -557,16 +595,11 @@ def sample_disc_figures(sample: dict[str, Any], plots: dict[str, str] | None) ->
     return lines
 
 
-def sample_sky_lists(
-    rows: list[dict[str, Any]],
-    *,
-    iau_page: str | None,
-    iau_ids: set[str],
-) -> list[str]:
+def sample_sky_lists(rows: list[dict[str, Any]], nv: NightView | None = None) -> list[str]:
     lines = ["<h4>Planets</h4>"]
-    lines.extend(html_ul(planet_items(rows), "none above the geometric horizon"))
-    lines.extend(constellation_block(rows, iau_page=iau_page, iau_ids=iau_ids))
-    nav = nav_star_items(rows, iau_page=iau_page, iau_ids=iau_ids)
+    lines.extend(html_ul(planet_items(rows, nv), "none above the geometric horizon"))
+    lines.extend(constellation_block(rows, nv))
+    nav = nav_star_items(rows, nv)
     if nav:
         lines.append("<h4>Bright stars</h4>")
         lines.extend(html_ul(nav, ""))
@@ -697,6 +730,7 @@ class NightView:
     stop_hrefs: dict[int, str]
     iau_ids: set[str]
     iau_items: list[IauConstellation]
+    sky_ids: set[str]
 
 
 def prepare_night_views(
@@ -705,6 +739,7 @@ def prepare_night_views(
     sky: list[dict[str, Any]],
     spots: list[dict[str, Any]] | None,
     iau_plots: dict[int, list[IauConstellation]] | None,
+    plots: dict[str, str] | None = None,
 ) -> list[NightView]:
     by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for s in samples:
@@ -730,6 +765,7 @@ def prepare_night_views(
                 stop_hrefs=stop_hrefs,
                 iau_ids={constellation_id(title) for title, _ in items},
                 iau_items=items,
+                sky_ids=sky_plot_ids(plots, nid),
             )
         )
     return views
@@ -782,7 +818,7 @@ def build_index(
         if nv.featured is not None:
             body.append(
                 f"      <p class='insight'>"
-                f"{sky_lede(rows_for_sample(sky, int(nv.featured['i'])))}</p>"
+                f"{sky_lede(rows_for_sample(sky, int(nv.featured['i'])), nv)}</p>"
             )
         body.append("      <ol>")
         for s in nv.ordered:
@@ -945,7 +981,7 @@ def build_night(
     else:
         if nv.featured is not None:
             rows = rows_for_sample(sky, int(nv.featured["i"]))
-            body.append(f"<p class='lede'>{sky_lede(rows)}</p>")
+            body.append(f"<p class='lede'>{sky_lede(rows, nv)}</p>")
             body.extend(sample_disc_figures(nv.featured, plots))
             href = nv.stop_hrefs[int(nv.featured["i"])]
             body.append(
@@ -967,7 +1003,7 @@ def build_night(
                 if nv.featured is not None and int(s["i"]) == int(nv.featured["i"]):
                     body.append("    <p class='meta'>best stop</p>")
                 body.append(
-                    f"    <p class='meta'>{sky_lede(rows_for_sample(sky, int(s['i'])))}</p>"
+                    f"    <p class='meta'>{sky_lede(rows_for_sample(sky, int(s['i'])), nv)}</p>"
                 )
                 body.append("  </li>")
             body.append("</ul>")
@@ -986,6 +1022,10 @@ def build_night(
         other = same_place_html(views, nv.nid)
         if other:
             body.append(other)
+        ref_names: list[str] = []
+        for s in nv.ordered:
+            ref_names.extend(sample_ref_names(rows_for_sample(sky, int(s["i"]))))
+        body.extend(references_block(ref_names))
     return page_shell(
         title=f"Night {nv.nid} — {title}",
         heading=f"Night {nv.nid}",
@@ -1013,9 +1053,9 @@ def build_stop(
 ) -> str:
     km = km_label(float(sample["dist_km"]))
     rows = rows_for_sample(sky, int(sample["i"]))
-    body = [f"<p class='lede'>{sky_lede(rows)}</p>"]
+    body = [f"<p class='lede'>{sky_lede(rows, nv)}</p>"]
     body.extend(sample_disc_figures(sample, plots))
-    body.extend(sample_sky_lists(rows, iau_page=nv.iau_href, iau_ids=nv.iau_ids))
+    body.extend(sample_sky_lists(rows, nv))
     more = [
         f'<a href="{esc(nv.href)}">Night {nv.nid}</a>',
         f'<a href="{esc(nv.sky_href)}">Planets and stars</a>',
@@ -1037,6 +1077,7 @@ def build_stop(
     other = same_place_html(views, nv.nid)
     if other:
         body.append(other)
+    body.extend(references_block(sample_ref_names(rows)))
     return page_shell(
         title=f"{km} · Night {nv.nid} — {title}",
         heading=km,
@@ -1074,10 +1115,10 @@ def build_sky(
         km = km_label(float(nv.featured["dist_km"]))
         body.append(
             f'<p>At the best stop (<a href="{esc(href)}">{esc(km)}</a>): '
-            f"{sky_lede(rows)}</p>"
+            f"{sky_lede(rows, nv)}</p>"
         )
         body.append("<h4>Planets</h4>")
-        body.extend(html_ul(planet_items(rows), "none above the geometric horizon"))
+        body.extend(html_ul(planet_items(rows, nv), "none above the geometric horizon"))
     more = [f'<a href="{esc(nv.href)}">Night {nv.nid}</a>']
     if nv.iau_href:
         more.append(f'<a href="{esc(nv.iau_href)}">Constellations this night</a>')
@@ -1126,11 +1167,11 @@ def build_iau(
     if overhead:
         body.append(
             f"<p class='jump'>Overhead: "
-            f"{join_linked(sorted(overhead), nv.iau_href, nv.iau_ids)}.</p>"
+            f"{join_linked(sorted(overhead), nv)}.</p>"
         )
     if up:
         body.append(
-            f"<p class='jump'>Up: {join_linked(sorted(up), nv.iau_href, nv.iau_ids)}.</p>"
+            f"<p class='jump'>Up: {join_linked(sorted(up), nv)}.</p>"
         )
     others = other_nights(views, nv.nid)
     for plate_title, files in nv.iau_items:
@@ -1140,8 +1181,8 @@ def build_iau(
             inner.extend(
                 html_src_figure(src, f"{plate_title} · {caption}", caption=caption)
             )
+        inner.append(f"<p class='meta'>{encyclopedia_links(plate_title)}</p>")
         here = [s for s, names in stop_names if name_in(plate_title, names)]
-        inner.insert(0, f"<p class='meta'>{linked_sky_name(plate_title)}</p>")
         if here:
             links = ", ".join(
                 f'<a href="{esc(nv.stop_hrefs[int(s["i"])])}">'
@@ -1195,7 +1236,7 @@ def build_pages(
     location = race.get("location") or ""
     kicker = f"{location} · {title}" if location else title
     night_list = list(nights.get("nights") or [])
-    views = prepare_night_views(night_list, samples, sky, spots, iau_plots)
+    views = prepare_night_views(night_list, samples, sky, spots, iau_plots, plots)
     pages = {
         "index.html": build_index(
             title=title,
