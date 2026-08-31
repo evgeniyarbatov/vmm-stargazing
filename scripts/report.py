@@ -359,6 +359,15 @@ def build_html(
         mid = min(group, key=midnightish)
         lines.append(f"      <p class='lede'>{esc(sky_lede(rows_for_sample(sky, mid['i'])))}</p>")
         lines.extend(
+            html_figure(
+                f"night{nid}-spot-ahead",
+                plots,
+                f"Night {nid} looking along the course",
+                "GLO-30 DSM from the best stop on this night, looking up the GPX. "
+                "The filled contour is the ridge; a star below it is behind terrain.",
+            )
+        )
+        lines.extend(
             html_figure(f"night{nid}-alt-planets", plots, f"Night {nid} planets and moon")
         )
         lines.extend(html_figure(f"night{nid}-alt-stars", plots, f"Night {nid} bright stars"))
@@ -369,15 +378,6 @@ def build_html(
             stem = disc_stem(sample, group)
             lines += [f"      <h3>{esc(sample_heading(sample))}</h3>"]
             lines.extend(html_figure(stem, plots, sample_heading(sample)))
-            lines.extend(
-                html_figure(
-                    f"{stem}-ridge",
-                    plots,
-                    f"{sample_heading(sample)} ridge silhouette",
-                    "Filled edge is the DEM ridge line from this point. "
-                    "A star below the fill is behind terrain.",
-                )
-            )
             lines.append(f"      <p>{esc(moon_sentence(rows))}</p>")
             mw = milky_way_sentence(rows)
             if mw:

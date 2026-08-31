@@ -14,6 +14,36 @@ def load_dem_array(path: Path) -> tuple[np.ndarray, object, float | None]:
         return dem.read(1), dem.transform, dem.nodata
 
 
+def horizon_along_azs(
+    array: np.ndarray,
+    transform: object,
+    lon: float,
+    lat: float,
+    elev_m: float,
+    azs: np.ndarray,
+    max_km: float = 15.0,
+    step_m: float = 200.0,
+    eye_m: float = EYE_M,
+) -> np.ndarray:
+    eye = elev_m + eye_m
+    n_steps = max(1, int(max_km * 1000.0 / step_m))
+    profile = np.zeros(len(azs), dtype=float)
+    for i, az in enumerate(azs):
+        max_alt = 0.0
+        az_f = float(az) % 360.0
+        for s in range(1, n_steps + 1):
+            dist = s * step_m
+            dlon, dlat = destination_lonlat(lon, lat, az_f, dist)
+            z = sample_elev_xy(array, transform, dlon, dlat, None)
+            if not np.isfinite(z):
+                continue
+            alt = math.degrees(math.atan2(z - eye, dist))
+            if alt > max_alt:
+                max_alt = alt
+        profile[i] = max_alt
+    return profile
+
+
 def horizon_profile(
     array: np.ndarray,
     transform: object,
@@ -25,23 +55,10 @@ def horizon_profile(
     step_m: float = 200.0,
     eye_m: float = EYE_M,
 ) -> np.ndarray:
-    eye = elev_m + eye_m
-    n_steps = max(1, int(max_km * 1000.0 / step_m))
-    profile = np.zeros(n_az, dtype=float)
-    for i in range(n_az):
-        az = i * (360.0 / n_az)
-        max_alt = 0.0
-        for s in range(1, n_steps + 1):
-            dist = s * step_m
-            dlon, dlat = destination_lonlat(lon, lat, az, dist)
-            z = sample_elev_xy(array, transform, dlon, dlat, None)
-            if not np.isfinite(z):
-                continue
-            alt = math.degrees(math.atan2(z - eye, dist))
-            if alt > max_alt:
-                max_alt = alt
-        profile[i] = max_alt
-    return profile
+    azs = np.arange(n_az, dtype=float) * (360.0 / n_az)
+    return horizon_along_azs(
+        array, transform, lon, lat, elev_m, azs, max_km=max_km, step_m=step_m, eye_m=eye_m
+    )
 
 
 def horizon_at_az(profile: np.ndarray, az_deg: float) -> float:

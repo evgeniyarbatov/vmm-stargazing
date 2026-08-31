@@ -37,11 +37,9 @@ docs/                     GitHub Pages (committed)
   plots/profile.png
   plots/spots.png
   plots/nightN-dusk.png
-  plots/nightN-dusk-ridge.png
   plots/nightN-midnight.png
-  plots/nightN-midnight-ridge.png
   plots/nightN-dawn.png
-  plots/nightN-dawn-ridge.png
+  plots/nightN-spot-ahead.png
   plots/nightN-alt-planets.png
   plots/nightN-alt-stars.png
 ```

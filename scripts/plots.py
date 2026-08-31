@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
 from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
-from horizon import horizon_at_az, horizon_profile, load_dem_array
+from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
 from report import disc_stem, fmt_hours, fmt_time, key_samples, rows_for_sample
 from utils import ensure_parent, load_json, sample_along
 
@@ -32,6 +32,7 @@ MOON = "#dc8a78"
 MW = "#8839ef"
 STAR = "#1e1e2e"
 AHEAD_DEG = 20.0
+AHEAD_HALF_DEG = 90.0
 OPEN_REF_DEG = 45.0
 NIGHT_COLORS = {1: "#1e66f5", 2: "#8839ef", 3: "#40a02b"}
 PLANET_COLORS = {
@@ -163,6 +164,15 @@ def score_sample(
         "moon_penalty": moon_penalty,
         "mw_bonus": float(mw_up),
     }
+
+
+def best_spots(scores: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for row in scores:
+        by_night[int(row["night_id"])].append(row)
+    return [
+        max(by_night[nid], key=lambda row: float(row["score"])) for nid in sorted(by_night)
+    ]
 
 
 def _style_axes(ax: Any, title: str | None = None) -> None:
@@ -404,13 +414,7 @@ def plot_spots(
         linewidths=0.4,
         zorder=4,
     )
-    by_night: dict[int, list[dict[str, Any]]] = defaultdict(list)
-    for row in scores:
-        by_night[int(row["night_id"])].append(row)
-    labeled: list[dict[str, Any]] = []
-    for nid in sorted(by_night):
-        ranked = sorted(by_night[nid], key=lambda row: row["score"], reverse=True)
-        labeled.extend(ranked[:1])
+    labeled = best_spots(scores)
     for row in labeled:
         _annotate(
             ax_map,
@@ -655,61 +659,70 @@ def plot_altitude(
     return _savefig(fig, path)
 
 
-def plot_ridge(
+def plot_ahead(
     path: Path,
     sample: dict[str, Any],
     rows: list[dict[str, Any]],
-    profile: np.ndarray | None,
+    dem_array: np.ndarray | None,
+    dem_transform: Any,
     guide: dict[str, Any] | None = None,
 ) -> Path:
-    fig, ax = plt.subplots(figsize=(10, 3.9), facecolor=PAPER)
-    az = np.linspace(0.0, 360.0, 361)
-    if profile is not None:
-        horizon = np.array([horizon_at_az(profile, a) for a in az])
-        ax.fill_between(az, horizon, -12.0, color=HORIZON_FILL, zorder=1)
-        ax.plot(az, horizon, color=HORIZON_LINE, lw=1.1, zorder=2)
+    fig, ax = plt.subplots(figsize=(10, 4.6), facecolor=PAPER)
     heading = float(sample.get("heading_deg") or 0.0)
-    ax.axvline(heading, color=RUN, lw=0.9, ls="--", zorder=3, alpha=0.7)
-    ax.text(heading, 82, "run", color=RUN, ha="center", va="bottom", fontsize=8)
+    rels = np.linspace(-AHEAD_HALF_DEG, AHEAD_HALF_DEG, 181)
+    if dem_array is not None and dem_transform is not None:
+        horizon = horizon_along_azs(
+            dem_array,
+            dem_transform,
+            float(sample["lon"]),
+            float(sample["lat"]),
+            float(sample["elev_m"]),
+            heading + rels,
+            max_km=15.0,
+            step_m=100.0,
+        )
+        ax.fill_between(rels, horizon, -8.0, color=HORIZON_FILL, zorder=1)
+        ax.plot(rels, horizon, color=HORIZON_LINE, lw=1.2, zorder=2)
+    ax.axvline(0.0, color=RUN, lw=0.9, ls="--", zorder=3, alpha=0.75)
+    ax.text(0.0, 84, "ahead", color=RUN, ha="center", va="bottom", fontsize=8)
     guide_name = guide["name"] if guide else None
     for row in rows:
         alt = float(row["alt_deg"])
-        if alt < -8:
+        rel = rel_bearing_deg(row["az_deg"], heading)
+        if alt < -5 or abs(rel) > AHEAD_HALF_DEG:
             continue
         kind = row["kind"]
         name = row["name"]
-        az_b = float(row["az_deg"]) % 360.0
         obscured = bool(row.get("obscured"))
         if kind == "planet":
             color = PLANET_COLORS.get(name, INK)
             ax.scatter(
-                az_b, alt, s=70, c=color, zorder=5, alpha=0.35 if obscured else 1.0, edgecolors=color
+                rel, alt, s=80, c=color, zorder=5, alpha=0.35 if obscured else 1.0, edgecolors=color
             )
             if not obscured:
-                _annotate(ax, name, (az_b, alt), color=color)
+                _annotate(ax, name, (rel, alt), color=color)
         elif kind == "moon":
-            ax.scatter(az_b, alt, s=110, c=MOON, edgecolors=INK, zorder=5)
-            _annotate(ax, "Moon", (az_b, alt), color=MOON)
+            ax.scatter(rel, alt, s=120, c=MOON, edgecolors=INK, zorder=5)
+            _annotate(ax, "Moon", (rel, alt), color=MOON)
         elif kind == "feature":
-            ax.scatter(az_b, alt, s=55, marker="*", c=MW, zorder=5)
-            _annotate(ax, "MW", (az_b, alt), color=MW)
+            ax.scatter(rel, alt, s=60, marker="*", c=MW, zorder=5)
+            _annotate(ax, "MW", (rel, alt), color=MW)
         elif kind == "star" and name in NAV_STARS and alt >= 5:
             mag = float(row["mag"]) if row.get("mag") is not None else 2.0
-            size = max(10.0, 48.0 * 0.65**mag)
+            size = max(12.0, 52.0 * 0.65**mag)
             color = star_color(name)
             is_guide = name == guide_name
-            ax.scatter(az_b, alt, s=size * (1.6 if is_guide else 1.0), c=color, zorder=4)
-            if mag <= 1.3 or is_guide:
-                label = f"{name} · ahead" if is_guide else name
-                _annotate(ax, label, (az_b, alt), color=GUIDE if is_guide else color)
-    ax.set_xlim(0, 360)
-    ax.set_xticks([0, 90, 180, 270, 360])
-    ax.set_xticklabels(["N", "E", "S", "W", "N"])
-    ax.set_ylim(-12, 90)
+            ax.scatter(rel, alt, s=size * (1.6 if is_guide else 1.0), c=color, zorder=4)
+            label = f"{name} · ahead" if is_guide else name
+            _annotate(ax, label, (rel, alt), color=GUIDE if is_guide else color)
+    ax.set_xlim(-AHEAD_HALF_DEG, AHEAD_HALF_DEG)
+    ax.set_xticks([-90, -45, 0, 45, 90])
+    ax.set_xticklabels(["90° L", "45° L", "ahead", "45° R", "90° R"])
+    ax.set_ylim(-8, 90)
     ax.set_ylabel("altitude °")
     title = (
         f"{fmt_time(sample['time'])}  ·  km {sample['dist_km']:.1f}  ·  "
-        f"{fmt_hours(sample['elapsed_h'])}  ·  ridge silhouette"
+        f"{fmt_hours(sample['elapsed_h'])}  ·  looking along the course"
     )
     _style_axes(ax, title)
     return _savefig(fig, path)
@@ -799,9 +812,20 @@ def write_plots(
             written.append(
                 plot_sky_disc(plots_dir / f"{stem}.png", sample, rows, profile, guide)
             )
-            written.append(
-                plot_ridge(plots_dir / f"{stem}-ridge.png", sample, rows, profile, guide)
+    by_i = {int(s["i"]): s for s in samples}
+    for spot in best_spots(scores):
+        sample = by_i[int(spot["i"])]
+        nid = int(sample["night_id"])
+        written.append(
+            plot_ahead(
+                plots_dir / f"night{nid}-spot-ahead.png",
+                sample,
+                rows_for_sample(sky, sample["i"]),
+                dem_array,
+                dem_transform,
+                guides.get(int(sample["i"])),
             )
+        )
     kept = {path.name for path in written}
     if plots_dir.is_dir():
         for old in plots_dir.glob("*.png"):
@@ -811,7 +835,9 @@ def write_plots(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Course, sky-disc, altitude, and spots plots.")
+    parser = argparse.ArgumentParser(
+        description="Course, sky-disc, altitude, spots, and look-ahead plots."
+    )
     parser.add_argument("--config", type=Path, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)
     parser.add_argument("--site-dir", type=Path, default=None)
