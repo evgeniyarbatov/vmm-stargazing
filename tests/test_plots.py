@@ -17,6 +17,7 @@ from horizon import load_dem_array
 from plots import (
     _altitude_series,
     _clock_axis,
+    _frame_track,
     _local_time,
     altaz_to_rtheta,
     guide_label,
@@ -29,6 +30,7 @@ from plots import (
     write_plots,
 )
 from report import disc_stem
+from utils import bbox_of, expand_bbox
 
 from gpx import read_track
 
@@ -42,6 +44,20 @@ class TestPlots(unittest.TestCase):
         r, theta = altaz_to_rtheta(0.0, 0.0)
         self.assertAlmostEqual(r, 90.0)
         self.assertAlmostEqual(theta, 0.0)
+
+    def test_frame_track_crops_to_padded_course(self) -> None:
+        fig, ax = plt.subplots()
+        ax.set_xlim(100.0, 110.0)
+        ax.set_ylim(10.0, 30.0)
+        lons = np.array([103.8, 104.0])
+        lats = np.array([22.3, 22.4])
+        _frame_track(ax, lons, lats, pad_km=2.0)
+        box = expand_bbox(bbox_of(lons, lats), 2.0)
+        self.assertAlmostEqual(ax.get_xlim()[0], box["west"])
+        self.assertAlmostEqual(ax.get_xlim()[1], box["east"])
+        self.assertAlmostEqual(ax.get_ylim()[0], box["south"])
+        self.assertAlmostEqual(ax.get_ylim()[1], box["north"])
+        plt.close(fig)
 
     def test_rel_bearing_ahead_left_right_wrap(self) -> None:
         self.assertAlmostEqual(rel_bearing_deg(90.0, 90.0), 0.0)

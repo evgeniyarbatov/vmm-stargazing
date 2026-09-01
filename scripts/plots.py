@@ -16,7 +16,7 @@ from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
 from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
 from report import altitude_stem, fmt_hours, fmt_time, rows_for_sample, sample_stem
-from utils import dump_json, ensure_parent, load_json, sample_along
+from utils import bbox_of, dump_json, ensure_parent, expand_bbox, load_json, sample_along
 
 from gpx import read_track, write_spots_gpx
 
@@ -40,6 +40,7 @@ LOCAL_PEAK_BUMP = 0.08
 SPOT_GAP_KM = 4.0
 SPOT_MAX_PER_NIGHT = 8
 SPOT_SCORE_FLOOR = 0.7
+COURSE_PAD_KM = 2.0
 NIGHT_COLORS = {1: "#1e66f5", 2: "#8839ef", 3: "#40a02b"}
 PLANET_COLORS = {
     "Mercury": "#7c7f93",
@@ -360,6 +361,18 @@ def _draw_hillshade(ax: Any, dem_array: np.ndarray, dem_transform: Any) -> None:
     )
 
 
+def _frame_track(
+    ax: Any,
+    lons: np.ndarray,
+    lats: np.ndarray,
+    pad_km: float = COURSE_PAD_KM,
+) -> None:
+    box = expand_bbox(bbox_of(lons, lats), pad_km)
+    ax.set_xlim(box["west"], box["east"])
+    ax.set_ylim(box["south"], box["north"])
+    ax.set_aspect("equal", adjustable="box")
+
+
 def _draw_course_track(
     ax: Any,
     lons: np.ndarray,
@@ -474,7 +487,7 @@ def plot_course(
             if is_hi:
                 text = f"{text}\n{fmt_time(sample['time'])}"
             _annotate(ax, text, (sample["lon"], sample["lat"]))
-    ax.set_aspect("equal", adjustable="box")
+    _frame_track(ax, lons, lats)
     ax.set_xlabel("lon")
     ax.set_ylabel("lat")
     title = "Stargazing stops on course (realistic pace)"
@@ -556,7 +569,7 @@ def plot_spots(
             f"{row['dist_km']:.0f} km · {row['score']:.2f}",
             (row["lon"], row["lat"]),
         )
-    ax_map.set_aspect("equal", adjustable="box")
+    _frame_track(ax_map, lons, lats)
     ax_map.set_xlabel("lon")
     ax_map.set_ylabel("lat")
     _style_axes(ax_map, "Stargazing spots (realistic-pace night samples)")
