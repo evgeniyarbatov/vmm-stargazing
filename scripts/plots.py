@@ -121,6 +121,20 @@ def guide_star(sample: dict[str, Any], rows: list[dict[str, Any]]) -> dict[str, 
     return min(pool, key=lambda row: abs(float(row["rel_deg"])))
 
 
+def _named_on_disc(row: dict[str, Any], guide_name: str | None = None) -> bool:
+    alt = float(row["alt_deg"])
+    kind = row["kind"]
+    name = row["name"]
+    if alt < 0 or row.get("obscured"):
+        return False
+    if kind in ("planet", "moon", "feature"):
+        return True
+    if kind != "star" or name not in NAV_STARS or alt < 5:
+        return False
+    mag = float(row["mag"]) if row.get("mag") is not None else 2.0
+    return mag <= 1.3 or name == guide_name
+
+
 def guide_label(row: dict[str, Any] | None) -> str:
     if row is None:
         return "—"
@@ -644,12 +658,11 @@ def plot_sky_disc(
 
     guide_name = guide["name"] if guide else None
     for row in rows:
-        alt = float(row["alt_deg"])
-        if alt < 0:
+        if not _named_on_disc(row, guide_name):
             continue
+        alt = float(row["alt_deg"])
         r, theta = altaz_to_rtheta(alt, float(row["az_deg"]))
         kind = row["kind"]
-        obscured = bool(row.get("obscured"))
         name = row["name"]
         if kind == "planet":
             color = PLANET_COLORS.get(name, INK)
@@ -657,11 +670,10 @@ def plot_sky_disc(
                 theta,
                 r,
                 s=90,
-                c=color if not obscured else "none",
+                c=color,
                 edgecolors=color,
                 linewidths=1.2,
                 zorder=5,
-                alpha=0.35 if obscured else 1.0,
             )
             ax.annotate(
                 name,
@@ -686,7 +698,7 @@ def plot_sky_disc(
             ax.annotate(
                 "MW", (theta, r), textcoords="offset points", xytext=(5, 5), color=MW, fontsize=8
             )
-        elif kind == "star" and name in NAV_STARS and alt >= 5:
+        elif kind == "star":
             mag = float(row["mag"]) if row.get("mag") is not None else 2.0
             size = max(8.0, 55.0 * 0.65**mag)
             is_guide = name == guide_name
@@ -697,7 +709,6 @@ def plot_sky_disc(
                 s=size * (1.6 if is_guide else 1.0),
                 c=color,
                 zorder=4,
-                alpha=0.25 if obscured else 0.95,
             )
             if is_guide:
                 ax.scatter(
@@ -709,16 +720,15 @@ def plot_sky_disc(
                     linewidths=1.3,
                     zorder=5,
                 )
-            if (mag <= 1.3 or is_guide) and not obscured:
-                label = f"{name} · ahead" if is_guide else name
-                ax.annotate(
-                    label,
-                    (theta, r),
-                    textcoords="offset points",
-                    xytext=(4, 4),
-                    color=GUIDE if is_guide else color,
-                    fontsize=7,
-                )
+            label = f"{name} · ahead" if is_guide else name
+            ax.annotate(
+                label,
+                (theta, r),
+                textcoords="offset points",
+                xytext=(4, 4),
+                color=GUIDE if is_guide else color,
+                fontsize=7,
+            )
 
     title = (
         f"{fmt_time(sample['time'])}  ·  km {sample['dist_km']:.1f}  ·  "
@@ -860,18 +870,14 @@ def plot_ahead(
     for row in rows:
         alt = float(row["alt_deg"])
         rel = rel_bearing_deg(row["az_deg"], heading)
-        if alt < -5 or abs(rel) > AHEAD_HALF_DEG:
+        if alt < -5 or abs(rel) > AHEAD_HALF_DEG or row.get("obscured"):
             continue
         kind = row["kind"]
         name = row["name"]
-        obscured = bool(row.get("obscured"))
         if kind == "planet":
             color = PLANET_COLORS.get(name, INK)
-            ax.scatter(
-                rel, alt, s=80, c=color, zorder=5, alpha=0.35 if obscured else 1.0, edgecolors=color
-            )
-            if not obscured:
-                _annotate(ax, name, (rel, alt), color=color)
+            ax.scatter(rel, alt, s=80, c=color, zorder=5, edgecolors=color)
+            _annotate(ax, name, (rel, alt), color=color)
         elif kind == "moon":
             ax.scatter(rel, alt, s=120, c=MOON, edgecolors=INK, zorder=5)
             _annotate(ax, "Moon", (rel, alt), color=MOON)

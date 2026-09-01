@@ -19,6 +19,7 @@ from plots import (
     _clock_axis,
     _frame_track,
     _local_time,
+    _named_on_disc,
     altaz_to_rtheta,
     guide_label,
     guide_star,
@@ -121,6 +122,34 @@ class TestPlots(unittest.TestCase):
         picked = guide_star(sample, rows)
         assert picked is not None
         self.assertEqual(picked["name"], "Altair")
+
+    def test_named_on_disc_skips_unlabeled_and_hidden(self) -> None:
+        vega = {
+            "kind": "star",
+            "name": "Vega",
+            "alt_deg": 40.0,
+            "mag": 0.03,
+            "obscured": False,
+        }
+        polaris = {
+            "kind": "star",
+            "name": "Polaris",
+            "alt_deg": 40.0,
+            "mag": 1.98,
+            "obscured": False,
+        }
+        hidden = {**vega, "obscured": True}
+        venus = {
+            "kind": "planet",
+            "name": "Venus",
+            "alt_deg": 8.0,
+            "obscured": True,
+        }
+        self.assertTrue(_named_on_disc(vega))
+        self.assertFalse(_named_on_disc(polaris))
+        self.assertTrue(_named_on_disc(polaris, "Polaris"))
+        self.assertFalse(_named_on_disc(hidden))
+        self.assertFalse(_named_on_disc(venus))
 
     def test_score_sample_rewards_open_high_dark(self) -> None:
         high = score_sample(
