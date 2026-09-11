@@ -3,49 +3,44 @@
   <metadata>
     <name>Stargazing locations</name>
   </metadata>
-  <wpt lat="22.304052374512366" lon="103.98780426643542">
-    <ele>1026.9739934033064</ele>
+  <wpt lat="22.28317959363631" lon="104.01845649318176">
+    <ele>477.9648585058563</ele>
     <name>Night 1 · km 62</name>
-    <desc>stargazing score 0.87</desc>
+    <desc>stargazing score 0.63</desc>
   </wpt>
-  <wpt lat="22.298995276727233" lon="104.01751061258189">
-    <ele>411.73129426181816</ele>
+  <wpt lat="22.261619" lon="104.02242530882123">
+    <ele>873.0790688801532</ele>
     <name>Night 1 · km 66</name>
-    <desc>stargazing score 0.67</desc>
+    <desc>stargazing score 0.85</desc>
   </wpt>
-  <wpt lat="22.259047955671225" lon="104.01744453738415">
-    <ele>819.4522108516768</ele>
-    <name>Night 1 · km 76</name>
-    <desc>stargazing score 0.67</desc>
+  <wpt lat="22.250688668520667" lon="104.012081657326">
+    <ele>807.095726889882</ele>
+    <name>Night 1 · km 70</name>
+    <desc>stargazing score 0.85</desc>
   </wpt>
-  <wpt lat="22.278608907843886" lon="103.96443645768932">
-    <ele>957.8597764231681</ele>
+  <wpt lat="22.264218291068797" lon="103.97999563237634">
+    <ele>604.0024460824845</ele>
+    <name>Night 1 · km 82</name>
+    <desc>stargazing score 0.61</desc>
+  </wpt>
+  <wpt lat="22.27745810147171" lon="103.9640634628782">
+    <ele>970.4843159602817</ele>
     <name>Night 1 · km 86</name>
-    <desc>stargazing score 0.75</desc>
+    <desc>stargazing score 0.77</desc>
   </wpt>
-  <wpt lat="22.278686287096892" lon="103.9368680883375">
-    <ele>888.9606907224015</ele>
-    <name>Night 1 · km 90</name>
+  <wpt lat="22.280711759660498" lon="103.92423935269122">
+    <ele>972.6075081664745</ele>
+    <name>Night 1 · km 92</name>
     <desc>stargazing score 0.68</desc>
   </wpt>
-  <wpt lat="22.287845716476827" lon="103.91146693595837">
-    <ele>1035.819087617307</ele>
-    <name>Night 1 · km 94</name>
-    <desc>stargazing score 0.70</desc>
+  <wpt lat="22.29927404648556" lon="103.89335012701501">
+    <ele>1036.728363497759</ele>
+    <name>Night 1 · km 97</name>
+    <desc>stargazing score 0.72</desc>
   </wpt>
-  <wpt lat="22.30502" lon="103.88554214734842">
-    <ele>983.4072868546909</ele>
-    <name>Night 1 · km 99</name>
-    <desc>stargazing score 0.71</desc>
-  </wpt>
-  <wpt lat="22.293578994143505" lon="103.94753245294822">
-    <ele>1386.9059814714767</ele>
-    <name>Night 2 · km 152</name>
-    <desc>stargazing score 0.88</desc>
-  </wpt>
-  <wpt lat="22.27626" lon="103.9667">
-    <ele>947.7404750780904</ele>
-    <name>Night 2 · km 157</name>
-    <desc>stargazing score 0.65</desc>
+  <wpt lat="22.292713788151957" lon="103.93274473478277">
+    <ele>1280.0752752496671</ele>
+    <name>Night 2 · km 154</name>
+    <desc>stargazing score 0.74</desc>
   </wpt>
 </gpx>
