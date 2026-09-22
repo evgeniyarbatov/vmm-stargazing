@@ -22,7 +22,7 @@ See [usage.md](usage.md) for knobs and [architecture.md](architecture.md) for ho
 
 ## Race
 
-- Distance: ~161 km, ~8800 m elevation gain.
+- Distance: ~160 km, ~8800 m elevation gain.
 - Start: Friday 18 September 2026, 08:00 local (Asia/Ho_Chi_Minh, UTC+7) at Sapa Square.
 - Finish cutoff: Sunday 20 September 2026 ~09:00 (49 h). Predicted finishes are earlier (optimistic / realistic / conservative).
 - Location: Sa Pa / Hoàng Liên Sơn, ~22.34° N, 103.84° E.
