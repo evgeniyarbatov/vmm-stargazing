@@ -12,13 +12,13 @@ matplotlib.use("Agg")
 import matplotlib.dates as mdates  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np
+
 from catalog import NAV_STARS
 from config import REPO_ROOT, data_dir, load_config
+from gpx import read_track, write_spots_gpx
 from horizon import horizon_along_azs, horizon_at_az, horizon_profile, load_dem_array
 from report import altitude_stem, fmt_hours, fmt_time, rows_for_sample, sample_stem
 from utils import bbox_of, dump_json, ensure_parent, expand_bbox, load_json, sample_along
-
-from gpx import read_track, write_spots_gpx
 
 PAPER = "#ffffff"
 INK = "#1e1e2e"

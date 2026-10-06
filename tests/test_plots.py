@@ -12,6 +12,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
+from gpx import read_track
 from helpers import FIXTURES, write_ridge_dem
 from horizon import load_dem_array
 from plots import (
@@ -32,8 +33,6 @@ from plots import (
 )
 from report import disc_stem
 from utils import bbox_of, expand_bbox
-
-from gpx import read_track
 
 
 class TestPlots(unittest.TestCase):

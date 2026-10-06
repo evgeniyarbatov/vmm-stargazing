@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+
 from config import data_dir, load_config
 from ephem import load_ephemeris, observe_all
 from horizon import horizon_at_az, horizon_profile, load_dem_array

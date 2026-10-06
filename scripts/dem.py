@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import rasterio
 from rasterio.transform import rowcol
+
 from utils import ensure_parent, expand_bbox
 
 StitchFn = Callable[[float, float, float, float], tuple[np.ndarray, dict]]

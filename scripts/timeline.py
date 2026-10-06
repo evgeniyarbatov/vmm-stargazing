@@ -8,14 +8,14 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+
 from config import REPO_ROOT, data_dir, load_config, race_window
 from dem import sample_elev_xy
 from ephem import night_windows, transition_events, twilight_intervals
+from gpx import read_track
 from horizon import load_dem_array
 from pace import load_anchor, load_scenarios, per_km_buckets, scenario_knots
 from utils import LOOKAHEAD_M, cumulative_m, dump_json, heading_at, interp_at
-
-from gpx import read_track
 
 PaceKnots = list[tuple[float, datetime]]
 

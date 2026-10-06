@@ -18,6 +18,7 @@ package = false
 [tool.ruff]
 line-length = 99
 target-version = "py311"
+src = ["scripts", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "C4", "UP", "SIM", "RET"]

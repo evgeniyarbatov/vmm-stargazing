@@ -7,6 +7,7 @@ from pathlib import Path
 import gpxpy
 import gpxpy.gpx
 import numpy as np
+
 from config import data_dir, load_config, resolve_gpx
 from utils import bbox_of, densify_track, dump_json, ensure_parent, segment_lengths_m
 
