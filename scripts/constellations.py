@@ -11,7 +11,7 @@ from pathlib import Path
 from config import REPO_ROOT, data_dir, load_config
 from utils import load_json
 
-CONSTELLATIONS_URL = "https://github.com/evgeniyarbatov/constellations.git"
+NIGHT_SKY_URL = "https://github.com/evgeniyarbatov/night-sky.git"
 DATE_LINE = "DATE = datetime.now().date()"
 DATE_PATCH = (
     "DATE = datetime.fromisoformat(os.environ[\"CONSTELLATIONS_DATE\"]).date() "
@@ -23,14 +23,14 @@ def run(cmd: list[str], cwd: Path | None = None, env: dict[str, str] | None = No
     subprocess.run(cmd, cwd=cwd, env=env, check=True)
 
 
-def ensure_clone(src: Path) -> None:
-    src.parent.mkdir(parents=True, exist_ok=True)
-    if (src / ".git").is_dir():
-        run(["git", "-C", str(src), "fetch", "origin"])
-        run(["git", "-C", str(src), "checkout", "main"])
-        run(["git", "-C", str(src), "reset", "--hard", "origin/main"])
+def ensure_clone(repo: Path) -> None:
+    repo.parent.mkdir(parents=True, exist_ok=True)
+    if (repo / ".git").is_dir():
+        run(["git", "-C", str(repo), "fetch", "origin"])
+        run(["git", "-C", str(repo), "checkout", "main"])
+        run(["git", "-C", str(repo), "reset", "--hard", "origin/main"])
         return
-    run(["git", "clone", CONSTELLATIONS_URL, str(src)])
+    run(["git", "clone", NIGHT_SKY_URL, str(repo)])
 
 
 def write_observer_config(src: Path, cfg: dict, nights: dict) -> None:
@@ -69,7 +69,7 @@ def copy_plots(src_plots: Path, dest: Path) -> int:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Clone constellations, plot each VMM night, copy into docs/.")
+    parser = argparse.ArgumentParser(description="Clone night-sky, plot each VMM night, copy into docs/.")
     parser.add_argument("--config", type=Path, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)
     parser.add_argument("--site-dir", type=Path, default=None)
@@ -78,9 +78,10 @@ def main() -> None:
     datadir = data_dir(args.data_dir)
     site_dir = (args.site_dir or REPO_ROOT / "docs").expanduser()
     nights = load_json(datadir / "nights.json")
-    src = datadir / "constellations"
+    repo = datadir / "night-sky"
+    src = repo / "constellations"
     out = datadir / "constellations-out"
-    ensure_clone(src)
+    ensure_clone(repo)
     write_observer_config(src, cfg, nights)
     patch_date_env(src)
     run(["make", "install"], cwd=src)
