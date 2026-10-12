@@ -8,6 +8,12 @@ Pre-computed notes for Vietnam Mountain Marathon 100 Miles 2026 (Sa Pa): planets
 
 **Waypoints:** [stargazing-spots.gpx](docs/stargazing-spots.gpx) — also a download on the site.
 
+## Status
+
+| Folder | Status | Last touched | Next step |
+|---|---|---|---|
+| root | active | 2026-10-07 | — |
+
 ## Quick start
 
 ```bash
