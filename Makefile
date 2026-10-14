@@ -18,23 +18,25 @@ NIGHTS = $(DATA_DIR)/nights.json
 SAMPLES = $(DATA_DIR)/samples.json
 SKY = $(DATA_DIR)/sky.json
 
-.PHONY: install lock test lint help \
-	gpx dem timeline sky plots constellations site run \
-	clean clean-dem
+.DEFAULT_GOAL := help
 
-install:
+.PHONY: setup lock test lint help \
+	gpx dem timeline sky plots constellations site run \
+	clean-dem
+
+setup:
 	@uv sync --group dev
 
 lock:
 	@uv lock
 
-test: install
+test: setup
 	@uv run python -m unittest discover -s tests -p "test_*.py" -v
 
-lint: install
+lint: setup
 	@uv run ruff check scripts tests
 
-gpx: install
+gpx: setup
 	@mkdir -p "$(DATA_DIR)/gpx"
 	@if [ -n "$(strip $(GPX))" ]; then \
 		uv run python scripts/gpx.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
@@ -44,34 +46,34 @@ gpx: install
 			--densify-m $(DENSIFY_M); \
 	fi
 
-dem: install
+dem: setup
 	@test -f "$(BBOX_JSON)" || (echo "Error: missing $(BBOX_JSON). Run: make gpx GPX=…" >&2; exit 1)
 	@mkdir -p "$(DATA_DIR)/dem"
 	@uv run python scripts/dem.py "$(BBOX_JSON)" \
 		--out "$(DEM_TIF)" \
 		--buffer-km $(BUFFER_KM)
 
-timeline: install
+timeline: setup
 	@test -f "$(CLEANED_GPX)" || (echo "Error: missing $(CLEANED_GPX). Run: make gpx GPX=…" >&2; exit 1)
 	@uv run python scripts/timeline.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
 		$(SAMPLE_FLAG)
 
-sky: install
+sky: setup
 	@test -f "$(SAMPLES)" || (echo "Error: missing $(SAMPLES). Run: make timeline" >&2; exit 1)
 	@uv run python scripts/sky.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)"
 
-plots: install
+plots: setup
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
 	@mkdir -p "$(SITE_DIR)/plots"
 	@uv run python scripts/plots.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
 		--site-dir "$(SITE_DIR)"
 
-constellations: install
+constellations: setup
 	@test -f "$(NIGHTS)" || (echo "Error: missing $(NIGHTS). Run: make timeline" >&2; exit 1)
 	@uv run python scripts/constellations.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
 		--site-dir "$(SITE_DIR)"
 
-site: install
+site: setup
 	@test -f "$(SKY)" || (echo "Error: missing $(SKY). Run: make sky" >&2; exit 1)
 	@mkdir -p "$(SITE_DIR)"
 	@uv run python scripts/report.py --config "$(CONFIG)" --data-dir "$(DATA_DIR)" \
@@ -80,16 +82,12 @@ site: install
 run: gpx dem timeline sky plots constellations site
 	@echo "Done: $(SITE_DIR)"
 
-clean:
-	@rm -f "$(NIGHTS)" "$(SAMPLES)" "$(SKY)"
-	@echo "Cleaned nights/samples/sky under $(DATA_DIR)"
-
 clean-dem:
 	@rm -f "$(DEM_TIF)"
 	@echo "Removed $(DEM_TIF)"
 
 help:
-	@echo "install     - uv sync deps"
+	@echo "setup       - uv sync deps"
 	@echo "lock        - refresh uv.lock"
 	@echo "test        - run unit tests"
 	@echo "lint        - ruff check scripts tests"
@@ -101,7 +99,6 @@ help:
 	@echo "constellations - clone IAU constellation plots for each night → docs/plots/"
 	@echo "site           - GitHub Pages HTML + data.json under docs/"
 	@echo "run            - gpx → dem → timeline → sky → plots → constellations → site"
-	@echo "clean       - remove nights/samples/sky (keep DEM + ephemeris + docs/)"
 	@echo "clean-dem   - remove cached DEM"
 	@echo ""
 	@echo "Data: \$$(DATA_DIR) (default ~/Documents/data/vmm-stargazing)."

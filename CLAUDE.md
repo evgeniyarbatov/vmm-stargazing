@@ -11,7 +11,7 @@ Details: [architecture.md](architecture.md), [usage.md](usage.md). Keep README h
 ## Commands
 
 ```sh
-make install
+make setup
 make test
 make run
 make plots

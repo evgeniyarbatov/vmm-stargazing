@@ -1,7 +1,7 @@
 # Usage
 
 ```bash
-make install
+make setup
 make test
 make run
 ```
@@ -22,7 +22,7 @@ Default cache: `~/Documents/data/vmm-stargazing/`. The public site is `docs/` in
 
 `docs/index.html` is the contents page. Nights, stops, sky charts, and constellation plates are linked from there and from each other. PNGs live in `docs/plots/`. Raw data is `docs/data.json`. Best stargazing places are `docs/stargazing-spots.gpx` (waypoints).
 
-`make clean` removes nights/samples/sky (keeps DEM + ephemeris + `docs/`). `make clean-dem` drops the GeoTIFF.
+`make clean-dem` drops the GeoTIFF.
 
 ## What to re-run
 

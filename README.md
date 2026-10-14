@@ -11,7 +11,7 @@ Pre-computed notes for Vietnam Mountain Marathon 100 Miles 2026 (Sa Pa): planets
 ## Quick start
 
 ```bash
-make install
+make setup
 make test
 make run
 ```
